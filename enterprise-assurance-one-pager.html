@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Internal one-page blueprint for moving a Microsoft Foundry prior-authorization PoC toward an enterprise-controlled evidence system.">
+  <title>Enterprise Assurance Blueprint — Prior Authorization PoC</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body.one-page{background:#eef0f6}.one-page .concept-ribbon{position:static}.paper{max-width:1540px;margin:26px auto;background:white;box-shadow:0 22px 70px rgba(7,18,94,.13);border-radius:22px;overflow:hidden}.paper-header{padding:30px 38px 28px;background:linear-gradient(120deg,#07125e 0%,#15227d 58%,#3c2cda 100%);color:white;position:relative}.paper-header:after{content:"";position:absolute;right:-90px;top:-180px;width:420px;height:420px;border:1px solid rgba(255,255,255,.16);border-radius:50%;box-shadow:0 0 0 55px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.028)}.paper-brand{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.paper-brand .brand{padding:0}.paper-tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px;color:#dce2ff}.paper-hero{display:grid;grid-template-columns:1.35fr .65fr;gap:36px;align-items:end;margin-top:34px;position:relative;z-index:1}.paper-hero h1{font-size:40px;line-height:1.07;margin:0 0 12px;max-width:900px;font-weight:560}.paper-hero h1 em{font-style:normal;color:#82bcff}.paper-hero p{font-size:13px;color:#d6dcfb;line-height:1.65;max-width:900px;margin:0}.truth-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:15px;padding:18px}.truth-box strong{display:block;color:#fff;font-size:12px;margin-bottom:7px}.truth-box p{font-size:10px;line-height:1.55}.paper-body{padding:26px 38px 34px}.paper-section{margin-bottom:24px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:12px}.section-title h2{font-size:17px;color:#07125e;margin:0}.section-title p{margin:0;color:#66708b;font-size:9px}.stage-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.stage{border:1px solid #e1e4ef;border-top:3px solid #3c2cda;border-radius:11px;padding:12px;min-height:116px;background:#fff}.stage:nth-child(2),.stage:nth-child(3),.stage:nth-child(5){border-top-color:#1e85ff}.stage:nth-child(7){border-top-color:#14795f}.stage b{display:block;font-size:8px;color:#3c2cda;letter-spacing:.1em;margin-bottom:7px}.stage strong{display:block;color:#07125e;font-size:10px;line-height:1.3;margin-bottom:5px}.stage span{display:block;color:#66708b;font-size:8px;line-height:1.45}.matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.control-layer{background:#f8f8f9;border-radius:12px;padding:14px;border:1px solid #e1e4ef}.control-layer header{display:flex;justify-content:space-between;gap:8px;margin-bottom:9px}.control-layer h3{font-size:11px;color:#07125e;margin:0}.control-layer .owner{font-size:7px;text-transform:uppercase;letter-spacing:.08em;color:#3c2cda;font-weight:850}.control-layer ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}.control-layer li{font-size:8px;line-height:1.4;color:#4c5674;padding-left:11px;position:relative}.control-layer li:before{content:"";width:5px;height:5px;border-radius:50%;background:#1e85ff;position:absolute;left:0;top:4px}.warning-strip{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:#fff4df;border:1px solid #f1d6a3;border-radius:12px;padding:12px;margin-top:11px}.warning-strip strong{width:28px;height:28px;border-radius:8px;background:#ffe6b2;color:#8d4d00;display:grid;place-items:center}.warning-strip p{font-size:8px;line-height:1.5;color:#68440f;margin:0}.two-up{display:grid;grid-template-columns:1.03fr .97fr;gap:14px}.mini-table{border:1px solid #e1e4ef;border-radius:12px;overflow:hidden}.mini-table header{display:grid;grid-template-columns:1.2fr .7fr 1.2fr;background:#07125e;color:white;padding:9px 12px;font-size:8px;font-weight:800}.mini-row{display:grid;grid-template-columns:1.2fr .7fr 1.2fr;padding:8px 12px;border-bottom:1px solid #e1e4ef;align-items:start}.mini-row:last-child{border-bottom:0}.mini-row span,.mini-row strong{font-size:8px;line-height:1.35}.mini-row strong{color:#07125e}.mini-row span{color:#66708b}.mini-row .caveat{color:#a45b00;font-weight:750}.gate-card{border:1px solid #e1e4ef;border-radius:12px;padding:14px}.gate-card h3{font-size:11px;color:#07125e;margin:0 0 10px}.gate-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}.gate{display:flex;gap:7px;font-size:8px;color:#4d5774;line-height:1.35}.gate:before{content:"✓";color:#14795f;font-weight:900}.gate.zero:before{content:"0";width:14px;height:14px;background:#e9f7f2;color:#14795f;display:grid;place-items:center;border-radius:50%;font-size:7px;flex:0 0 auto}.eval-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.eval-card{border:1px solid #e1e4ef;border-radius:10px;padding:11px;min-height:96px}.eval-card b{font-size:8px;color:#3c2cda}.eval-card strong{display:block;color:#07125e;font-size:9px;margin:6px 0 4px}.eval-card span{font-size:7.5px;line-height:1.4;color:#66708b}.eval-card footer{margin-top:7px;font-size:7px;color:#14795f;font-weight:850}.plan{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.plan-step{background:#f6f7fb;border-radius:11px;padding:11px;border-bottom:3px solid #cbd0e5}.plan-step:nth-child(4),.plan-step:nth-child(5){border-bottom-color:#3c2cda}.plan-step b{font-size:7px;color:#3c2cda}.plan-step strong{display:block;font-size:9px;color:#07125e;margin:5px 0}.plan-step span{font-size:7.5px;line-height:1.4;color:#66708b}.paper-footer{display:flex;justify-content:space-between;gap:24px;padding-top:16px;border-top:1px solid #e1e4ef}.sources{font-size:7px;line-height:1.6;color:#66708b}.sources a{color:#3c2cda}.footer-note{text-align:right;max-width:370px;color:#66708b;font-size:7px;line-height:1.6}.back-link{position:fixed;right:20px;bottom:20px;background:#3c2cda;color:white;text-decoration:none;padding:10px 14px;border-radius:9px;font-size:10px;font-weight:800;box-shadow:0 10px 25px rgba(60,44,218,.3)}
+    @media(max-width:1100px){.paper{margin:0;border-radius:0}.stage-flow{grid-template-columns:repeat(4,1fr)}.matrix{grid-template-columns:1fr 1fr}.eval-grid,.plan{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:720px){.paper-header,.paper-body{padding-left:20px;padding-right:20px}.paper-hero,.two-up{grid-template-columns:1fr}.paper-hero h1{font-size:30px}.stage-flow,.matrix,.eval-grid,.plan{grid-template-columns:1fr}.mini-table header,.mini-row{grid-template-columns:1fr}.gate-list{grid-template-columns:1fr}.paper-footer{flex-direction:column}.footer-note{text-align:left}.back-link{position:static;display:block;margin:12px 20px;text-align:center}}
+    @media print{body.one-page{background:white}.concept-ribbon,.back-link{display:none}.paper{max-width:none;margin:0;box-shadow:none;border-radius:0}.paper-header{padding:18px 24px}.paper-hero{margin-top:18px}.paper-hero h1{font-size:27px}.paper-body{padding:16px 24px}.paper-section{break-inside:avoid;margin-bottom:14px}.stage{min-height:92px;padding:8px}.control-layer,.gate-card{padding:9px}.paper-footer{padding-top:8px}}
+  </style>
+</head>
+<body class="one-page">
+  <div class="concept-ribbon">INTERNAL CONCEPT · SYNTHETIC DATA · NOT AN APPROVED SECURITY, CLINICAL, OR COMPLIANCE ARCHITECTURE</div>
+  <article class="paper">
+    <header class="paper-header">
+      <div class="paper-brand">
+        <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span><strong>hexaware</strong><small>AI Innovation Lab</small></span></div>
+        <span class="paper-tag">Prior authorization PoC · Enterprise assurance blueprint · 21 Jul 2026</span>
+      </div>
+      <div class="paper-hero">
+        <div>
+          <p class="eyebrow" style="color:#8fc3ff">FROM PLAYGROUND DEMO TO CONTROLLED EVIDENCE SYSTEM</p>
+          <h1>Foundry-native intelligence.<br><em>Harness-enforced trust.</em></h1>
+          <p>Build a provider-side prior-authorization evidence assistant using synthetic data in the existing Azure subscription. It maps policy criteria to source-linked synthetic evidence, surfaces gaps and conflicts, drafts only from verified facts, and leaves submission decisions with an accountable human.</p>
+        </div>
+        <aside class="truth-box">
+          <strong>The non-negotiable truth</strong>
+          <p>No generative system can guarantee that it “will not hallucinate.” Enterprise grade means unsupported content cannot silently become an operational action: constrain it, verify it, fail closed, trace it, test it, and require human review.</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="paper-body">
+      <section class="paper-section">
+        <div class="section-title"><h2>1 · Target runtime: seven controlled stages</h2><p>The LLM proposes a bounded evidence map; deterministic services decide whether that map may enter workflow.</p></div>
+        <div class="stage-flow">
+          <div class="stage"><b>01 · INTAKE</b><strong>Trusted backend</strong><span>Authenticated user, synthetic/approved case, supported procedure, file/type/size limits.</span></div>
+          <div class="stage"><b>02 · POLICY</b><strong>Pin exact authority</strong><span>Policy ID, version, effective date, source URL, hash, chunk and page locators.</span></div>
+          <div class="stage"><b>03 · PRE-CHECK</b><strong>Reject unsafe input</strong><span>Schema, malware, prompt/document attacks, case isolation, PHI and secret controls.</span></div>
+          <div class="stage"><b>04 · FOUNDRY</b><strong>Bounded model step</strong><span>Criterion mapping only; no approve/deny authority and no external side effects.</span></div>
+          <div class="stage"><b>05 · VERIFY</b><strong>Harness is authority</strong><span>Schema enums, known criterion IDs, verbatim quote resolution, source linkage, prohibited fields.</span></div>
+          <div class="stage"><b>06 · HUMAN</b><strong>Review and attest</strong><span>Resolve gaps/conflicts, confirm draft, choose workflow action, supply override reason.</span></div>
+          <div class="stage"><b>07 · OBSERVE</b><strong>Trace and evaluate</strong><span>Run IDs, spans, versions, latency, token/cost, guardrail outcomes, reviewer feedback.</span></div>
+        </div>
+      </section>
+
+      <section class="paper-section">
+        <div class="section-title"><h2>2 · Four-layer assurance model</h2><p>Native safety is necessary, but the clinical evidence contract remains a custom responsibility.</p></div>
+        <div class="matrix">
+          <div class="control-layer"><header><h3>Deterministic code gates</h3><span class="owner">Harness</span></header><ul><li>Input schema, procedure allowlist, policy/date pinning</li><li>Known criterion and status enums</li><li>Exact quote and citation resolution</li><li>No approve/deny fields or tool actions</li><li>Retry once; then fail closed</li></ul></div>
+          <div class="control-layer"><header><h3>Foundry native controls</h3><span class="owner">Platform</span></header><ul><li>Prompt-agent tracing and Application Insights</li><li>Quality, safety, task-adherence evaluators</li><li>User/indirect prompt-attack controls</li><li>Agent guardrails and intervention points*</li><li>AI red-team scans and attack-success reporting*</li></ul></div>
+          <div class="control-layer"><header><h3>Domain evidence controls</h3><span class="owner">Product</span></header><ul><li>Policy ↔ clinical dual provenance</li><li>Supported / not evidenced / conflicting / unable states</li><li>Code-derived workflow state</li><li>Missing-information questions</li><li>Draft only from verified claim IDs</li></ul></div>
+          <div class="control-layer"><header><h3>Human governance</h3><span class="owner">Workflow owner</span></header><ul><li>No autonomous coverage or medical-necessity decision</li><li>Explicit submission/review control point</li><li>Required override reason and attestation</li><li>Least-privilege access and audit review</li><li>Rollback, incident, and retention process</li></ul></div>
+        </div>
+        <div class="warning-strip"><strong>!</strong><p><b>Current platform caveats matter.</b> Microsoft documents agent guardrails as preview; Groundedness and Spotlighting controls are not currently applicable to Foundry agents. Structured Outputs are not currently supported with Foundry Agents Service. Therefore the current prompt-agent demo needs strict backend post-validation, or the bounded mapping step should move to a Foundry Responses API path that supports Structured Outputs. Preview controls cannot be the sole release gate.</p></div>
+      </section>
+
+      <section class="paper-section two-up">
+        <div>
+          <div class="section-title"><h2>3 · Native versus custom responsibility</h2></div>
+          <div class="mini-table">
+            <header><span>Capability</span><span>Use</span><span>Enterprise condition</span></header>
+            <div class="mini-row"><strong>Prompt-agent tracing</strong><span>Use now</span><span>GA per current docs; redact and restrict telemetry.</span></div>
+            <div class="mini-row"><strong>Foundry agent evaluation</strong><span>Use now</span><span>Helpful diagnostics; pair with deterministic and domain-labeled tests.</span></div>
+            <div class="mini-row"><strong>Agent guardrails</strong><span class="caveat">Preview</span><span>Configure input/tool/output coverage; do not treat as complete assurance.</span></div>
+            <div class="mini-row"><strong>Groundedness control</strong><span class="caveat">Not for agents</span><span>Implement citation and quote checks in the harness.</span></div>
+            <div class="mini-row"><strong>Structured Outputs</strong><span class="caveat">Not Agent Service</span><span>Post-validate prompt-agent JSON or use a direct Responses API step.</span></div>
+            <div class="mini-row"><strong>AI Red Teaming Agent</strong><span>Use pre-release</span><span>Review non-deterministic results; supplement with workflow-specific attacks.</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-title"><h2>4 · Release gates</h2></div>
+          <div class="gate-card">
+            <h3>Zero-tolerance invariants</h3>
+            <div class="gate-list">
+              <span class="gate zero">Malformed response released</span><span class="gate zero">Unknown policy or criterion accepted</span>
+              <span class="gate zero">Unresolvable citation displayed</span><span class="gate zero">Fabricated material fact in draft</span>
+              <span class="gate zero">Approve/deny action emitted</span><span class="gate zero">Cross-case state or data leakage</span>
+              <span class="gate">100% fail-closed routing on gate failure</span><span class="gate">100% trace/run/version correlation</span>
+            </div>
+            <h3 style="margin-top:14px">Quality thresholds set with the workflow owner</h3>
+            <div class="gate-list"><span class="gate">Evidence-status accuracy</span><span class="gate">Missing-evidence recall</span><span class="gate">Contradiction escalation</span><span class="gate">Reviewer agreement / overrides</span><span class="gate">Task adherence</span><span class="gate">Latency and cost budget</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="paper-section">
+        <div class="section-title"><h2>5 · Evaluation contract: broad enough to find failure</h2><p>Showcase cases prove the demo can work; held-out, adversarial, and invalid cases show how it fails.</p></div>
+        <div class="eval-grid">
+          <div class="eval-card"><b>A · HAPPY PATH</b><strong>Correct, complete evidence</strong><span>Verify supported criterion mapping and human-ready package.</span><footer>Deterministic + domain labels</footer></div>
+          <div class="eval-card"><b>B · MISSING / CONFLICT</b><strong>Evidence gaps</strong><span>Missing PT record, conflicting exam, scanned/noisy documents, policy ambiguity.</span><footer>Recall + escalation</footer></div>
+          <div class="eval-card"><b>C · INVALID / STALE</b><strong>Fail before model</strong><span>Unsupported procedure, stale policy, malformed dates, duplicate or oversize files.</span><footer>100% expected block</footer></div>
+          <div class="eval-card"><b>D · ADVERSARIAL</b><strong>Attack the boundaries</strong><span>User jailbreaks, instructions hidden in documents, data leakage, prohibited action attempts.</span><footer>Foundry + custom red team</footer></div>
+          <div class="eval-card"><b>E · REGRESSION</b><strong>Version every change</strong><span>Run the frozen deck against prompt, model, policy, retrieval, schema, and code changes.</span><footer>CI gate + signed report</footer></div>
+        </div>
+      </section>
+
+      <section class="paper-section">
+        <div class="section-title"><h2>6 · Ten-day conversion path</h2><p>Do not add multi-agent complexity before the endpoint-backed vertical slice is stable.</p></div>
+        <div class="plan">
+          <div class="plan-step"><b>DAYS 1–2</b><strong>Inspect & connect</strong><span>Obtain the repo/endpoint; freeze provider workflow; add trusted backend; connect this sample UI.</span></div>
+          <div class="plan-step"><b>DAYS 3–4</b><strong>Enforce contract</strong><span>Pin policy/version, define schemas/statuses, build citation resolver, prohibited-output gate, failure routing.</span></div>
+          <div class="plan-step"><b>DAYS 5–6</b><strong>Trace & label</strong><span>Wire OTel/Application Insights; build independent golden labels and 15+ held-out cases.</span></div>
+          <div class="plan-step"><b>DAYS 7–8</b><strong>Attack & fix</strong><span>Prompt/document injection, stale policy, leakage, conflict, unsupported procedure; fix and rerun.</span></div>
+          <div class="plan-step"><b>DAYS 9–10</b><strong>Gate & rehearse</strong><span>Freeze versions, issue pass/fail report, create backup demo, rehearse the 20-minute narrative.</span></div>
+        </div>
+      </section>
+
+      <footer class="paper-footer">
+        <div class="sources"><b>Authoritative public sources reviewed 21 Jul 2026:</b><br>
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/concepts/trace-agent-concept">Microsoft Foundry agent tracing</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluate-agent">Evaluate agents</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview">Foundry guardrails overview</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs">Structured Outputs</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection">Prompt Shields</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent">AI Red Teaming Agent</a> ·
+          <a href="https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link">Private Link</a><br>
+          <a href="foundry-enterprise-harness-walkthrough.html"><strong>Open the detailed implementation walkthrough →</strong></a> ·
+          <a href="foundry-prior-auth-reference-architecture.html"><strong>Open the interactive reference architecture →</strong></a>
+        </div>
+        <div class="footer-note">Hexaware-inspired internal visual concept based on the public Hexaware website palette and “Artificial Intelligence Led. Human Intelligence Perfected.” positioning. It is not an approved brand, security, legal, clinical, payer, or compliance artifact.</div>
+      </footer>
+    </div>
+  </article>
+  <a class="back-link" href="index.html">← Open sample UI</a>
+</body>
+</html>
