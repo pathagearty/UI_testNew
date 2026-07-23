@@ -1,12 +1,12 @@
-# Clearway — provider prior-authorization submission demo
+# Clearway — provider prior-authorization readiness workspace
 
-Internal sample interface, enterprise-assurance one-pager, cross-functional implementation walkthrough, and interactive reference architecture for a provider-side Microsoft Foundry prior-authorization PoC. The primary UI is intentionally simple: it helps a provider review supplied records against a selected payer policy, identify missing or conflicting evidence, and prepare the package for clinician review.
+Production-shaped UAT interface, Supabase-backed synthetic case service, enterprise-assurance one-pager, cross-functional implementation walkthrough, and interactive reference architecture for a provider-side Microsoft Foundry prior-authorization PoC. The primary UI helps a clinician select a linked patient/case/order context, review supplied records against the backend-resolved payer policy, identify missing or conflicting evidence, and prepare the package for clinician review.
 
 Confirmed assumptions: the PoC uses synthetic cases, documents, policies, and expected results only; an Azure subscription is already available with team privileges. The implementation therefore verifies resource/project access and separates runtime identity rather than provisioning a new subscription or requesting broad ownership.
 
 ## What is included
 
-- `index.html` — simple provider workspace with three synthetic cases, supplied-document review, source-linked policy checklist, missing-information guidance, draft-letter review, and a human-owned clinician-review handoff.
+- `index.html` — production-shaped provider workspace with linked patient/case/order selectors, backend-resolved policy context, and five synthetic Supabase UAT cases spanning ready, missing-evidence, and conflicting-evidence states.
 - `enterprise-assurance-one-pager.html` — executive single-scroll enterprise-control blueprint covering the runtime architecture, layered guardrails, Foundry-native versus custom responsibilities, release gates, evaluation deck, and ten-day conversion path.
 - `foundry-enterprise-harness-walkthrough.html` — detailed interactive cross-functional checklist with Foundry-specific portal/SDK steps, application-owned controls, verification gates, evidence requirements, troubleshooting, progress saving, search, and print support.
 - `foundry-prior-auth-reference-architecture.html` — interactive line-and-box architecture showing the existing subscription boundary, reviewer/application/Foundry/data/observability layers, numbered request flow, ownership model, synthetic examples, and fail-closed scenarios.
@@ -15,32 +15,46 @@ Confirmed assumptions: the PoC uses synthetic cases, documents, policies, and ex
 - `walkthrough.js` — local checklist progress, search, print, and reset behavior.
 - `provider-ui.css` — responsive styling for the simple provider workspace.
 - `styles.css` — shared styling retained for the technical walkthrough and assurance artifacts.
-- `app.js` — browser-only sample data and interactions.
+- `config.js` — deployment-safe backend URL and fallback settings; never contains secrets.
+- `demo-data.js` — retained emergency fixtures; fixture fallback is disabled in the current Supabase configuration.
+- `api-client.js` — API adapter for the local backend service.
+- `app.js` — cascading clinical-context selection, evidence review, visual summaries, and human-review interactions.
+- `server.py` — dependency-free local backend and static server; it proxies opaque case/order requests to Supabase PostgREST.
+- `supabase/migrations/`, `supabase/seed.sql`, and `supabase/full_documents_seed.sql` — relational UAT schema, read-only synthetic-data policies, five-case seed dataset, sixteen received source texts, two intentionally absent records, five complete synthetic policy texts, and server-side API views.
+- `BACKEND_INTEGRATION.md` — current Supabase UAT implementation, future Azure data recommendation, endpoint contract, validation requirements, and Shorya handoff.
+- `SUPABASE_UAT_SETUP.md` — secret-safe setup, schema, seed catalog, health check, and AI-integration seam.
+- `SYNTHETIC_DOCUMENT_CATALOG.md` — case-by-case source inventory, intentional evidence logic, deterministic content gates, and model-input contract.
+- `PROVIDER_UI_UPDATE_NOTES.md` — focused case/policy identity flow, conflict handling, UI behavior, and demo-versus-production guidance.
 
 ## Run locally
 
 ```bash
 git clone https://github.com/pathagearty/UI_test.git
 cd UI_test
-python3 -m http.server 8788 --bind 127.0.0.1
+cp .env.example .env.local
+# Add the temporary Supabase UAT values to .env.local, then:
+chmod 600 .env.local
+python3 server.py
 ```
 
 Open:
 
-- Sample UI: <http://127.0.0.1:8788/index.html>
+- Provider workspace: <http://127.0.0.1:8788/index.html>
 - Detailed implementation walkthrough: <http://127.0.0.1:8788/foundry-enterprise-harness-walkthrough.html>
 - Interactive reference architecture: <http://127.0.0.1:8788/foundry-prior-auth-reference-architecture.html>
 - Executive one-pager: <http://127.0.0.1:8788/enterprise-assurance-one-pager.html>
 
-No install, cloud resource, credential, or external API is required.
+The local server uses only the Python standard library. A configured synthetic Supabase UAT project is required for the primary provider workspace. The technical walkthrough and assurance pages remain static.
 
 ## Important boundaries
 
-- The artifact uses synthetic data and illustrative metrics.
+- The current UAT artifact uses fully synthetic patients, clinicians, facilities, clinical-document text, payer-policy text, a fictional reviewer, and deterministic precomputed review results stored in a temporary Supabase project.
+- Sixteen received documents and five policies contain substantive text and SHA-256 hashes. Two expected records intentionally remain absent to test missing-information detection.
+- The current evidence review endpoint retrieves stored UAT results; it does not invoke an AI model. Conflict clarification is an explicitly ephemeral UAT interaction until a controlled write service is implemented.
 - It is not connected to a live Foundry agent or any payer, EHR, clinical, or production system.
 - Any implementation should be treated as unverified until the repository, endpoint, configuration, traces, and tests are inspected directly.
 - The UI does not approve or deny prior authorization. It demonstrates a provider-side evidence-readiness workflow with human-owned next actions.
-- Browser guardrail indicators are presentation only. Real enforcement must occur in a trusted backend and the Foundry/project boundary.
+- The browser sends only opaque case/order identifiers. Entity authorization, relationship validation, effective policy resolution, evidence validation, and workflow-state derivation must occur in a trusted backend.
 - This is Hexaware-inspired internal collateral, not an approved brand, security, clinical, legal, regulatory, or compliance architecture.
 - No generative system can guarantee zero hallucinations. The design goal is to prevent unsupported content from becoming an action, detect residual errors, fail closed, and make human accountability explicit.
 
@@ -67,21 +81,12 @@ Request:
 
 ```json
 {
-  "case_id": "SYN-PA-1042",
-  "request_date": "2026-07-21",
-  "procedure": {"code_system": "CPT", "code": "72148"},
-  "policy": {
-    "policy_id": "RAD-201",
-    "version": "2026.1",
-    "effective_date": "2026-01-01",
-    "source_uri": "approved-source-reference",
-    "content_hash": "sha256:..."
-  },
-  "documents": [
-    {"document_id": "NOTE-1042", "type": "progress_note", "content_ref": "approved-object-reference"}
-  ]
+  "case_id": "PA-3001",
+  "source_order_id": "ORD-3001"
 }
 ```
+
+The browser sends only the opaque case and order IDs. The authenticated backend authorizes the request and resolves the patient reference, procedure, payer/plan, request date, approved clinical documents, and exact effective policy version from trusted stores before invoking Foundry.
 
 Response:
 

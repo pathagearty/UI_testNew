@@ -1,267 +1,428 @@
-const cases = {
-  'SYN-PA-1042': {
-    id: 'SYN-PA-1042',
-    procedure: 'Lumbar spine MRI',
-    cpt: '72148',
-    payer: 'HealthPlus (fictional)',
-    patient: 'Morgan Lee (synthetic)',
-    requestDate: '2026-07-21',
-    policy: 'RAD-201',
-    version: '2026.1',
-    state: 'more_information_required',
-    stateLabel: 'Missing information',
-    stateMessage: 'The case is not ready for submission review because required treatment evidence is missing and one clinical finding needs clarification.',
-    documents: [
-      { name: 'Progress note', date: '2026-07-14', present: true },
-      { name: 'Imaging order', date: '2026-07-18', present: true },
-      { name: 'Physical therapy summary', date: 'Not supplied', present: false }
-    ],
-    criteria: [
-      { id: 'C1', title: 'Symptoms documented for required duration', description: 'The policy requires symptoms to continue beyond the defined period.', status: 'supported', policyQuote: 'Symptoms persist for at least six weeks despite initial conservative management.', policyLocator: 'RAD-201 · page 3 · section 2.1', clinicalQuote: 'Low-back pain with right-sided radicular symptoms has persisted for approximately eight weeks.', clinicalLocator: 'Progress note · paragraph 4', next: 'No additional information identified for this requirement.' },
-      { id: 'C2', title: 'Conservative treatment documented', description: 'The treatment course and the patient response must be included.', status: 'not_evidenced', policyQuote: 'The record must document at least six weeks of provider-directed conservative treatment and response.', policyLocator: 'RAD-201 · page 4 · section 2.2', clinicalQuote: 'Patient reports trying home exercises and over-the-counter medication.', clinicalLocator: 'Progress note · paragraph 7', next: 'Provide treatment dates, the provider-directed modality and the documented response.' },
-      { id: 'C3', title: 'Neurologic findings are consistent', description: 'The clinical record should contain consistent objective findings.', status: 'conflicting', policyQuote: 'Objective neurologic deficit or progressive symptoms may support advanced imaging.', policyLocator: 'RAD-201 · page 4 · section 2.3', clinicalQuote: 'The assessment records a reduced right ankle reflex, while the examination records symmetric reflexes.', clinicalLocator: 'Progress note · paragraphs 9 and 12', next: 'Ask the clinician to clarify the conflicting examination findings.' },
-      { id: 'C4', title: 'Red-flag exception', description: 'Urgent red-flag criteria are checked separately.', status: 'not_applicable', policyQuote: 'Red-flag findings may bypass conservative-treatment duration requirements.', policyLocator: 'RAD-201 · page 2 · section 1.4', clinicalQuote: 'No red-flag finding is documented.', clinicalLocator: 'Progress note · paragraph 10', next: 'No red-flag exception is being used for this request.' }
-    ]
-  },
-  'SYN-PA-1043': {
-    id: 'SYN-PA-1043',
-    procedure: 'Lumbar spine MRI',
-    cpt: '72148',
-    payer: 'HealthPlus (fictional)',
-    patient: 'Taylor Jordan (synthetic)',
-    requestDate: '2026-07-21',
-    policy: 'RAD-201',
-    version: '2026.1',
-    state: 'review_ready',
-    stateLabel: 'Ready for clinician review',
-    stateMessage: 'The required evidence categories are present and source-linked; a clinician must verify the package before any submission.',
-    documents: [
-      { name: 'Progress note', date: '2026-07-12', present: true },
-      { name: 'Physical therapy discharge summary', date: '2026-07-10', present: true },
-      { name: 'Imaging order', date: '2026-07-18', present: true }
-    ],
-    criteria: [
-      { id: 'C1', title: 'Symptoms documented for required duration', description: 'The policy requires symptoms to continue beyond the defined period.', status: 'supported', policyQuote: 'Symptoms persist for at least six weeks despite initial conservative management.', policyLocator: 'RAD-201 · page 3 · section 2.1', clinicalQuote: 'Symptoms have persisted for ten weeks.', clinicalLocator: 'Progress note · paragraph 3', next: 'No additional information identified for this requirement.' },
-      { id: 'C2', title: 'Conservative treatment documented', description: 'The treatment course and the patient response must be included.', status: 'supported', policyQuote: 'The record must document at least six weeks of provider-directed conservative treatment and response.', policyLocator: 'RAD-201 · page 4 · section 2.2', clinicalQuote: 'Eight provider-directed physical therapy visits were completed from May 5 through June 30 with limited improvement.', clinicalLocator: 'PT summary · paragraphs 2–5', next: 'No additional information identified for this requirement.' },
-      { id: 'C3', title: 'Neurologic findings are consistent', description: 'The clinical record should contain consistent objective findings.', status: 'supported', policyQuote: 'Objective neurologic deficit or progressive symptoms may support advanced imaging.', policyLocator: 'RAD-201 · page 4 · section 2.3', clinicalQuote: 'Right ankle dorsiflexion strength is documented as 4/5 on two examinations.', clinicalLocator: 'Progress note · paragraphs 8 and 11', next: 'No additional information identified for this requirement.' },
-      { id: 'C4', title: 'Red-flag exception', description: 'Urgent red-flag criteria are checked separately.', status: 'not_applicable', policyQuote: 'Red-flag findings may bypass conservative-treatment duration requirements.', policyLocator: 'RAD-201 · page 2 · section 1.4', clinicalQuote: 'No red-flag finding is documented.', clinicalLocator: 'Progress note · paragraph 9', next: 'No red-flag exception is being used for this request.' }
-    ]
-  },
-  'SYN-PA-1044': {
-    id: 'SYN-PA-1044',
-    procedure: 'Lumbar spine MRI',
-    cpt: '72148',
-    payer: 'HealthPlus (fictional)',
-    patient: 'Casey Kim (synthetic)',
-    requestDate: '2026-07-21',
-    policy: 'RAD-201',
-    version: '2025.3',
-    state: 'blocked_invalid_input',
-    stateLabel: 'Review blocked',
-    stateMessage: 'The supplied policy version expired before the request date, so the case was stopped before clinical evidence review.',
-    documents: [
-      { name: 'Progress note', date: '2026-07-20', present: true },
-      { name: 'Imaging order', date: '2026-07-20', present: true },
-      { name: 'Policy RAD-201 · version 2025.3', date: 'Expired', present: false }
-    ],
-    criteria: [
-      { id: 'G0', title: 'Current payer policy selected', description: 'The policy must be valid on the request date.', status: 'blocked', policyQuote: 'Version 2025.3 effective through 2025-12-31.', policyLocator: 'RAD-201 · policy metadata', clinicalQuote: 'Request date: 2026-07-21.', clinicalLocator: 'Case intake', next: 'Select and pin the policy version effective on the request date, then run the review again.' }
-    ]
+(() => {
+  const $ = selector => document.querySelector(selector);
+  const $$ = selector => [...document.querySelectorAll(selector)];
+  const service = window.ClearwayDataService;
+
+  const state = {
+    workspace: null,
+    currentCase: null,
+    lastFocused: null
+  };
+
+  const statusLabels = {
+    supported: 'Supported',
+    not_evidenced: 'Evidence needed',
+    conflicting: 'Conflict found',
+    unable_to_assess: 'Unable to assess',
+    not_applicable: 'Not applicable',
+    blocked: 'Blocked'
+  };
+
+  const scenarioOrder = ['needs_documentation', 'review_ready', 'conflicting_evidence', 'policy_blocked'];
+
+  function escapeHtml(value = '') {
+    return String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
   }
-};
 
-const statusLabels = {
-  supported: 'Found',
-  not_evidenced: 'Missing',
-  conflicting: 'Needs clarification',
-  unable_to_assess: 'Unable to assess',
-  not_applicable: 'Not required',
-  blocked: 'Blocked'
-};
+  function formatDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return value || '—';
+    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(`${value}T12:00:00`));
+  }
 
-let currentCase = cases['SYN-PA-1042'];
-let lastFocused = null;
+  function toneForState(workflowState) {
+    if (workflowState === 'review_ready') return 'ready';
+    if (['clinical_review_required', 'blocked_invalid_input'].includes(workflowState)) return 'blocked';
+    return 'attention';
+  }
 
-const $ = selector => document.querySelector(selector);
-const $$ = selector => [...document.querySelectorAll(selector)];
+  function toneForCriterion(status) {
+    if (status === 'supported') return 'success';
+    if (status === 'not_evidenced') return 'warning';
+    if (status === 'conflicting' || status === 'blocked') return 'danger';
+    return 'neutral';
+  }
 
-function escapeHtml(value = '') {
-  return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-}
+  function option(value, label) {
+    return `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
+  }
 
-function toneForState(state) {
-  if (state === 'review_ready') return 'ready';
-  if (state === 'blocked_invalid_input') return 'blocked';
-  return 'attention';
-}
+  function updateDataSource() {
+    const status = service.getStatus();
+    const node = $('#data-source');
+    node.dataset.mode = status.mode;
+    node.querySelector('span').textContent = status.label;
+    node.title = status.lastError || (status.mode === 'api' ? 'Authenticated backend connection' : 'Local UAT fixture adapter using the production API contract');
+  }
 
-function toneForCriterion(status) {
-  if (status === 'supported') return 'success';
-  if (status === 'not_evidenced') return 'warning';
-  if (status === 'conflicting' || status === 'blocked') return 'danger';
-  return 'neutral';
-}
+  function populatePatients() {
+    const patients = [...state.workspace.patients].sort((a, b) => a.name.localeCompare(b.name));
+    $('#patient-select').innerHTML = patients.map(patient => option(patient.id, `${patient.name} · ${patient.id}`)).join('');
+    const preferred = patients.find(patient => patient.id === 'PAT-3001') || patients[0];
+    $('#patient-select').value = preferred.id;
+  }
 
-function renderCase() {
-  const c = currentCase;
-  const statusBanner = $('#status-banner');
-  statusBanner.dataset.state = toneForState(c.state);
-  $('.status-icon').textContent = c.state === 'review_ready' ? '✓' : c.state === 'blocked_invalid_input' ? '×' : '!';
-  $('#workflow-state').textContent = c.stateLabel;
-  $('#workflow-message').textContent = c.stateMessage;
-  $('#policy-version').textContent = `${c.policy} · ${c.version}`;
-  $('#procedure-pill').textContent = c.procedure;
+  function populateCases(preferredCaseId = null) {
+    const patientId = $('#patient-select').value;
+    const cases = state.workspace.cases
+      .filter(item => item.patientId === patientId)
+      .sort((a, b) => scenarioOrder.indexOf(a.scenario) - scenarioOrder.indexOf(b.scenario));
+    $('#case-select').innerHTML = cases.map(item => option(item.id, `${item.id} · ${item.procedure} · ${item.statusLabel}`)).join('');
+    if (preferredCaseId && cases.some(item => item.id === preferredCaseId)) $('#case-select').value = preferredCaseId;
+    return cases[0]?.id || null;
+  }
 
-  $('#case-facts').innerHTML = [
-    ['Case ID', c.id],
-    ['Patient', c.patient],
-    ['Procedure', `${c.procedure} · CPT ${c.cpt}`],
-    ['Payer', c.payer],
-    ['Request date', c.requestDate]
-  ].map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
+  function populateLinkedContext(record) {
+    $('#order-select').innerHTML = record.orders.map(order => option(order.id, `${order.id} · ${order.procedure} · ${order.codeSystem} ${order.procedureCode}`)).join('');
+    $('#order-select').value = record.selectedOrderId || record.orders[0]?.id || '';
+    const policyLabel = `${record.policy.id} v${record.policy.version} · ${record.policy.name}`;
+    $('#policy-select').innerHTML = option(`${record.policy.id}:${record.policy.version}`, policyLabel);
+  }
 
-  $('#document-count').textContent = `${c.documents.filter(document => document.present).length} of ${c.documents.length} supplied`;
-  $('#document-list').innerHTML = c.documents.map(document => `
-    <div class="document-item ${document.present ? '' : 'missing'}">
-      <span class="document-icon" aria-hidden="true">${document.present ? '✓' : '!'}</span>
-      <div><strong>${escapeHtml(document.name)}</strong><small>${escapeHtml(document.date)}</small></div>
-    </div>`).join('');
+  async function loadSelectedCase(caseId = $('#case-select').value) {
+    if (!caseId) return;
+    setReviewButton(true, 'Loading case…');
+    try {
+      state.currentCase = await service.loadCase(caseId);
+      populateLinkedContext(state.currentCase);
+      updateDataSource();
+      renderCase();
+    } catch (error) {
+      renderError('Unable to load the selected case', error.message);
+    } finally {
+      setReviewButton(false, 'Run evidence review');
+    }
+  }
 
-  renderCriteria();
-  renderNextStep();
-}
+  function setReviewButton(loading, label) {
+    const button = $('#run-review');
+    button.disabled = loading;
+    button.textContent = label;
+    $('#patient-select').disabled = loading;
+    $('#case-select').disabled = loading;
+    $('#order-select').disabled = loading;
+  }
 
-function renderCriteria() {
-  const c = currentCase;
-  const required = c.criteria.filter(item => item.status !== 'not_applicable');
-  const supported = required.filter(item => item.status === 'supported').length;
-  const attention = required.filter(item => !['supported', 'not_applicable'].includes(item.status)).length;
+  function renderError(title, message) {
+    const banner = $('#status-banner');
+    banner.dataset.state = 'blocked';
+    $('.status-icon').textContent = '×';
+    $('#workflow-state').textContent = title;
+    $('#workflow-message').textContent = message;
+    showToast('The case could not be loaded');
+  }
 
-  $('#checklist-summary').innerHTML = `
-    <span><strong>${supported}</strong><small>found</small></span>
-    <span class="${attention ? 'has-attention' : ''}"><strong>${attention}</strong><small>need attention</small></span>`;
+  function renderSteps() {
+    const c = state.currentCase;
+    ['#step-case', '#step-context', '#step-check', '#step-review'].forEach(selector => $(selector).className = '');
+    $('#step-case').classList.add('complete');
+    $('#step-context').classList.add(c.review.state === 'blocked_invalid_input' ? 'active' : 'complete');
+    if (c.review.state === 'review_ready') {
+      $('#step-check').classList.add('complete');
+      $('#step-review').classList.add('active');
+    } else if (c.review.state !== 'blocked_invalid_input') {
+      $('#step-check').classList.add('active');
+    }
+  }
 
-  $('#criteria-list').innerHTML = c.criteria.map(item => {
-    const tone = toneForCriterion(item.status);
-    return `
-      <details class="criterion criterion-${tone}">
-        <summary>
-          <span class="criterion-mark" aria-hidden="true">${item.status === 'supported' ? '✓' : item.status === 'not_applicable' ? '–' : item.status === 'blocked' ? '×' : '!'}</span>
-          <span class="criterion-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.description)}</small></span>
-          <span class="status-pill status-${tone}">${escapeHtml(statusLabels[item.status])}</span>
-        </summary>
-        <div class="criterion-detail">
-          <section><h3>Payer policy</h3><blockquote>“${escapeHtml(item.policyQuote)}”</blockquote><small>${escapeHtml(item.policyLocator)}</small></section>
-          <section><h3>Supplied record</h3><blockquote>“${escapeHtml(item.clinicalQuote)}”</blockquote><small>${escapeHtml(item.clinicalLocator)}</small></section>
-          <section class="next-evidence"><h3>What to do</h3><p>${escapeHtml(item.next)}</p></section>
+  function renderVerificationItem(selector, label, value, itemState = 'ready') {
+    const element = $(selector);
+    element.dataset.state = itemState;
+    const mark = itemState === 'blocked' ? '×' : itemState === 'warning' ? '!' : '✓';
+    element.innerHTML = `<span class="verification-mark" aria-hidden="true">${mark}</span><span><small>${escapeHtml(label)}</small><strong title="${escapeHtml(value)}">${escapeHtml(value)}</strong></span>`;
+  }
+
+  function calculateMetrics(record) {
+    const required = record.criteria.filter(item => item.status !== 'not_applicable');
+    const supported = required.filter(item => item.status === 'supported').length;
+    const attention = required.filter(item => !['supported', 'not_applicable'].includes(item.status)).length;
+    const documentsPresent = record.documents.filter(item => item.present).length;
+    return {
+      required: required.length,
+      supported,
+      attention,
+      percentage: required.length ? Math.round((supported / required.length) * 100) : 0,
+      documentsPresent,
+      documentsTotal: record.documents.length
+    };
+  }
+
+  function renderMetrics(record) {
+    const metrics = calculateMetrics(record);
+    $('#requirements-percent').textContent = `${metrics.percentage}%`;
+    $('#requirements-ratio').textContent = `${metrics.supported} of ${metrics.required}`;
+    $('#requirements-ring').style.setProperty('--progress', `${metrics.percentage * 3.6}deg`);
+    $('#documents-metric').textContent = `${metrics.documentsPresent} of ${metrics.documentsTotal}`;
+    $('#documents-caption').textContent = metrics.documentsPresent === metrics.documentsTotal ? 'All expected records are available' : `${metrics.documentsTotal - metrics.documentsPresent} expected record${metrics.documentsTotal - metrics.documentsPresent === 1 ? '' : 's'} outstanding`;
+    $('#attention-metric').textContent = String(metrics.attention);
+    $('#policy-metric').textContent = record.policy.current ? 'Current' : 'Blocked';
+    $('#policy-metric-caption').textContent = record.policy.current ? 'Effective on the request date' : 'Policy expired before request date';
+    const policyCard = $('#policy-metric').closest('.metric-card');
+    policyCard.dataset.state = record.policy.current ? 'ready' : 'blocked';
+    policyCard.querySelector('.metric-icon').textContent = record.policy.current ? '✓' : '×';
+  }
+
+  function renderCase() {
+    const c = state.currentCase;
+    const order = c.orders.find(item => item.id === $('#order-select').value) || c.orders[0];
+    const review = c.review;
+    const statusBanner = $('#status-banner');
+    const statusTone = toneForState(review.state);
+    statusBanner.dataset.state = statusTone;
+    $('.status-icon').textContent = review.state === 'review_ready' ? '✓' : statusTone === 'blocked' ? '×' : '!';
+    $('#workflow-state').textContent = review.stateLabel;
+    $('#workflow-message').textContent = review.stateMessage;
+    $('#policy-version').textContent = `${c.policy.id} · v${c.policy.version}`;
+    $('#policy-effective').textContent = `${formatDate(c.policy.effectiveStart)} – ${formatDate(c.policy.effectiveEnd)}`;
+    $('#procedure-pill').textContent = order.procedure;
+
+    renderSteps();
+    renderMetrics(c);
+    renderVerificationItem('#case-verification', 'Patient / case linked', `${c.patient.id} · ${c.id}`);
+    renderVerificationItem('#order-verification', 'Order verified', `${order.id} · ${order.codeSystem} ${order.procedureCode}`);
+    renderVerificationItem('#policy-verification', 'Policy version', c.policy.current ? `${c.policy.id} v${c.policy.version} pinned` : `${c.policy.id} v${c.policy.version} expired`, c.policy.current ? 'ready' : 'blocked');
+    renderVerificationItem('#trace-verification', 'Review trace', review.traceId, c.policy.current ? 'ready' : 'warning');
+
+    $('#case-facts').innerHTML = [
+      ['Case ID', c.id],
+      ['Patient', c.patient.name],
+      ['Patient ID / MRN', `${c.patient.id} · ${c.patient.mrn}`],
+      ['Order ID', order.id],
+      ['Procedure', `${order.procedure} · ${order.codeSystem} ${order.procedureCode}`],
+      ['Ordering clinician', order.orderingClinician],
+      ['Payer / plan', `${c.coverage.payer.name} · ${c.coverage.plan.name}`],
+      ['Coverage IDs', `${c.coverage.payer.id} · ${c.coverage.plan.id} · ${c.coverage.coverageId}`],
+      ['Request date', formatDate(c.requestDate)],
+      ['Policy hash', c.policy.contentHash]
+    ].map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd title="${escapeHtml(value)}">${escapeHtml(value)}</dd></div>`).join('');
+
+    const present = c.documents.filter(document => document.present).length;
+    $('#document-count').textContent = `${present} of ${c.documents.length} available`;
+    $('#document-list').innerHTML = c.documents.map(document => `
+      <div class="document-item ${document.present ? '' : 'missing'}">
+        <span class="document-icon" aria-hidden="true">${document.present ? '✓' : '!'}</span>
+        <div><strong>${escapeHtml(document.name)}</strong><small>${escapeHtml(document.id)} · ${escapeHtml(document.type)} · ${escapeHtml(formatDate(document.date))}</small></div>
+      </div>`).join('');
+
+    renderCriteria();
+    renderNextStep();
+  }
+
+  function renderClinicalSources(item) {
+    const conflict = item.status === 'conflicting';
+    const cards = (item.clinicalSources || []).map(source => `
+      <div class="source-quote" data-conflict="${conflict}">
+        <strong>${escapeHtml(source.label)}</strong>
+        <blockquote>“${escapeHtml(source.quote)}”</blockquote>
+        <small>${escapeHtml(source.locator)}</small>
+      </div>`).join('');
+    const reason = item.whyFlagged ? `<div class="conflict-callout"><strong>Why this was flagged:</strong> ${escapeHtml(item.whyFlagged)}</div>` : '';
+    return `<div class="source-stack">${cards}</div>${reason}`;
+  }
+
+  function renderCriteria() {
+    const c = state.currentCase;
+    const metrics = calculateMetrics(c);
+    $('#checklist-summary').innerHTML = `
+      <span><strong>${metrics.supported}</strong><small>supported</small></span>
+      <span class="${metrics.attention ? 'has-attention' : ''}"><strong>${metrics.attention}</strong><small>need action</small></span>`;
+
+    $('#criteria-list').innerHTML = c.criteria.map(item => {
+      const tone = toneForCriterion(item.status);
+      const expanded = ['conflicting', 'blocked'].includes(item.status) || item.resolved ? ' open' : '';
+      return `
+        <details class="criterion criterion-${tone}"${expanded}>
+          <summary>
+            <span class="criterion-mark" aria-hidden="true">${item.status === 'supported' ? '✓' : item.status === 'not_applicable' ? '–' : item.status === 'blocked' ? '×' : '!'}</span>
+            <span class="criterion-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.description)}</small></span>
+            <span class="status-pill status-${tone}">${escapeHtml(statusLabels[item.status] || item.status)}</span>
+          </summary>
+          <div class="criterion-detail">
+            <section><h3>Payer policy</h3><blockquote>“${escapeHtml(item.policyQuote)}”</blockquote><small>${escapeHtml(item.policyLocator)}</small></section>
+            <section><h3>Clinical evidence</h3>${renderClinicalSources(item)}</section>
+            <section class="next-evidence${item.resolved ? ' is-resolved' : ''}"><h3>${item.resolved ? 'Resolution' : 'Required action'}</h3><p>${escapeHtml(item.next)}</p></section>
+          </div>
+        </details>`;
+    }).join('');
+  }
+
+  function renderNextStep() {
+    const c = state.currentCase;
+    const action = $('#primary-action');
+    const summary = $('#review-letter');
+    const issues = c.criteria.filter(item => ['not_evidenced', 'conflicting', 'unable_to_assess', 'blocked'].includes(item.status));
+    summary.disabled = ['clinical_review_required', 'blocked_invalid_input'].includes(c.review.state);
+
+    if (c.review.state === 'review_ready') {
+      $('#next-step-title').textContent = 'Ready for clinician review';
+      $('#next-step-guidance').textContent = 'Verify the source-linked evidence and clinical summary before deciding whether the package should move to submission.';
+      $('#attention-list').innerHTML = '<li>No unresolved policy-evidence gaps remain.</li>';
+      action.textContent = 'Send to clinician review';
+      action.disabled = false;
+      summary.disabled = false;
+    } else if (c.review.state === 'clinical_review_required') {
+      $('#next-step-title').textContent = 'Resolve the clinical conflict';
+      $('#next-step-guidance').textContent = 'Both source statements remain visible. The workflow will not decide which clinical statement is correct.';
+      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      action.textContent = 'Request clinical clarification';
+      action.disabled = false;
+    } else if (c.review.state === 'blocked_invalid_input') {
+      $('#next-step-title').textContent = 'Resolve the policy mapping';
+      $('#next-step-guidance').textContent = 'Evidence review cannot continue until the backend resolves a policy effective on the request date.';
+      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      action.textContent = 'Review policy mapping';
+      action.disabled = false;
+    } else {
+      $('#next-step-title').textContent = 'Complete the evidence package';
+      $('#next-step-guidance').textContent = 'Collect the highlighted documentation before routing the case to a clinician.';
+      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      action.textContent = 'Create documentation request';
+      action.disabled = false;
+      summary.disabled = false;
+    }
+  }
+
+  function openModal(kicker, title, body, action = null) {
+    state.lastFocused = document.activeElement;
+    $('#modal-kicker').textContent = kicker;
+    $('#modal-title').textContent = title;
+    $('#modal-body').innerHTML = body;
+    const primary = $('#modal-primary');
+    primary.hidden = !action;
+    primary.onclick = null;
+    if (action) {
+      primary.textContent = action.label;
+      primary.onclick = action.handler;
+    }
+    $('#modal').classList.add('is-open');
+    $('#modal').setAttribute('aria-hidden', 'false');
+    $('.modal-close').focus();
+  }
+
+  function closeModal() {
+    $('#modal').classList.remove('is-open');
+    $('#modal').setAttribute('aria-hidden', 'true');
+    $('#modal-primary').onclick = null;
+    if (state.lastFocused) state.lastFocused.focus();
+  }
+
+  function showClinicalSummary() {
+    const c = state.currentCase;
+    const order = c.orders.find(item => item.id === $('#order-select').value) || c.orders[0];
+    const metrics = calculateMetrics(c);
+    openModal('CLINICIAN REVIEW REQUIRED', 'Prior authorization evidence summary', `
+      <article class="draft-letter">
+        <dl class="modal-facts">
+          <div><dt>Patient</dt><dd>${escapeHtml(c.patient.name)} · ${escapeHtml(c.patient.id)}</dd></div>
+          <div><dt>Case / order</dt><dd>${escapeHtml(c.id)} · ${escapeHtml(order.id)}</dd></div>
+          <div><dt>Requested service</dt><dd>${escapeHtml(order.procedure)} · ${escapeHtml(order.codeSystem)} ${escapeHtml(order.procedureCode)}</dd></div>
+          <div><dt>Policy</dt><dd>${escapeHtml(c.policy.id)} v${escapeHtml(c.policy.version)}</dd></div>
+        </dl>
+        <p><strong>${metrics.supported} of ${metrics.required} required criteria have source-linked support.</strong></p>
+        <p>This summary assists review; it does not determine medical necessity, approve or deny a request, or submit information to a payer.</p>
+        <p><strong>Clinician verification and attestation are required before use.</strong></p>
+      </article>`);
+  }
+
+  async function addClarification() {
+    const button = $('#modal-primary');
+    button.disabled = true;
+    button.textContent = 'Adding clarification…';
+    try {
+      state.currentCase = await service.addClarification(state.currentCase.id, 'C3');
+      populateLinkedContext(state.currentCase);
+      updateDataSource();
+      closeModal();
+      renderCase();
+      showToast('Clarification linked and evidence review updated');
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = 'Add UAT clarification';
+      showToast(error.message);
+    }
+  }
+
+  function handlePrimaryAction() {
+    const c = state.currentCase;
+    if (c.review.state === 'review_ready') {
+      openModal('CLINICIAN HANDOFF', 'Case prepared for clinician review', '<p>The evidence package is ready for an authorized clinician to verify. The UAT workflow records the handoff but does not submit to a payer.</p>');
+    } else if (c.review.state === 'clinical_review_required') {
+      openModal('CLINICAL CLARIFICATION', 'Resolve the conflicting finding', `
+        <p>The workflow has retained both statements and has not selected which one is correct.</p>
+        <div class="resolution-preview">
+          <div><strong>Progress note assessment</strong><small>“Right ankle reflex is reduced.”</small></div>
+          <div><strong>Neurologic examination</strong><small>“Lower-extremity reflexes are symmetric.”</small></div>
         </div>
-      </details>`;
-  }).join('');
-}
-
-function renderNextStep() {
-  const c = currentCase;
-  const actionButton = $('#primary-action');
-  const letterButton = $('#review-letter');
-  const issues = c.criteria.filter(item => ['not_evidenced', 'conflicting', 'unable_to_assess', 'blocked'].includes(item.status));
-
-  if (c.state === 'review_ready') {
-    $('#next-step-title').textContent = 'Ready for clinician review';
-    $('#next-step-guidance').textContent = 'A clinician should verify the evidence and draft letter before deciding whether the provider should submit the request.';
-    $('#attention-list').innerHTML = '<li>No unresolved policy-evidence gaps were identified in this synthetic example.</li>';
-    actionButton.textContent = 'Send to clinician review';
-    actionButton.disabled = false;
-    letterButton.disabled = false;
-  } else if (c.state === 'blocked_invalid_input') {
-    $('#next-step-title').textContent = 'Correct the policy selection';
-    $('#next-step-guidance').textContent = 'The case cannot be reviewed until the current payer policy is selected.';
-    $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
-    actionButton.textContent = 'Select current policy';
-    actionButton.disabled = false;
-    letterButton.disabled = true;
-  } else {
-    $('#next-step-title').textContent = 'Complete the submission package';
-    $('#next-step-guidance').textContent = 'Resolve the highlighted gaps before sending the package to a clinician for final review.';
-    $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
-    actionButton.textContent = 'Request missing documentation';
-    actionButton.disabled = false;
-    letterButton.disabled = false;
+        <p>Add a signed UAT clarification to demonstrate the reviewed-resolution path.</p>`, { label: 'Add UAT clarification', handler: addClarification });
+    } else if (c.review.state === 'blocked_invalid_input') {
+      openModal('POLICY RESOLUTION', 'Current policy required', '<p>The backend must resolve exactly one policy using payer, plan, procedure, and request date. A missing, stale, or ambiguous match remains blocked for authorized review.</p>');
+    } else {
+      const missing = c.criteria.filter(item => item.status === 'not_evidenced');
+      openModal('DOCUMENTATION REQUEST', 'Evidence request prepared', `<p>The provider-team request contains only the unresolved requirements below. No message is sent from this UAT workspace.</p><ul>${missing.map(item => `<li>${escapeHtml(item.next)}</li>`).join('')}</ul>`);
+    }
   }
-}
 
-function openModal(kicker, title, body) {
-  lastFocused = document.activeElement;
-  $('#modal-kicker').textContent = kicker;
-  $('#modal-title').textContent = title;
-  $('#modal-body').innerHTML = body;
-  $('#modal').classList.add('is-open');
-  $('#modal').setAttribute('aria-hidden', 'false');
-  $('.modal-close').focus();
-}
-
-function closeModal() {
-  $('#modal').classList.remove('is-open');
-  $('#modal').setAttribute('aria-hidden', 'true');
-  if (lastFocused) lastFocused.focus();
-}
-
-function showLetter() {
-  const c = currentCase;
-  const warning = c.state === 'review_ready'
-    ? 'The supplied documents contain source-linked evidence for the checklist shown in the workspace.'
-    : 'The record contains unresolved documentation gaps or conflicts and should not be submitted in its current form.';
-  openModal('DRAFT · CLINICIAN REVIEW REQUIRED', 'Medical necessity letter', `
-    <article class="draft-letter">
-      <p><strong>To the reviewing organization:</strong></p>
-      <p>This synthetic package requests review of a ${escapeHtml(c.procedure)} for ${escapeHtml(c.patient)}. The supplied evidence has been compared with ${escapeHtml(c.policy)} version ${escapeHtml(c.version)}.</p>
-      <p>${escapeHtml(warning)}</p>
-      <p><strong>Clinician name and attestation required before use.</strong></p>
-    </article>`);
-}
-
-function handlePrimaryAction() {
-  const c = currentCase;
-  if (c.state === 'review_ready') {
-    openModal('HUMAN REVIEW', 'Case prepared for clinician review', '<p>This sample records a workflow handoff only. The clinician must verify the evidence and letter before deciding whether to submit.</p>');
-  } else if (c.state === 'blocked_invalid_input') {
-    openModal('POLICY REQUIRED', 'Select the current payer policy', '<p>In the integrated workflow, the provider user would select or confirm the policy version effective on the request date before running the review again.</p>');
-  } else {
-    openModal('DOCUMENTATION REQUEST', 'Missing information identified', `<p>This sample would prepare an internal documentation request for the provider team; it does not contact the patient or payer.</p><ul>${c.criteria.filter(item => ['not_evidenced', 'conflicting'].includes(item.status)).map(item => `<li>${escapeHtml(item.next)}</li>`).join('')}</ul>`);
+  function showToast(message) {
+    const toast = $('#toast');
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove('is-visible'), 2600);
   }
-}
 
-function showToast(message) {
-  const toast = $('#toast');
-  toast.textContent = message;
-  toast.classList.add('is-visible');
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove('is-visible'), 2400);
-}
+  async function runEvidenceReview() {
+    if (!state.currentCase) return;
+    const button = $('#run-review');
+    const labels = ['Validating context…', 'Resolving policy…', 'Mapping evidence…', 'Validating sources…'];
+    setReviewButton(true, labels[0]);
+    try {
+      for (const label of labels) {
+        button.textContent = label;
+        await new Promise(resolve => setTimeout(resolve, 180));
+      }
+      state.currentCase = await service.runEvidenceReview(state.currentCase.id, $('#order-select').value);
+      populateLinkedContext(state.currentCase);
+      updateDataSource();
+      renderCase();
+      showToast('Evidence review complete');
+    } catch (error) {
+      renderError('Evidence review unavailable', error.message);
+    } finally {
+      setReviewButton(false, 'Run evidence review');
+    }
+  }
 
-$('#case-select').addEventListener('change', event => {
-  currentCase = cases[event.target.value];
-  renderCase();
-  showToast(`${currentCase.id} loaded`);
-});
+  function wireEvents() {
+    $('#patient-select').addEventListener('change', async () => {
+      const firstCaseId = populateCases();
+      await loadSelectedCase(firstCaseId);
+    });
+    $('#case-select').addEventListener('change', event => loadSelectedCase(event.target.value));
+    $('#order-select').addEventListener('change', renderCase);
+    $('#run-review').addEventListener('click', runEvidenceReview);
+    $('#primary-action').addEventListener('click', handlePrimaryAction);
+    $('#review-letter').addEventListener('click', showClinicalSummary);
+    $$('[data-close-modal]').forEach(element => element.addEventListener('click', closeModal));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && $('#modal').classList.contains('is-open')) closeModal();
+    });
+  }
 
-$('#run-review').addEventListener('click', event => {
-  const button = event.currentTarget;
-  const original = button.textContent;
-  button.disabled = true;
-  button.textContent = 'Reviewing…';
-  setTimeout(() => {
-    button.disabled = false;
-    button.textContent = original;
-    renderCase();
-    showToast('Synthetic review complete');
-  }, 650);
-});
+  async function initialize() {
+    wireEvents();
+    setReviewButton(true, 'Loading workspace…');
+    try {
+      state.workspace = await service.loadWorkspace();
+      populatePatients();
+      const caseId = populateCases('PA-3001');
+      $('#queue-open').textContent = String(state.workspace.cases.length);
+      $('#queue-attention').textContent = String(state.workspace.cases.filter(item => item.scenario !== 'review_ready').length);
+      updateDataSource();
+      await loadSelectedCase(caseId);
+    } catch (error) {
+      renderError('Workspace unavailable', error.message);
+      setReviewButton(false, 'Retry');
+    }
+  }
 
-$('#primary-action').addEventListener('click', handlePrimaryAction);
-$('#review-letter').addEventListener('click', showLetter);
-$$('[data-close-modal]').forEach(element => element.addEventListener('click', closeModal));
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && $('#modal').classList.contains('is-open')) closeModal();
-});
-
-renderCase();
+  initialize();
+})();

@@ -1,3 +1,15 @@
-.DS_Store
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+
+# Python runtime
 __pycache__/
 *.py[cod]
+
+# Local logs and process files
+*.log
+*.pid
+
+# macOS
+.DS_Store
