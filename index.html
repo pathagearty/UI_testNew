@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Internal synthetic provider workflow for preparing a prior-authorization submission.">
-  <title>Clearway — Prepare Prior Authorization</title>
+  <meta name="description" content="Clearway provider workspace for prior-authorization evidence review and clinician handoff.">
+  <title>Clearway — Prior Authorization Workspace</title>
   <link rel="stylesheet" href="provider-ui.css">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <div class="concept-ribbon" role="note">INTERNAL CONCEPT · SYNTHETIC DATA · DOES NOT SUBMIT TO A PAYER</div>
 
   <header class="app-header">
     <a class="brand" href="#main-content" aria-label="Clearway home">
@@ -18,54 +17,114 @@
     </a>
     <div class="product-label">
       <strong>Clearway</strong>
-      <span>Provider prior authorization</span>
+      <span>Prior authorization readiness</span>
     </div>
-    <span class="sample-badge"><i></i> Sample mode</span>
+    <div class="header-context">
+      <span class="environment-badge"><i></i> UAT</span>
+      <div class="user-profile">
+        <span class="avatar" aria-hidden="true">MC</span>
+        <span><strong>Dr. Maya Chen</strong><small>Clinical reviewer</small></span>
+      </div>
+    </div>
   </header>
 
   <main id="main-content" class="page" tabindex="-1">
     <section class="hero" aria-labelledby="page-title">
       <div>
-        <p class="eyebrow">PROVIDER WORKSPACE</p>
-        <h1 id="page-title">Prepare a prior authorization submission</h1>
-        <p>Review the supplied clinical documents against the selected payer policy, identify what is missing, and prepare the case for clinician review.</p>
+        <p class="eyebrow">PRIOR AUTHORIZATION WORKSPACE</p>
+        <h1 id="page-title">Review evidence. Resolve gaps. Move cases forward.</h1>
+        <p>Select a patient and authorization case to load the linked order, coverage, clinical records, and effective payer policy.</p>
       </div>
-      <div class="case-controls">
-        <label for="case-select">Synthetic example</label>
-        <div>
-          <select id="case-select">
-            <option value="SYN-PA-1042">SYN-PA-1042 · Missing information</option>
-            <option value="SYN-PA-1043">SYN-PA-1043 · Ready for review</option>
-            <option value="SYN-PA-1044">SYN-PA-1044 · Policy issue</option>
-          </select>
-          <button class="button button-primary" id="run-review">Review case</button>
-        </div>
+      <div class="queue-summary" aria-label="Work queue summary">
+        <span><strong id="queue-open">4</strong><small>Open cases</small></span>
+        <span><strong id="queue-attention">3</strong><small>Need attention</small></span>
       </div>
     </section>
 
-    <ol class="steps" aria-label="Submission preparation steps">
-      <li class="complete"><span>1</span><strong>Case received</strong></li>
-      <li class="active"><span>2</span><strong>Check requirements</strong></li>
-      <li><span>3</span><strong>Clinician review</strong></li>
+    <section class="workspace-selector card" aria-labelledby="selector-title">
+      <div class="workspace-heading">
+        <div>
+          <p class="eyebrow">REVIEW CONTEXT</p>
+          <h2 id="selector-title">Select a case</h2>
+          <p>Patient and case are selected by the reviewer. Order, coverage, and policy links are verified by the backend.</p>
+        </div>
+        <span class="data-source" id="data-source"><i></i><span>Connecting to data service…</span></span>
+      </div>
+
+      <div class="selector-grid">
+        <label>
+          <span>Patient</span>
+          <select id="patient-select" aria-describedby="selection-guidance"></select>
+        </label>
+        <label>
+          <span>Authorization case</span>
+          <select id="case-select"></select>
+        </label>
+        <label>
+          <span>Order / service request</span>
+          <select id="order-select"></select>
+        </label>
+        <label>
+          <span>Effective payer policy</span>
+          <select id="policy-select" disabled title="Resolved from payer, plan, procedure, and request date"></select>
+          <small>Resolved automatically</small>
+        </label>
+        <button class="button button-primary load-review" id="run-review">Run evidence review</button>
+      </div>
+      <p class="selection-guidance" id="selection-guidance">The browser sends the selected case and order IDs. The service validates entity relationships and pins the applicable policy before evidence review.</p>
+    </section>
+
+    <ol class="steps" aria-label="Prior authorization preparation steps">
+      <li id="step-case" class="complete"><span>1</span><strong>Select case</strong></li>
+      <li id="step-context" class="complete"><span>2</span><strong>Verify context</strong></li>
+      <li id="step-check" class="active"><span>3</span><strong>Review evidence</strong></li>
+      <li id="step-review"><span>4</span><strong>Clinician decision</strong></li>
     </ol>
 
     <section class="status-banner" id="status-banner" aria-live="polite">
       <span class="status-icon" aria-hidden="true">!</span>
       <div>
-        <p class="eyebrow">SUBMISSION STATUS</p>
-        <h2 id="workflow-state">Missing information</h2>
+        <p class="eyebrow">CASE READINESS</p>
+        <h2 id="workflow-state">Loading case</h2>
         <p id="workflow-message"></p>
       </div>
       <div class="policy-chip">
-        <small>Policy used</small>
+        <small>Policy authority</small>
         <strong id="policy-version"></strong>
+        <span id="policy-effective"></span>
       </div>
+    </section>
+
+    <section class="metric-grid" aria-label="Case readiness summary">
+      <article class="metric-card metric-featured">
+        <div class="progress-ring" id="requirements-ring" style="--progress:0deg"><span id="requirements-percent">0%</span></div>
+        <div><small>Requirements satisfied</small><strong id="requirements-ratio">0 of 0</strong><span>Policy criteria with source-linked evidence</span></div>
+      </article>
+      <article class="metric-card">
+        <span class="metric-icon documents" aria-hidden="true">▤</span>
+        <div><small>Documents available</small><strong id="documents-metric">0 of 0</strong><span id="documents-caption">Clinical records linked to this case</span></div>
+      </article>
+      <article class="metric-card">
+        <span class="metric-icon attention" aria-hidden="true">!</span>
+        <div><small>Items requiring action</small><strong id="attention-metric">0</strong><span>Missing, conflicting, or blocked requirements</span></div>
+      </article>
+      <article class="metric-card">
+        <span class="metric-icon policy" aria-hidden="true">✓</span>
+        <div><small>Policy validation</small><strong id="policy-metric">Current</strong><span id="policy-metric-caption">Effective on the request date</span></div>
+      </article>
+    </section>
+
+    <section class="verification-strip" aria-label="Backend context verification">
+      <div class="verification-item" id="case-verification"></div>
+      <div class="verification-item" id="order-verification"></div>
+      <div class="verification-item" id="policy-verification"></div>
+      <div class="verification-item verification-trace" id="trace-verification"></div>
     </section>
 
     <div class="summary-grid">
       <section class="card" aria-labelledby="request-title">
         <div class="card-heading">
-          <div><p class="eyebrow">REQUEST</p><h2 id="request-title">Case overview</h2></div>
+          <div><p class="eyebrow">AUTHORIZATION REQUEST</p><h2 id="request-title">Case overview</h2></div>
           <span class="pill pill-neutral" id="procedure-pill"></span>
         </div>
         <dl class="fact-grid" id="case-facts"></dl>
@@ -73,7 +132,7 @@
 
       <section class="card" aria-labelledby="documents-title">
         <div class="card-heading">
-          <div><p class="eyebrow">SUPPLIED RECORDS</p><h2 id="documents-title">Documents</h2></div>
+          <div><p class="eyebrow">CLINICAL RECORD</p><h2 id="documents-title">Linked documents</h2></div>
           <span class="document-count" id="document-count"></span>
         </div>
         <div class="document-list" id="document-list"></div>
@@ -83,9 +142,9 @@
     <section class="card checklist-card" aria-labelledby="checklist-title">
       <div class="card-heading checklist-heading">
         <div>
-          <p class="eyebrow">POLICY CHECK</p>
-          <h2 id="checklist-title">Submission checklist</h2>
-          <p>Each requirement is matched to the supplied record; open a row to see the source text.</p>
+          <p class="eyebrow">EVIDENCE REVIEW</p>
+          <h2 id="checklist-title">Policy requirements</h2>
+          <p>Each requirement is matched to the exact payer-policy language and source clinical record.</p>
         </div>
         <div class="checklist-summary" id="checklist-summary"></div>
       </div>
@@ -94,20 +153,20 @@
 
     <section class="card next-step-card" aria-labelledby="next-step-title">
       <div>
-        <p class="eyebrow">NEXT STEP</p>
+        <p class="eyebrow">RECOMMENDED NEXT STEP</p>
         <h2 id="next-step-title">Prepare for clinician review</h2>
-        <p id="next-step-guidance">Resolve the highlighted documentation gaps before moving the case forward.</p>
+        <p id="next-step-guidance">Resolve the highlighted evidence gaps before moving the case forward.</p>
         <ul class="attention-list" id="attention-list"></ul>
       </div>
       <div class="action-stack">
-        <button class="button button-primary" id="primary-action">Request missing documentation</button>
-        <button class="button button-secondary" id="review-letter">Review draft letter</button>
-        <p>No action in this sample sends information to a payer or patient.</p>
+        <button class="button button-primary" id="primary-action">Create documentation request</button>
+        <button class="button button-secondary" id="review-letter">Preview clinical summary</button>
+        <p>Actions remain inside the UAT workflow and require clinician confirmation.</p>
       </div>
     </section>
 
     <footer class="page-footer">
-      <span>Fictional people, policies and clinical documents only.</span>
+      <span>UAT environment · Synthetic records · No EHR or payer write-back</span>
       <a href="foundry-enterprise-harness-walkthrough.html">Technical implementation details</a>
     </footer>
   </main>
@@ -120,10 +179,16 @@
       <p class="eyebrow" id="modal-kicker"></p>
       <h2 id="modal-title"></h2>
       <div id="modal-body"></div>
-      <div class="modal-actions"><button class="button button-primary" data-close-modal>Done</button></div>
+      <div class="modal-actions">
+        <button class="button button-secondary" data-close-modal>Close</button>
+        <button class="button button-primary" id="modal-primary" hidden></button>
+      </div>
     </section>
   </div>
 
+  <script src="config.js"></script>
+  <script src="demo-data.js"></script>
+  <script src="api-client.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
