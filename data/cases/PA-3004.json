@@ -1,0 +1,138 @@
+{
+  "id": "PA-3004",
+  "orders": [
+    {
+      "id": "ORD-3004",
+      "status": "Active",
+      "procedure": "Adalimumab induction and maintenance",
+      "codeSystem": "HCPCS",
+      "orderedDate": "2026-07-19",
+      "serviceDate": "2026-07-30",
+      "procedureCode": "J0135",
+      "orderingClinician": "Dr. Marcus Hale"
+    }
+  ],
+  "policy": {
+    "id": "RX-ADL-410",
+    "name": "Adalimumab Initial Therapy",
+    "current": true,
+    "version": "2026.1",
+    "contentHash": "sha256:3b47f0978b99fb635fd7dec5cafbca120b0ff56a4039ba0af5560bcc5a019827",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01"
+  },
+  "review": {
+    "runId": null,
+    "traceId": null,
+    "state": "not_analyzed",
+    "stateLabel": "Awaiting Microsoft Foundry analysis",
+    "stateMessage": "No evidence analysis is stored for this case. Run evidence review to invoke the configured Foundry agent.",
+    "resultSource": "not_run"
+  },
+  "patient": {
+    "id": "PAT-3004",
+    "mrn": "MRN-UAT-83004",
+    "name": "Casey Kim",
+    "dateOfBirth": "1989-08-15"
+  },
+  "caseType": "Specialty medication",
+  "coverage": {
+    "plan": {
+      "id": "PLAN-SHP-HMO",
+      "name": "Summit Coordinated HMO"
+    },
+    "payer": {
+      "id": "PAY-SHP-01",
+      "name": "Summit Health Plan"
+    },
+    "memberId": "MEM-UAT-3004",
+    "coverageId": "COV-3004"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "criterionId": "RX-ADL-410:C1",
+      "title": "Covered diagnosis documented",
+      "description": "The diagnosis must match a covered indication.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Moderate-to-severe rheumatoid arthritis is a covered indication when documented by the treating specialist.",
+      "policyLocator": "RX-ADL-410 · page 2 · section 1.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C2",
+      "criterionId": "RX-ADL-410:C2",
+      "title": "Prior therapy documented",
+      "description": "Prior conventional therapy and response must be documented.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The record must document an adequate trial and response to covered conventional therapy unless contraindicated.",
+      "policyLocator": "RX-ADL-410 · page 3 · section 2.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C3",
+      "criterionId": "RX-ADL-410:C3",
+      "title": "Baseline safety laboratory results available",
+      "description": "Required baseline laboratory monitoring must be available.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Baseline complete blood count and liver-function results must be reviewed before therapy.",
+      "policyLocator": "RX-ADL-410 · page 4 · section 3.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C4",
+      "criterionId": "RX-ADL-410:C4",
+      "title": "Tuberculosis screening documented",
+      "description": "A current tuberculosis screening result is required.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "A negative tuberculosis screening result must be documented before initiation.",
+      "policyLocator": "RX-ADL-410 · page 4 · section 3.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    }
+  ],
+  "scenario": "not_analyzed",
+  "documents": [
+    {
+      "id": "DOC-3004-LABS",
+      "date": "Jul 17, 2026",
+      "name": "Baseline CBC and liver panel",
+      "type": "Laboratory report",
+      "present": true
+    },
+    {
+      "id": "DOC-3004-ORDER",
+      "date": "Jul 19, 2026",
+      "name": "Adalimumab order",
+      "type": "Order",
+      "present": true
+    },
+    {
+      "id": "DOC-3004-RHEUM",
+      "date": "Jul 16, 2026",
+      "name": "Rheumatology treatment note",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3004-TB",
+      "date": "Not received",
+      "name": "Tuberculosis screening result",
+      "type": "Laboratory report",
+      "present": false
+    }
+  ],
+  "requestDate": "2026-07-21",
+  "selectedOrderId": "ORD-3004"
+}

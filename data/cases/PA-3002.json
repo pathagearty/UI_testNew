@@ -1,0 +1,138 @@
+{
+  "id": "PA-3002",
+  "orders": [
+    {
+      "id": "ORD-3002",
+      "status": "Active",
+      "procedure": "Total knee arthroplasty",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-16",
+      "serviceDate": "2026-08-12",
+      "procedureCode": "27447",
+      "orderingClinician": "Dr. Samuel Ortiz"
+    }
+  ],
+  "policy": {
+    "id": "SURG-TKA-210",
+    "name": "Total Knee Arthroplasty",
+    "current": true,
+    "version": "2026.1",
+    "contentHash": "sha256:44eed83463b645b21de441e6e196098835029c1007389913283df0f1e9ccb38f",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01"
+  },
+  "review": {
+    "runId": null,
+    "traceId": null,
+    "state": "not_analyzed",
+    "stateLabel": "Awaiting Microsoft Foundry analysis",
+    "stateMessage": "No evidence analysis is stored for this case. Run evidence review to invoke the configured Foundry agent.",
+    "resultSource": "not_run"
+  },
+  "patient": {
+    "id": "PAT-3002",
+    "mrn": "MRN-UAT-83002",
+    "name": "Taylor Jordan",
+    "dateOfBirth": "1958-11-08"
+  },
+  "caseType": "Orthopedic surgery",
+  "coverage": {
+    "plan": {
+      "id": "PLAN-SHP-HMO",
+      "name": "Summit Coordinated HMO"
+    },
+    "payer": {
+      "id": "PAY-SHP-01",
+      "name": "Summit Health Plan"
+    },
+    "memberId": "MEM-UAT-3002",
+    "coverageId": "COV-3002"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "criterionId": "SURG-TKA-210:C1",
+      "title": "Advanced knee osteoarthritis documented",
+      "description": "Diagnosis and severity must be supported.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The record must show advanced symptomatic osteoarthritis of the operative knee.",
+      "policyLocator": "SURG-TKA-210 · page 3 · section 2.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C2",
+      "criterionId": "SURG-TKA-210:C2",
+      "title": "Imaging supports structural disease",
+      "description": "Recent weight-bearing imaging must support the diagnosis.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Weight-bearing radiographs must demonstrate advanced joint-space loss or equivalent disease.",
+      "policyLocator": "SURG-TKA-210 · page 3 · section 2.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C3",
+      "criterionId": "SURG-TKA-210:C3",
+      "title": "Conservative therapy completed",
+      "description": "Nonoperative therapies and response must be documented.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "A clinically appropriate trial of nonoperative management must be documented.",
+      "policyLocator": "SURG-TKA-210 · page 4 · section 2.3",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C4",
+      "criterionId": "SURG-TKA-210:C4",
+      "title": "Preoperative optimization completed",
+      "description": "Medical readiness must be documented.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The record must include medical optimization and surgical risk review.",
+      "policyLocator": "SURG-TKA-210 · page 5 · section 3.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    }
+  ],
+  "scenario": "not_analyzed",
+  "documents": [
+    {
+      "id": "DOC-3002-CLEAR",
+      "date": "Jul 15, 2026",
+      "name": "Medical optimization clearance",
+      "type": "Preoperative clearance",
+      "present": true
+    },
+    {
+      "id": "DOC-3002-ORTHO",
+      "date": "Jul 10, 2026",
+      "name": "Orthopedic surgery consultation",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3002-PT",
+      "date": "Jul 6, 2026",
+      "name": "Conservative-treatment history",
+      "type": "Treatment record",
+      "present": true
+    },
+    {
+      "id": "DOC-3002-XRAY",
+      "date": "Jul 8, 2026",
+      "name": "Weight-bearing knee radiographs",
+      "type": "Imaging report",
+      "present": true
+    }
+  ],
+  "requestDate": "2026-07-21",
+  "selectedOrderId": "ORD-3002"
+}

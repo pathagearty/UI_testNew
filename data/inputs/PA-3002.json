@@ -1,0 +1,171 @@
+{
+  "case": {
+    "order": {
+      "orderId": "ORD-3002",
+      "procedure": "Total knee arthroplasty",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-16",
+      "serviceDate": "2026-08-12",
+      "procedureCode": "27447",
+      "orderingClinician": "Dr. Samuel Ortiz"
+    },
+    "caseId": "PA-3002",
+    "patient": {
+      "mrn": "MRN-UAT-83002",
+      "patientId": "PAT-3002",
+      "dateOfBirth": "1958-11-08",
+      "displayName": "Taylor Jordan"
+    },
+    "caseType": "Orthopedic surgery",
+    "coverage": {
+      "planId": "PLAN-SHP-HMO",
+      "payerId": "PAY-SHP-01",
+      "memberId": "MEM-UAT-3002",
+      "planName": "Summit Coordinated HMO",
+      "payerName": "Summit Health Plan",
+      "coverageId": "COV-3002"
+    },
+    "requestDate": "2026-07-21"
+  },
+  "policy": {
+    "version": "2026.1",
+    "criteria": [
+      {
+        "title": "Advanced knee osteoarthritis documented",
+        "required": true,
+        "criterionId": "SURG-TKA-210:C1",
+        "description": "Diagnosis and severity must be supported.",
+        "policyQuote": "The record must show advanced symptomatic osteoarthritis of the operative knee.",
+        "criterionCode": "C1",
+        "policyLocator": "SURG-TKA-210 · page 3 · section 2.1"
+      },
+      {
+        "title": "Imaging supports structural disease",
+        "required": true,
+        "criterionId": "SURG-TKA-210:C2",
+        "description": "Recent weight-bearing imaging must support the diagnosis.",
+        "policyQuote": "Weight-bearing radiographs must demonstrate advanced joint-space loss or equivalent disease.",
+        "criterionCode": "C2",
+        "policyLocator": "SURG-TKA-210 · page 3 · section 2.2"
+      },
+      {
+        "title": "Conservative therapy completed",
+        "required": true,
+        "criterionId": "SURG-TKA-210:C3",
+        "description": "Nonoperative therapies and response must be documented.",
+        "policyQuote": "A clinically appropriate trial of nonoperative management must be documented.",
+        "criterionCode": "C3",
+        "policyLocator": "SURG-TKA-210 · page 4 · section 2.3"
+      },
+      {
+        "title": "Preoperative optimization completed",
+        "required": true,
+        "criterionId": "SURG-TKA-210:C4",
+        "description": "Medical readiness must be documented.",
+        "policyQuote": "The record must include medical optimization and surgical risk review.",
+        "criterionCode": "C4",
+        "policyLocator": "SURG-TKA-210 · page 5 · section 3.1"
+      }
+    ],
+    "policyId": "SURG-TKA-210",
+    "policyText": "CLEARWAY SYNTHETIC UAT PAYER POLICY\nPolicy: SURG-TKA-210 — Total Knee Arthroplasty\nVersion: 2026.1 | Effective: January 1–December 31, 2026\nFictional payer: Summit Health Plan\nNOTICE: This policy is entirely synthetic and must not be used for real coverage or clinical decisions.\n\n[Page 1 — Purpose]\nThis policy defines the synthetic evidence package used to route a primary total-knee-arthroplasty request for clinician review. Criterion satisfaction is evidence readiness, not authorization.\n\n[Page 3 — Section 2.1: Diagnosis]\nThe record must show advanced symptomatic osteoarthritis of the operative knee.\nThe signed orthopedic assessment should identify laterality, symptoms, functional limitation, and the operative diagnosis.\n\n[Page 3 — Section 2.2: Imaging]\nWeight-bearing radiographs must demonstrate advanced joint-space loss or equivalent disease.\nThe imaging report must identify laterality and a finding consistent with the operative diagnosis. A procedure request without linked imaging is incomplete for this synthetic policy.\n\n[Page 4 — Section 2.3: Nonoperative management]\nA clinically appropriate trial of nonoperative management must be documented.\nThe record should identify modalities, treatment dates or duration, and response. Examples include supervised therapy, medication when appropriate, activity modification, assistive-device use, or injection therapy.\n\n[Page 5 — Section 3.1: Optimization]\nThe record must include medical optimization and surgical risk review.\nThe clearance document should be signed and should identify whether unresolved conditions require additional review. It does not replace surgical or anesthesia judgment.\n\n[Page 6 — Submission and validation]\nThe package should include a signed surgical consultation, weight-bearing imaging report, conservative-treatment history, and optimization review. Each criterion result must cite the supporting source. Contradictions, invalid identifiers, or cross-patient evidence stop automatic progression.\n\n[Page 7 — Limitations]\nThis fictional policy demonstrates evidence-readiness workflow only. It does not approve surgery, establish benefits, or replace clinician review.",
+    "contentHash": "sha256:44eed83463b645b21de441e6e196098835029c1007389913283df0f1e9ccb38f",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01",
+    "policyVersionId": "SURG-TKA-210:2026.1"
+  },
+  "synthetic": true,
+  "schemaVersion": "clearway.ai-input.v1",
+  "sourceDocuments": [
+    {
+      "text": "CLEARWAY SYNTHETIC UAT PREOPERATIVE CLEARANCE\nDocument ID: DOC-3002-CLEAR\nPatient: Taylor Jordan | Patient ID: PAT-3002 | MRN: MRN-UAT-83002\nEvaluation date: July 15, 2026\nPlanned procedure: Right total knee arthroplasty\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Purpose]\nPreoperative medical optimization review for a synthetic planned right total knee arthroplasty. This document does not authorize or schedule a real procedure.\n\n[Medical history]\nSynthetic history includes controlled hypertension and hyperlipidemia. There is no documented history of myocardial infarction, heart failure, stroke, insulin-treated diabetes, chronic kidney disease, bleeding disorder, or anesthesia complication. Medication reconciliation was completed for testing purposes.\n\n[Functional and symptom review]\nThe patient denies chest pain, resting dyspnea, syncope, fever, or active infection. Functional activity is limited primarily by knee pain. No open skin lesion is present over the operative extremity.\n\n[Examination]\nBlood pressure 128/76, pulse 72, and oxygen saturation 98% on room air are synthetic values. Heart rhythm is regular, lungs are clear, and there is no acute cardiopulmonary finding.\n\n[Testing]\nSynthetic CBC and basic metabolic panel are within the stated reference limits. Creatinine is 0.9 mg/dL and hemoglobin is 13.8 g/dL. Electrocardiogram shows sinus rhythm without an acute ischemic pattern. No additional preoperative test is identified in this bounded UAT review.\n\n[Assessment and plan]\nPatient is medically optimized for planned right total knee arthroplasty.\nMedication and perioperative instructions were reviewed in synthetic form. Final surgical, anesthesia, and perioperative decisions remain with the responsible clinicians.\n\nElectronically signed by Owen Park, MD on July 15, 2026 at 16:30 UTC.\nSYNTHETIC UAT CLEARANCE — NOT FOR CLINICAL CARE.",
+      "title": "Medical optimization clearance",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-15T16:30:00+00:00",
+      "authorName": "Owen Park, MD",
+      "authorRole": "Internal medicine clinician",
+      "documentId": "DOC-3002-CLEAR",
+      "contentHash": "sha256:c7b27e3b3aefb6d52e9ca42c9ab7f476087056a066b12274c16ff837d057438b",
+      "documentDate": "2026-07-15",
+      "documentType": "Preoperative clearance",
+      "facilityName": "Clearway Synthetic Preoperative Clinic"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3002-ORTHO\nDocument type: Orthopedic surgery consultation\nPatient: Taylor Jordan | Patient ID: PAT-3002 | MRN: MRN-UAT-83002\nEncounter date: July 10, 2026\nAuthor: Samuel Ortiz, MD\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[History]\nTaylor Jordan is a 67-year-old synthetic patient with progressively limiting right-knee pain over four years. Pain is present daily, is worse with stairs and standing, and limits walking to approximately two city blocks. The patient uses a cane outside the home and reports difficulty with shopping and household tasks.\n\n[Conservative treatment]\nDocumented nonoperative management includes a twelve-week supervised physical-therapy course from January 13 through April 7, 2026, activity modification, topical and oral anti-inflammatory therapy when tolerated, and intra-articular injections on February 3 and May 12, 2026. Relief from the most recent injection lasted approximately three weeks. The patient reports no durable functional improvement.\n\n[Imaging reviewed]\nWeight-bearing right-knee radiographs dated July 8, 2026 were reviewed and show advanced medial and patellofemoral joint-space loss, osteophytes, and subchondral sclerosis. The imaging report is included as DOC-3002-XRAY.\n\n[Examination]\nAntalgic gait is present. Right-knee range of motion is 8 to 108 degrees with crepitus. There is medial joint-line tenderness and a small effusion. Distal motor, sensation, and perfusion are intact. Skin over the planned operative field is intact.\n\n[Assessment]\nSevere right-knee osteoarthritis with daily pain and functional limitation.\n\n[Shared decision-making]\nThe diagnosis, continued conservative care, and surgical options were discussed. Because symptoms remain functionally limiting despite documented nonoperative treatment, the patient wishes to proceed with right total knee arthroplasty. Risks, expected rehabilitation, and the need for medical optimization were reviewed. This document records a synthetic preference for testing and is not consent for an actual procedure.\n\n[Plan]\nRequest authorization for right total knee arthroplasty, CPT 27447. Obtain medical optimization clearance, confirm operative-site planning, and route the complete evidence package to a clinician for final review.\n\nElectronically signed by Samuel Ortiz, MD on July 10, 2026 at 17:18 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Orthopedic surgery consultation",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-10T17:18:00+00:00",
+      "authorName": "Samuel Ortiz, MD",
+      "authorRole": "Orthopedic surgeon",
+      "documentId": "DOC-3002-ORTHO",
+      "contentHash": "sha256:fdee8ede2cdac3f23780afd11bfe2b52606f67930cb03c70afac88471be6d856",
+      "documentDate": "2026-07-10",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Orthopedics"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT TREATMENT SUMMARY\nDocument ID: DOC-3002-PT\nPatient: Taylor Jordan | Patient ID: PAT-3002 | MRN: MRN-UAT-83002\nTreatment interval: January 13 through April 7, 2026\nSummary date: July 6, 2026\nAuthor: Mara Ellis, DPT\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Referral and baseline]\nThe patient was referred for right-knee osteoarthritis with pain during walking, stairs, and sit-to-stand activity. At the initial synthetic evaluation, active right-knee motion was 10 to 105 degrees, quadriceps strength was 4-/5, and the patient tolerated approximately ten minutes of continuous walking.\n\n[Course]\nTwelve supervised visits were completed over twelve weeks. Interventions included range-of-motion exercise, quadriceps and hip strengthening, gait training, home exercise instruction, and activity modification. Attendance was consistent. The patient also used anti-inflammatory therapy as directed by the treating clinician.\n\n[Response]\nFlexion improved to 110 degrees and quadriceps strength improved to 4+/5. Pain with prolonged standing and stairs remained 7/10. Walking tolerance remained limited to approximately two blocks. Functional improvement was not durable after discharge despite continued home exercise.\n\n[Additional treatment]\nThe orthopedic record documents injections on February 3 and May 12, 2026. The patient reported temporary relief only.\n\n[Discharge assessment]\nPhysical therapy, activity modification, NSAID therapy, and two injections provided inadequate durable relief.\nThe patient reached a plateau in conservative management and was discharged to independent exercise with orthopedic follow-up.\n\nElectronically signed by Mara Ellis, DPT on July 6, 2026 at 19:10 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Conservative-treatment history",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-06T19:10:00+00:00",
+      "authorName": "Mara Ellis, DPT",
+      "authorRole": "Physical therapist",
+      "documentId": "DOC-3002-PT",
+      "contentHash": "sha256:f2f58b92c2b932cb28bdc8b04288d26323ccdaae8ba0277d3473ef6947828d7e",
+      "documentDate": "2026-07-06",
+      "documentType": "Treatment record",
+      "facilityName": "Clearway Synthetic Rehabilitation"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT IMAGING REPORT\nDocument ID: DOC-3002-XRAY\nPatient: Taylor Jordan | Patient ID: PAT-3002 | MRN: MRN-UAT-83002\nStudy date: July 8, 2026\nStudy: Right knee radiographs, four views, including weight-bearing views\nNOTICE: This report is entirely synthetic and is intended only for software testing.\n\n[Clinical indication]\nChronic right-knee pain, reduced walking tolerance, and preoperative assessment for possible arthroplasty.\n\n[Technique]\nSynthetic anteroposterior weight-bearing, lateral, sunrise, and posteroanterior flexion views were evaluated. No actual images exist for this UAT record.\n\n[Findings]\nThere is severe narrowing of the medial tibiofemoral compartment with near bone-on-bone apposition on the weight-bearing view. Moderate-to-severe patellofemoral joint-space narrowing is also present. Tricompartmental marginal osteophytes and medial subchondral sclerosis are described. No acute fracture, dislocation, or destructive osseous lesion is identified. A small joint effusion is present.\n\n[Impression]\nNear-complete medial-compartment joint-space loss with osteophyte formation.\nAdvanced tricompartmental osteoarthritis, greatest in the medial and patellofemoral compartments. No acute osseous abnormality.\n\nElectronically signed by Lila Mercer, MD on July 8, 2026 at 12:26 UTC.\nSYNTHETIC UAT IMAGING REPORT — NO REAL IMAGES OR PATIENT.",
+      "title": "Weight-bearing knee radiographs",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-08T12:26:00+00:00",
+      "authorName": "Lila Mercer, MD",
+      "authorRole": "Synthetic radiologist",
+      "documentId": "DOC-3002-XRAY",
+      "contentHash": "sha256:2f7e2d42ec38ba515534ccaad2a1a6a127618c7b05c3e35368ec5fe51fc72309",
+      "documentDate": "2026-07-08",
+      "documentType": "Imaging report",
+      "facilityName": "Clearway Synthetic Imaging"
+    }
+  ],
+  "documentManifest": [
+    {
+      "title": "Medical optimization clearance",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3002-CLEAR",
+      "contentHash": "sha256:c7b27e3b3aefb6d52e9ca42c9ab7f476087056a066b12274c16ff837d057438b",
+      "documentDate": "2026-07-15",
+      "documentType": "Preoperative clearance"
+    },
+    {
+      "title": "Orthopedic surgery consultation",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3002-ORTHO",
+      "contentHash": "sha256:fdee8ede2cdac3f23780afd11bfe2b52606f67930cb03c70afac88471be6d856",
+      "documentDate": "2026-07-10",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "Conservative-treatment history",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3002-PT",
+      "contentHash": "sha256:f2f58b92c2b932cb28bdc8b04288d26323ccdaae8ba0277d3473ef6947828d7e",
+      "documentDate": "2026-07-06",
+      "documentType": "Treatment record"
+    },
+    {
+      "title": "Weight-bearing knee radiographs",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3002-XRAY",
+      "contentHash": "sha256:2f7e2d42ec38ba515534ccaad2a1a6a127618c7b05c3e35368ec5fe51fc72309",
+      "documentDate": "2026-07-08",
+      "documentType": "Imaging report"
+    }
+  ]
+}

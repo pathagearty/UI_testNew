@@ -1,0 +1,91 @@
+{
+  "patients": [
+    {
+      "id": "PAT-3003",
+      "mrn": "MRN-UAT-83003",
+      "name": "Avery Patel",
+      "dateOfBirth": "1971-02-27"
+    },
+    {
+      "id": "PAT-3004",
+      "mrn": "MRN-UAT-83004",
+      "name": "Casey Kim",
+      "dateOfBirth": "1989-08-15"
+    },
+    {
+      "id": "PAT-3005",
+      "mrn": "MRN-UAT-83005",
+      "name": "Jordan Rivera",
+      "dateOfBirth": "1966-06-03"
+    },
+    {
+      "id": "PAT-3001",
+      "mrn": "MRN-UAT-83001",
+      "name": "Morgan Lee",
+      "dateOfBirth": "1982-04-19"
+    },
+    {
+      "id": "PAT-3002",
+      "mrn": "MRN-UAT-83002",
+      "name": "Taylor Jordan",
+      "dateOfBirth": "1958-11-08"
+    }
+  ],
+  "cases": [
+    {
+      "id": "PA-3001",
+      "patientId": "PAT-3001",
+      "orderIds": [
+        "ORD-3001"
+      ],
+      "procedure": "Lumbar spine MRI without contrast",
+      "scenario": "not_analyzed",
+      "statusLabel": "Awaiting Foundry review",
+      "requestDate": "2026-07-21"
+    },
+    {
+      "id": "PA-3002",
+      "patientId": "PAT-3002",
+      "orderIds": [
+        "ORD-3002"
+      ],
+      "procedure": "Total knee arthroplasty",
+      "scenario": "not_analyzed",
+      "statusLabel": "Awaiting Foundry review",
+      "requestDate": "2026-07-21"
+    },
+    {
+      "id": "PA-3003",
+      "patientId": "PAT-3003",
+      "orderIds": [
+        "ORD-3003"
+      ],
+      "procedure": "Lumbar spinal fusion",
+      "scenario": "not_analyzed",
+      "statusLabel": "Awaiting Foundry review",
+      "requestDate": "2026-07-21"
+    },
+    {
+      "id": "PA-3004",
+      "patientId": "PAT-3004",
+      "orderIds": [
+        "ORD-3004"
+      ],
+      "procedure": "Adalimumab induction and maintenance",
+      "scenario": "not_analyzed",
+      "statusLabel": "Awaiting Foundry review",
+      "requestDate": "2026-07-21"
+    },
+    {
+      "id": "PA-3005",
+      "patientId": "PAT-3005",
+      "orderIds": [
+        "ORD-3005"
+      ],
+      "procedure": "CPAP device and supplies",
+      "scenario": "not_analyzed",
+      "statusLabel": "Awaiting Foundry review",
+      "requestDate": "2026-07-21"
+    }
+  ]
+}

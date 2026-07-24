@@ -1,0 +1,171 @@
+{
+  "case": {
+    "order": {
+      "orderId": "ORD-3003",
+      "procedure": "Lumbar spinal fusion",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-17",
+      "serviceDate": "2026-08-19",
+      "procedureCode": "22612",
+      "orderingClinician": "Dr. Priya Nair"
+    },
+    "caseId": "PA-3003",
+    "patient": {
+      "mrn": "MRN-UAT-83003",
+      "patientId": "PAT-3003",
+      "dateOfBirth": "1971-02-27",
+      "displayName": "Avery Patel"
+    },
+    "caseType": "Spine surgery",
+    "coverage": {
+      "planId": "PLAN-SHP-PPO",
+      "payerId": "PAY-SHP-01",
+      "memberId": "MEM-UAT-3003",
+      "planName": "Summit Choice PPO",
+      "payerName": "Summit Health Plan",
+      "coverageId": "COV-3003"
+    },
+    "requestDate": "2026-07-21"
+  },
+  "policy": {
+    "version": "2026.1",
+    "criteria": [
+      {
+        "title": "Structural instability documented",
+        "required": true,
+        "criterionId": "SURG-LSF-310:C1",
+        "description": "Imaging must support the requested fusion indication.",
+        "policyQuote": "Imaging must demonstrate instability or another covered structural indication.",
+        "criterionCode": "C1",
+        "policyLocator": "SURG-LSF-310 · page 3 · section 2.1"
+      },
+      {
+        "title": "Nonoperative treatment completed",
+        "required": true,
+        "criterionId": "SURG-LSF-310:C2",
+        "description": "The treatment duration and response must be documented.",
+        "policyQuote": "At least six months of clinically appropriate nonoperative treatment must be documented unless an exception applies.",
+        "criterionCode": "C2",
+        "policyLocator": "SURG-LSF-310 · page 4 · section 2.2"
+      },
+      {
+        "title": "Neurologic findings are consistent",
+        "required": true,
+        "criterionId": "SURG-LSF-310:C3",
+        "description": "Objective findings should be internally consistent.",
+        "policyQuote": "Objective neurologic findings used to support surgery must be consistent across the submitted record.",
+        "criterionCode": "C3",
+        "policyLocator": "SURG-LSF-310 · page 4 · section 2.3"
+      },
+      {
+        "title": "Requested levels match the operative plan",
+        "required": true,
+        "criterionId": "SURG-LSF-310:C4",
+        "description": "The order and operative plan must identify the same levels.",
+        "policyQuote": "The requested fusion levels must be consistent across the order and surgical plan.",
+        "criterionCode": "C4",
+        "policyLocator": "SURG-LSF-310 · page 5 · section 3.1"
+      }
+    ],
+    "policyId": "SURG-LSF-310",
+    "policyText": "CLEARWAY SYNTHETIC UAT PAYER POLICY\nPolicy: SURG-LSF-310 — Lumbar Spinal Fusion\nVersion: 2026.1 | Effective: January 1–December 31, 2026\nFictional payer: Summit Health Plan\nNOTICE: This policy is entirely synthetic and must not be used for real coverage or clinical decisions.\n\n[Page 1 — Purpose and scope]\nThis policy defines a synthetic evidence package for lumbar fusion requests. It is designed to test relationship validation, policy-version pinning, source citation, and conflict handling.\n\n[Page 3 — Section 2.1: Structural indication]\nImaging must demonstrate instability or another covered structural indication.\nThe imaging source should identify the involved level and finding. The service request must match the documented anatomy.\n\n[Page 4 — Section 2.2: Nonoperative management]\nAt least six months of clinically appropriate nonoperative treatment must be documented unless an exception applies.\nThe record should state the treatment interval, modalities, and response. The workflow must not count an undocumented or self-reported course as completed treatment.\n\n[Page 4 — Section 2.3: Neurologic consistency]\nObjective neurologic findings used to support surgery must be consistent across the submitted record.\nWhen two signed source documents disagree about the same motor, sensory, or reflex finding, the criterion status is conflicting. The system must display both statements and request authorized clinician clarification; it must not choose the statement it considers more plausible.\n\n[Page 5 — Section 3.1: Operative levels]\nThe requested fusion levels must be consistent across the order and surgical plan.\nAny mismatch in level, laterality, or procedure code blocks progression pending correction.\n\n[Page 6 — Required records]\nThe synthetic package includes the signed surgical consultation, imaging evidence, nonoperative-treatment history, requested procedure, and relevant focused examinations. Every extracted claim requires a document ID and source location. Original evidence remains immutable when a clarification is added.\n\n[Page 7 — Limitations]\nCriterion classification is decision support only. A clinician owns interpretation, clarification, and any next action. This policy does not approve surgery or represent a real payer requirement.",
+    "contentHash": "sha256:a81d24d216b5e39533087e00284739da46463c43764c4541ee43e9f216a435fd",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01",
+    "policyVersionId": "SURG-LSF-310:2026.1"
+  },
+  "synthetic": true,
+  "schemaVersion": "clearway.ai-input.v1",
+  "sourceDocuments": [
+    {
+      "text": "CLEARWAY SYNTHETIC UAT IMAGING REPORT\nDocument ID: DOC-3003-IMG\nPatient: Avery Patel | Patient ID: PAT-3003 | MRN: MRN-UAT-83003\nStudy date: July 9, 2026\nStudy: Lumbar flexion-extension radiographs\nNOTICE: This report is entirely synthetic and is intended only for software testing.\n\n[Clinical indication]\nChronic low-back pain, suspected L4-L5 instability, and preoperative evaluation.\n\n[Technique]\nSynthetic standing lateral flexion and extension views of the lumbar spine were evaluated. No actual images exist for this UAT record.\n\n[Findings]\nThere is grade 1 anterolisthesis of L4 on L5. Translation increases from approximately 3 mm in extension to approximately 7 mm in flexion. Disc-space narrowing and facet degenerative change are greatest at L4-L5. Vertebral body heights are maintained. No acute compression fracture is identified.\n\n[Impression]\nDynamic L4-L5 translation is consistent with segmental instability.\nDegenerative change is greatest at L4-L5. Correlation with the clinical examination and existing cross-sectional imaging is recommended.\n\nElectronically signed by Lila Mercer, MD on July 9, 2026 at 13:48 UTC.\nSYNTHETIC UAT IMAGING REPORT — NO REAL IMAGES OR PATIENT.",
+      "title": "Lumbar flexion-extension radiographs",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-09T13:48:00+00:00",
+      "authorName": "Lila Mercer, MD",
+      "authorRole": "Synthetic radiologist",
+      "documentId": "DOC-3003-IMG",
+      "contentHash": "sha256:42585fe5f4d7a1d0e4879566bbc0a4443df93dfd80091f5c52d4caf40c53c1bf",
+      "documentDate": "2026-07-09",
+      "documentType": "Imaging report",
+      "facilityName": "Clearway Synthetic Imaging"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3003-NEURO\nDocument type: Independent neurologic examination\nPatient: Avery Patel | Patient ID: PAT-3003 | MRN: MRN-UAT-83003\nEncounter date: July 12, 2026\nAuthor: Jonas Reed, MD\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Reason for examination]\nFocused neurologic assessment for lumbar pain with intermittent right-leg symptoms. The examiner reviewed the reason for referral but did not reconcile findings with the prior-day spine surgery note.\n\n[Symptoms]\nThe patient reports low-back pain and intermittent right lateral-calf paresthesia. No new fall, bowel or bladder change, or saddle anesthesia is reported.\n\n[Motor examination]\nEffort is described as consistent. Hip flexion, knee extension, ankle dorsiflexion, great-toe extension, and plantar flexion are tested bilaterally.\n\nBilateral ankle dorsiflexion is 5/5 without focal weakness.\nHip flexion, knee extension, great-toe extension, and plantar flexion are also 5/5 bilaterally.\n\n[Sensory and reflex examination]\nLight-touch sensation is mildly reduced over the right lateral calf. Patellar and Achilles reflexes are 2+ and symmetric. No clonus is present. Gait is mildly antalgic but stable without assistive equipment during the examination.\n\n[Assessment]\nLumbar pain with intermittent right sensory symptoms. No focal motor deficit is identified in this examination.\n\n[Important UAT note]\nThis result intentionally conflicts with DOC-3003-SPINE, which records right ankle dorsiflexion as 4/5 one day earlier. No explanation or signed correction is provided. The workflow must preserve both statements and request authorized clinician clarification rather than selecting one as true.\n\nElectronically signed by Jonas Reed, MD on July 12, 2026 at 15:24 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Neurologic examination",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-12T15:24:00+00:00",
+      "authorName": "Jonas Reed, MD",
+      "authorRole": "Neurologist",
+      "documentId": "DOC-3003-NEURO",
+      "contentHash": "sha256:e7995872dc760115ae601f12673705a3aedd2d79647175a13e5bda03f5aa146d",
+      "documentDate": "2026-07-12",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Neurology"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3003-SPINE\nDocument type: Spine surgery consultation\nPatient: Avery Patel | Patient ID: PAT-3003 | MRN: MRN-UAT-83003\nEncounter date: July 11, 2026\nAuthor: Priya Nair, MD\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[History]\nAvery Patel is a 55-year-old synthetic patient with fourteen months of low-back pain and right-greater-than-left leg symptoms. Pain limits standing to fifteen minutes and walking to approximately one block. No bowel or bladder change is reported.\n\n[Nonoperative management]\nThe record documents seven months of structured nonoperative care from December 2025 through June 2026, including supervised physical therapy, anti-inflammatory medication when tolerated, neuropathic-pain medication, activity modification, and two image-guided injections. Symptoms and functional limitation persisted.\n\n[Imaging reviewed]\nLumbar MRI is described as showing L4-L5 degenerative stenosis. Flexion-extension radiographs dated July 9, 2026 show dynamic L4-L5 translation consistent with instability. The requested and planned fusion level is L4-L5.\n\n[Neurologic exam]\nGait is antalgic. Hip flexion and knee extension are 5/5 bilaterally. Right ankle dorsiflexion is 4/5. Left ankle dorsiflexion and bilateral plantar flexion are 5/5. Sensation is reduced over the right lateral calf. Patellar reflexes are 2+ and symmetric.\n\n[Assessment]\nL4-L5 degenerative stenosis and dynamic instability with persistent functional limitation despite documented nonoperative care. The right ankle dorsiflexion finding is used as part of the surgical assessment in this note.\n\n[Plan]\nPlanned posterolateral fusion at L4-L5.\nThe risks, alternatives, expected recovery, and need for final medical review were discussed in synthetic form. Request prior authorization for CPT 22612. The authorization package should include imaging, treatment history, and current neurologic documentation.\n\nElectronically signed by Priya Nair, MD on July 11, 2026 at 18:02 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Spine surgery consultation",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-11T18:02:00+00:00",
+      "authorName": "Priya Nair, MD",
+      "authorRole": "Spine surgeon",
+      "documentId": "DOC-3003-SPINE",
+      "contentHash": "sha256:5bca2c50623063c8b48ca117e9839553adedbdd0e1a8b540d303204466ab6366",
+      "documentDate": "2026-07-11",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Spine Surgery"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT TREATMENT SUMMARY\nDocument ID: DOC-3003-TX\nPatient: Avery Patel | Patient ID: PAT-3003 | MRN: MRN-UAT-83003\nTreatment interval: December 2, 2025 through June 30, 2026\nSummary date: July 7, 2026\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Initial presentation]\nThe patient entered supervised therapy for chronic low-back pain with intermittent right-leg symptoms, limited standing, and reduced walking tolerance.\n\n[Documented treatment]\nThe seven-month record contains twenty supervised physical-therapy visits, a progressive home exercise program, core stabilization, mobility work, gait and body-mechanics training, and activity modification. The treating-clinician record also documents anti-inflammatory medication when tolerated, neuropathic-pain medication, and image-guided injections on February 18 and May 20, 2026.\n\n[Response]\nThe patient demonstrated modest improvement in trunk mobility but continued to report pain with standing longer than fifteen minutes and walking farther than one block. Each injection produced less than four weeks of partial relief. Functional limitations persisted at discharge.\n\n[Summary]\nSeven months of physical therapy, medication management, and two injections produced persistent functional limitation.\nNo durable improvement sufficient to meet the patient's stated activity goals was documented.\n\n[Disposition]\nDischarged to an independent maintenance program with return to the spine clinician. This treatment summary does not resolve the contradictory motor-strength findings recorded in separate July clinical notes.\n\nElectronically signed by Mara Ellis, DPT on July 7, 2026 at 19:36 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Nonoperative treatment history",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-07T19:36:00+00:00",
+      "authorName": "Mara Ellis, DPT",
+      "authorRole": "Physical therapist",
+      "documentId": "DOC-3003-TX",
+      "contentHash": "sha256:ef65701e8bc4294de1c7015eeb23a51c999206700adba98051f62dc7011840cb",
+      "documentDate": "2026-07-07",
+      "documentType": "Treatment record",
+      "facilityName": "Clearway Synthetic Rehabilitation"
+    }
+  ],
+  "documentManifest": [
+    {
+      "title": "Lumbar flexion-extension radiographs",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3003-IMG",
+      "contentHash": "sha256:42585fe5f4d7a1d0e4879566bbc0a4443df93dfd80091f5c52d4caf40c53c1bf",
+      "documentDate": "2026-07-09",
+      "documentType": "Imaging report"
+    },
+    {
+      "title": "Neurologic examination",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3003-NEURO",
+      "contentHash": "sha256:e7995872dc760115ae601f12673705a3aedd2d79647175a13e5bda03f5aa146d",
+      "documentDate": "2026-07-12",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "Spine surgery consultation",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3003-SPINE",
+      "contentHash": "sha256:5bca2c50623063c8b48ca117e9839553adedbdd0e1a8b540d303204466ab6366",
+      "documentDate": "2026-07-11",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "Nonoperative treatment history",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3003-TX",
+      "contentHash": "sha256:ef65701e8bc4294de1c7015eeb23a51c999206700adba98051f62dc7011840cb",
+      "documentDate": "2026-07-07",
+      "documentType": "Treatment record"
+    }
+  ]
+}

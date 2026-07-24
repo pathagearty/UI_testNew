@@ -1,0 +1,131 @@
+{
+  "id": "PA-3001",
+  "orders": [
+    {
+      "id": "ORD-3001",
+      "status": "Active",
+      "procedure": "Lumbar spine MRI without contrast",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-18",
+      "serviceDate": "2026-07-29",
+      "procedureCode": "72148",
+      "orderingClinician": "Dr. Elena Brooks"
+    }
+  ],
+  "policy": {
+    "id": "IMG-MRI-101",
+    "name": "Advanced Imaging — Lumbar Spine MRI",
+    "current": true,
+    "version": "2026.1",
+    "contentHash": "sha256:30b6e06ce8e3b9fa8f2e747bf8b1c5dfbc0811d4cd4048d5abe4e0b74ea62a89",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01"
+  },
+  "review": {
+    "runId": null,
+    "traceId": null,
+    "state": "not_analyzed",
+    "stateLabel": "Awaiting Microsoft Foundry analysis",
+    "stateMessage": "No evidence analysis is stored for this case. Run evidence review to invoke the configured Foundry agent.",
+    "resultSource": "not_run"
+  },
+  "patient": {
+    "id": "PAT-3001",
+    "mrn": "MRN-UAT-83001",
+    "name": "Morgan Lee",
+    "dateOfBirth": "1982-04-19"
+  },
+  "caseType": "Diagnostic imaging",
+  "coverage": {
+    "plan": {
+      "id": "PLAN-SHP-PPO",
+      "name": "Summit Choice PPO"
+    },
+    "payer": {
+      "id": "PAY-SHP-01",
+      "name": "Summit Health Plan"
+    },
+    "memberId": "MEM-UAT-3001",
+    "coverageId": "COV-3001"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "criterionId": "IMG-MRI-101:C1",
+      "title": "Symptoms documented for required duration",
+      "description": "Symptoms must continue beyond the policy-defined period.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Symptoms persist for at least six weeks despite initial conservative management.",
+      "policyLocator": "IMG-MRI-101 · page 3 · section 2.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C2",
+      "criterionId": "IMG-MRI-101:C2",
+      "title": "Conservative treatment documented",
+      "description": "Treatment course, dates, and response must be included.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The record must document at least six weeks of provider-directed conservative treatment and response.",
+      "policyLocator": "IMG-MRI-101 · page 4 · section 2.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C3",
+      "criterionId": "IMG-MRI-101:C3",
+      "title": "MRI order and indication are consistent",
+      "description": "The requested study must match the documented indication.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The order must identify the requested MRI study and the documented clinical indication.",
+      "policyLocator": "IMG-MRI-101 · page 2 · section 1.3",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C4",
+      "criterionId": "IMG-MRI-101:C4",
+      "title": "Red-flag exception",
+      "description": "Urgent red-flag criteria are evaluated separately.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Red-flag findings may bypass conservative-treatment duration requirements.",
+      "policyLocator": "IMG-MRI-101 · page 2 · section 1.4",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    }
+  ],
+  "scenario": "not_analyzed",
+  "documents": [
+    {
+      "id": "DOC-3001-NOTE",
+      "date": "Jul 14, 2026",
+      "name": "Spine clinic progress note",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3001-ORDER",
+      "date": "Jul 18, 2026",
+      "name": "Lumbar MRI order",
+      "type": "Order",
+      "present": true
+    },
+    {
+      "id": "DOC-3001-PT",
+      "date": "Not received",
+      "name": "Physical therapy treatment summary",
+      "type": "Treatment record",
+      "present": false
+    }
+  ],
+  "requestDate": "2026-07-21",
+  "selectedOrderId": "ORD-3001"
+}

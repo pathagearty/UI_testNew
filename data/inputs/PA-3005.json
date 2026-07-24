@@ -1,0 +1,149 @@
+{
+  "case": {
+    "order": {
+      "orderId": "ORD-3005",
+      "procedure": "CPAP device and supplies",
+      "codeSystem": "HCPCS",
+      "orderedDate": "2026-07-15",
+      "serviceDate": "2026-07-28",
+      "procedureCode": "E0601",
+      "orderingClinician": "Dr. Nina Shah"
+    },
+    "caseId": "PA-3005",
+    "patient": {
+      "mrn": "MRN-UAT-83005",
+      "patientId": "PAT-3005",
+      "dateOfBirth": "1966-06-03",
+      "displayName": "Jordan Rivera"
+    },
+    "caseType": "Durable medical equipment",
+    "coverage": {
+      "planId": "PLAN-SHP-PPO",
+      "payerId": "PAY-SHP-01",
+      "memberId": "MEM-UAT-3005",
+      "planName": "Summit Choice PPO",
+      "payerName": "Summit Health Plan",
+      "coverageId": "COV-3005"
+    },
+    "requestDate": "2026-07-21"
+  },
+  "policy": {
+    "version": "2026.1",
+    "criteria": [
+      {
+        "title": "Qualifying sleep study documented",
+        "required": true,
+        "criterionId": "DME-CPAP-510:C1",
+        "description": "A valid sleep study must meet the coverage threshold.",
+        "policyQuote": "A qualifying sleep study must document the apnea-hypopnea index or respiratory-disturbance index.",
+        "criterionCode": "C1",
+        "policyLocator": "DME-CPAP-510 · page 2 · section 1.1"
+      },
+      {
+        "title": "Clinical symptoms documented",
+        "required": true,
+        "criterionId": "DME-CPAP-510:C2",
+        "description": "Symptoms or covered comorbidities must be present.",
+        "policyQuote": "The clinical record must document qualifying symptoms or covered comorbid conditions.",
+        "criterionCode": "C2",
+        "policyLocator": "DME-CPAP-510 · page 2 · section 1.2"
+      },
+      {
+        "title": "Equipment order is complete",
+        "required": true,
+        "criterionId": "DME-CPAP-510:C3",
+        "description": "The order must identify device and settings.",
+        "policyQuote": "A treating clinician order must identify the PAP device and prescribed settings.",
+        "criterionCode": "C3",
+        "policyLocator": "DME-CPAP-510 · page 3 · section 2.1"
+      },
+      {
+        "title": "Continued-use compliance",
+        "required": false,
+        "criterionId": "DME-CPAP-510:C4",
+        "description": "Compliance is evaluated for continued coverage.",
+        "policyQuote": "Objective adherence is required for continued coverage after the initial trial.",
+        "criterionCode": "C4",
+        "policyLocator": "DME-CPAP-510 · page 4 · section 3.1"
+      }
+    ],
+    "policyId": "DME-CPAP-510",
+    "policyText": "CLEARWAY SYNTHETIC UAT PAYER POLICY\nPolicy: DME-CPAP-510 — Positive Airway Pressure Equipment\nVersion: 2026.1 | Effective: January 1–December 31, 2026\nFictional payer: Summit Health Plan\nNOTICE: This policy is entirely synthetic and must not be used for real equipment, benefit, or clinical decisions.\n\n[Page 1 — Purpose]\nThis policy defines the synthetic evidence package for an initial positive-airway-pressure equipment request and distinguishes initial from continued-coverage evidence.\n\n[Page 2 — Section 1.1: Qualifying study]\nA qualifying sleep study must document the apnea-hypopnea index or respiratory-disturbance index.\nThe signed study should identify the test date, index value, interpretation, and enough information to match the patient and order.\n\n[Page 2 — Section 1.2: Symptoms or comorbidity]\nThe clinical record must document qualifying symptoms or covered comorbid conditions.\nExamples in this synthetic policy include excessive daytime sleepiness, witnessed apneas, impaired cognition, mood disorder, insomnia, hypertension, ischemic heart disease, or prior stroke. The workflow must cite the submitted source.\n\n[Page 3 — Section 2.1: Equipment order]\nA treating clinician order must identify the PAP device and prescribed settings.\nThe order should include the device type, pressure or range, accessories when relevant, diagnosis, and requested service date.\n\n[Page 4 — Section 3.1: Continued coverage]\nObjective adherence is required for continued coverage after the initial trial.\nAdherence is not expected before initial setup and should be classified as not applicable for an initial request. The model must not mark a criterion missing when the policy says it applies only later.\n\n[Page 5 — Submission and validation]\nThe initial package should include the signed sleep study, treating-clinician note, and complete equipment order. Sources must match the same patient and case. Invalid IDs or mixed-case evidence block progression.\n\n[Page 6 — Limitations]\nThis fictional policy demonstrates evidence review only. It does not establish equipment eligibility, approve payment, select a device, or replace clinician and supplier responsibilities.",
+    "contentHash": "sha256:bab28fe9fc38f1cbc47d62e668ffd69f3acdeaaff4ef8d893de914855cb1dc6c",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01",
+    "policyVersionId": "DME-CPAP-510:2026.1"
+  },
+  "synthetic": true,
+  "schemaVersion": "clearway.ai-input.v1",
+  "sourceDocuments": [
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3005-NOTE\nDocument type: Sleep medicine consultation\nPatient: Jordan Rivera | Patient ID: PAT-3005 | MRN: MRN-UAT-83005\nEncounter date: July 12, 2026\nAuthor: Nina Shah, MD\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[History]\nJordan Rivera is a 60-year-old synthetic patient referred after an attended sleep study. The patient reports loud habitual snoring, nonrestorative sleep, morning headache twice weekly, and unintended dozing while reading in the afternoon. A household observer reports pauses in breathing during sleep.\n\nPatient reports excessive daytime sleepiness and witnessed apneas.\n\n[Sleep-study review]\nThe July 9, 2026 synthetic polysomnography report documents an apnea-hypopnea index of 22 events per hour and an oxygen saturation nadir of 84%, consistent with moderate obstructive sleep apnea.\n\n[Relevant examination]\nSynthetic body-mass index is 31 kg/m2. Upper-airway examination is described as crowded. Heart rhythm is regular and lungs are clear. No active cardiopulmonary instability is described.\n\n[Assessment]\nModerate obstructive sleep apnea supported by the diagnostic study and clinical symptoms.\n\n[Plan]\nBegin an initial auto-adjusting CPAP trial at 6–14 cm H2O with humidification and mask supplies. Provide equipment education and arrange follow-up within sixty to ninety days. Objective adherence is relevant to continued coverage after the initial trial and is not expected before initial equipment delivery.\n\n[Human-review note]\nThe sleep study, symptoms, and signed equipment order are available for authorization review. This note does not represent payer approval or equipment delivery.\n\nElectronically signed by Nina Shah, MD on July 12, 2026 at 16:48 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Sleep medicine consultation",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-12T16:48:00+00:00",
+      "authorName": "Nina Shah, MD",
+      "authorRole": "Sleep medicine physician",
+      "documentId": "DOC-3005-NOTE",
+      "contentHash": "sha256:c900445c652d448c73eff2e9069c54ab84fe22fcaeffa36ed105f4c105302e8e",
+      "documentDate": "2026-07-12",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Sleep Center"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT DME ORDER\nDocument ID: DOC-3005-ORDER\nPatient: Jordan Rivera | Patient ID: PAT-3005 | MRN: MRN-UAT-83005\nOrder ID: ORD-3005\nOrder date: July 15, 2026\nOrdering clinician: Nina Shah, MD\nNOTICE: This order is entirely synthetic and is intended only for software testing.\n\n[Order detail]\nAuto-adjusting CPAP prescribed at 6–14 cm H2O with humidification and mask supplies.\n\nDevice: Auto-adjusting continuous positive airway pressure device\nHCPCS: E0601\nAccessories: Heated humidifier, patient-selected mask interface, tubing, filters, and initial replacement supplies according to the synthetic plan schedule\nIndication: Moderate obstructive sleep apnea documented by July 9, 2026 attended polysomnography; AHI 22 events per hour\nRequested service date: July 28, 2026\nLength of need: 99 months for UAT display only; not a real medical determination\n\n[Follow-up]\nArrange clinical follow-up within sixty to ninety days of synthetic setup. Continued-coverage criteria, including objective adherence, apply after the initial trial and are not represented as already satisfied.\n\nOrder status: Active; authorization pending\nElectronically signed by Nina Shah, MD on July 15, 2026 at 14:22 UTC.\nSYNTHETIC UAT DME ORDER — NOT FOR CLINICAL CARE.",
+      "title": "CPAP equipment order",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-15T14:22:00+00:00",
+      "authorName": "Nina Shah, MD",
+      "authorRole": "Ordering clinician",
+      "documentId": "DOC-3005-ORDER",
+      "contentHash": "sha256:6b6fa5139cd4a08a32f8738d291a9fc6a7cc94dd4ffc9d0ba6e7a03847514511",
+      "documentDate": "2026-07-15",
+      "documentType": "Order",
+      "facilityName": "Clearway Synthetic Sleep Center"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT SLEEP-STUDY REPORT\nDocument ID: DOC-3005-SLEEP\nPatient: Jordan Rivera | Patient ID: PAT-3005 | MRN: MRN-UAT-83005\nStudy date: July 9, 2026\nStudy type: Attended diagnostic polysomnography\nNOTICE: This report is entirely synthetic and is intended only for software testing. No actual physiologic recording exists.\n\n[Indication]\nLoud snoring, witnessed apneas, nonrestorative sleep, and excessive daytime sleepiness.\n\n[Recording summary]\nSynthetic total recording time is 438 minutes and synthetic total sleep time is 376 minutes. Sleep efficiency is 86%. Respiratory events are scored using the test policy's stated UAT conventions.\n\n[Respiratory findings]\nThere are 138 synthetic apneas and hypopneas, producing an apnea-hypopnea index of 22 events per hour. The index is higher during supine sleep. Oxygen saturation nadir is 84%, with 11 minutes below 90%. No central-apnea predominance is described.\n\n[Cardiac and movement findings]\nSynthetic average sleeping heart rate is 68 beats per minute without a sustained arrhythmia. No clinically significant periodic-limb-movement pattern is described in this bounded report.\n\n[Interpretation]\nApnea-hypopnea index is 22 events per hour, consistent with moderate obstructive sleep apnea.\nThe result meets the synthetic policy threshold for an initial PAP trial when paired with the treating-clinician documentation and complete equipment order.\n\n[Recommendation]\nClinical correlation and PAP treatment planning are recommended. Final equipment selection, education, and follow-up remain clinician responsibilities.\n\nElectronically signed by Nina Shah, MD on July 9, 2026 at 13:06 UTC.\nSYNTHETIC UAT SLEEP-STUDY REPORT — NOT FOR CLINICAL CARE.",
+      "title": "Polysomnography report",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-09T13:06:00+00:00",
+      "authorName": "Nina Shah, MD",
+      "authorRole": "Sleep medicine physician",
+      "documentId": "DOC-3005-SLEEP",
+      "contentHash": "sha256:64b7e31ce4e1161d9424545bb9045e435e332c289d3774d3009fb6602c876ed0",
+      "documentDate": "2026-07-09",
+      "documentType": "Sleep study",
+      "facilityName": "Clearway Synthetic Sleep Center"
+    }
+  ],
+  "documentManifest": [
+    {
+      "title": "Sleep medicine consultation",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3005-NOTE",
+      "contentHash": "sha256:c900445c652d448c73eff2e9069c54ab84fe22fcaeffa36ed105f4c105302e8e",
+      "documentDate": "2026-07-12",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "CPAP equipment order",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3005-ORDER",
+      "contentHash": "sha256:6b6fa5139cd4a08a32f8738d291a9fc6a7cc94dd4ffc9d0ba6e7a03847514511",
+      "documentDate": "2026-07-15",
+      "documentType": "Order"
+    },
+    {
+      "title": "Polysomnography report",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3005-SLEEP",
+      "contentHash": "sha256:64b7e31ce4e1161d9424545bb9045e435e332c289d3774d3009fb6602c876ed0",
+      "documentDate": "2026-07-09",
+      "documentType": "Sleep study"
+    }
+  ]
+}

@@ -1,8 +1,6 @@
-// Deployment-specific configuration. Do not place secrets in this browser file.
-// The local UAT server proxies authenticated data requests to Supabase.
+// Browser-visible deployment configuration. Never place secrets here.
 window.CLEARWAY_CONFIG = Object.freeze({
   apiBaseUrl: window.location.origin,
-  dataSourceLabel: 'Supabase UAT service',
-  requestTimeoutMs: 8000,
-  allowUatFixtureFallback: false
+  dataSourceLabel: 'Synthetic source repository · Microsoft Foundry review',
+  requestTimeoutMs: 120000
 });

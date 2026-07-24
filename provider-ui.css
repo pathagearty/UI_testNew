@@ -290,6 +290,7 @@ select:focus, button:focus-visible, summary:focus-visible, a:focus-visible { out
 .source-quote[data-conflict="true"] { border-color: #efc3be; background: #fff9f8; }
 .source-quote strong { display: block; margin-bottom: 5px; color: var(--navy); font-size: 10px; }
 .source-quote blockquote { margin-bottom: 5px; }
+.analysis-pending { margin: 0; padding: 10px; color: var(--muted); background: #f8f9fc; border: 1px dashed var(--line); border-radius: 8px; font-size: 11px; line-height: 1.5; }
 .conflict-callout { margin-top: 9px; padding: 9px 10px; color: #7f2f27; background: var(--danger-bg); border-radius: 8px; font-size: 10px; line-height: 1.5; }
 .conflict-callout strong { color: var(--danger); }
 
