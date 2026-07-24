@@ -1,0 +1,131 @@
+{
+  "id": "PA-3005",
+  "orders": [
+    {
+      "id": "ORD-3005",
+      "status": "Active",
+      "procedure": "CPAP device and supplies",
+      "codeSystem": "HCPCS",
+      "orderedDate": "2026-07-15",
+      "serviceDate": "2026-07-28",
+      "procedureCode": "E0601",
+      "orderingClinician": "Dr. Nina Shah"
+    }
+  ],
+  "policy": {
+    "id": "DME-CPAP-510",
+    "name": "Positive Airway Pressure Equipment",
+    "current": true,
+    "version": "2026.1",
+    "contentHash": "sha256:bab28fe9fc38f1cbc47d62e668ffd69f3acdeaaff4ef8d893de914855cb1dc6c",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01"
+  },
+  "review": {
+    "runId": null,
+    "traceId": null,
+    "state": "not_analyzed",
+    "stateLabel": "Awaiting Microsoft Foundry analysis",
+    "stateMessage": "No evidence analysis is stored for this case. Run evidence review to invoke the configured Foundry agent.",
+    "resultSource": "not_run"
+  },
+  "patient": {
+    "id": "PAT-3005",
+    "mrn": "MRN-UAT-83005",
+    "name": "Jordan Rivera",
+    "dateOfBirth": "1966-06-03"
+  },
+  "caseType": "Durable medical equipment",
+  "coverage": {
+    "plan": {
+      "id": "PLAN-SHP-PPO",
+      "name": "Summit Choice PPO"
+    },
+    "payer": {
+      "id": "PAY-SHP-01",
+      "name": "Summit Health Plan"
+    },
+    "memberId": "MEM-UAT-3005",
+    "coverageId": "COV-3005"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "criterionId": "DME-CPAP-510:C1",
+      "title": "Qualifying sleep study documented",
+      "description": "A valid sleep study must meet the coverage threshold.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "A qualifying sleep study must document the apnea-hypopnea index or respiratory-disturbance index.",
+      "policyLocator": "DME-CPAP-510 · page 2 · section 1.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C2",
+      "criterionId": "DME-CPAP-510:C2",
+      "title": "Clinical symptoms documented",
+      "description": "Symptoms or covered comorbidities must be present.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The clinical record must document qualifying symptoms or covered comorbid conditions.",
+      "policyLocator": "DME-CPAP-510 · page 2 · section 1.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C3",
+      "criterionId": "DME-CPAP-510:C3",
+      "title": "Equipment order is complete",
+      "description": "The order must identify device and settings.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "A treating clinician order must identify the PAP device and prescribed settings.",
+      "policyLocator": "DME-CPAP-510 · page 3 · section 2.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C4",
+      "criterionId": "DME-CPAP-510:C4",
+      "title": "Continued-use compliance",
+      "description": "Compliance is evaluated for continued coverage.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Objective adherence is required for continued coverage after the initial trial.",
+      "policyLocator": "DME-CPAP-510 · page 4 · section 3.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    }
+  ],
+  "scenario": "not_analyzed",
+  "documents": [
+    {
+      "id": "DOC-3005-NOTE",
+      "date": "Jul 12, 2026",
+      "name": "Sleep medicine consultation",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3005-ORDER",
+      "date": "Jul 15, 2026",
+      "name": "CPAP equipment order",
+      "type": "Order",
+      "present": true
+    },
+    {
+      "id": "DOC-3005-SLEEP",
+      "date": "Jul 9, 2026",
+      "name": "Polysomnography report",
+      "type": "Sleep study",
+      "present": true
+    }
+  ],
+  "requestDate": "2026-07-21",
+  "selectedOrderId": "ORD-3005"
+}

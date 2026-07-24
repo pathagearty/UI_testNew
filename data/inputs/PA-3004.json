@@ -1,0 +1,158 @@
+{
+  "case": {
+    "order": {
+      "orderId": "ORD-3004",
+      "procedure": "Adalimumab induction and maintenance",
+      "codeSystem": "HCPCS",
+      "orderedDate": "2026-07-19",
+      "serviceDate": "2026-07-30",
+      "procedureCode": "J0135",
+      "orderingClinician": "Dr. Marcus Hale"
+    },
+    "caseId": "PA-3004",
+    "patient": {
+      "mrn": "MRN-UAT-83004",
+      "patientId": "PAT-3004",
+      "dateOfBirth": "1989-08-15",
+      "displayName": "Casey Kim"
+    },
+    "caseType": "Specialty medication",
+    "coverage": {
+      "planId": "PLAN-SHP-HMO",
+      "payerId": "PAY-SHP-01",
+      "memberId": "MEM-UAT-3004",
+      "planName": "Summit Coordinated HMO",
+      "payerName": "Summit Health Plan",
+      "coverageId": "COV-3004"
+    },
+    "requestDate": "2026-07-21"
+  },
+  "policy": {
+    "version": "2026.1",
+    "criteria": [
+      {
+        "title": "Covered diagnosis documented",
+        "required": true,
+        "criterionId": "RX-ADL-410:C1",
+        "description": "The diagnosis must match a covered indication.",
+        "policyQuote": "Moderate-to-severe rheumatoid arthritis is a covered indication when documented by the treating specialist.",
+        "criterionCode": "C1",
+        "policyLocator": "RX-ADL-410 · page 2 · section 1.2"
+      },
+      {
+        "title": "Prior therapy documented",
+        "required": true,
+        "criterionId": "RX-ADL-410:C2",
+        "description": "Prior conventional therapy and response must be documented.",
+        "policyQuote": "The record must document an adequate trial and response to covered conventional therapy unless contraindicated.",
+        "criterionCode": "C2",
+        "policyLocator": "RX-ADL-410 · page 3 · section 2.1"
+      },
+      {
+        "title": "Baseline safety laboratory results available",
+        "required": true,
+        "criterionId": "RX-ADL-410:C3",
+        "description": "Required baseline laboratory monitoring must be available.",
+        "policyQuote": "Baseline complete blood count and liver-function results must be reviewed before therapy.",
+        "criterionCode": "C3",
+        "policyLocator": "RX-ADL-410 · page 4 · section 3.1"
+      },
+      {
+        "title": "Tuberculosis screening documented",
+        "required": true,
+        "criterionId": "RX-ADL-410:C4",
+        "description": "A current tuberculosis screening result is required.",
+        "policyQuote": "A negative tuberculosis screening result must be documented before initiation.",
+        "criterionCode": "C4",
+        "policyLocator": "RX-ADL-410 · page 4 · section 3.2"
+      }
+    ],
+    "policyId": "RX-ADL-410",
+    "policyText": "CLEARWAY SYNTHETIC UAT PAYER POLICY\nPolicy: RX-ADL-410 — Adalimumab Initial Therapy\nVersion: 2026.1 | Effective: January 1–December 31, 2026\nFictional payer: Summit Health Plan\nNOTICE: This policy is entirely synthetic and must not be used for prescribing, safety, or coverage decisions.\n\n[Page 1 — Purpose]\nThis policy defines the synthetic evidence required to route an initial adalimumab request for clinician review. It does not establish clinical appropriateness or authorization.\n\n[Page 2 — Section 1.2: Covered diagnosis]\nModerate-to-severe rheumatoid arthritis is a covered indication when documented by the treating specialist.\nThe signed record should identify the diagnosis and current disease activity.\n\n[Page 3 — Section 2.1: Prior therapy]\nThe record must document an adequate trial and response to covered conventional therapy unless contraindicated.\nThe source should identify the medication, treatment interval or duration, therapeutic dosing when relevant, and response or contraindication.\n\n[Page 4 — Section 3.1: Baseline laboratory review]\nBaseline complete blood count and liver-function results must be reviewed before therapy.\nThe actual laboratory report or a validated linked result must be present. An order for testing is not a result.\n\n[Page 4 — Section 3.2: Tuberculosis screening]\nA negative tuberculosis screening result must be documented before initiation.\nA note that screening was ordered, planned, or pending is not evidence of a negative result. Absence of a result must be classified as not evidenced, not assumed negative.\n\n[Page 5 — Submission and safety boundary]\nThe package should include the specialist note, prior-therapy evidence, baseline laboratory report, current tuberculosis screening result, and signed medication order. The workflow may identify missing evidence but must not prescribe, administer, or recommend bypassing a safety requirement.\n\n[Page 6 — Limitations]\nThis fictional policy is for synthetic workflow testing only. Medication selection, contraindication assessment, infection risk, dosing, and monitoring remain outside the model's authority.",
+    "contentHash": "sha256:3b47f0978b99fb635fd7dec5cafbca120b0ff56a4039ba0af5560bcc5a019827",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01",
+    "policyVersionId": "RX-ADL-410:2026.1"
+  },
+  "synthetic": true,
+  "schemaVersion": "clearway.ai-input.v1",
+  "sourceDocuments": [
+    {
+      "text": "CLEARWAY SYNTHETIC UAT LABORATORY REPORT\nDocument ID: DOC-3004-LABS\nPatient: Casey Kim | Patient ID: PAT-3004 | MRN: MRN-UAT-83004\nCollection date: July 17, 2026\nReport date: July 17, 2026\nNOTICE: This report is entirely synthetic and is intended only for software testing.\n\n[Complete blood count]\nWhite blood cell count: 6.4 x10^3/uL (synthetic reference 4.0–10.5)\nHemoglobin: 13.4 g/dL (synthetic reference 12.0–16.0)\nPlatelet count: 268 x10^3/uL (synthetic reference 150–400)\nAbsolute neutrophil count: 3.7 x10^3/uL (synthetic reference 1.5–7.5)\n\n[Hepatic panel]\nAST: 24 U/L (synthetic reference 10–40)\nALT: 27 U/L (synthetic reference 7–45)\nAlkaline phosphatase: 79 U/L (synthetic reference 40–120)\nTotal bilirubin: 0.6 mg/dL (synthetic reference 0.2–1.2)\nAlbumin: 4.2 g/dL (synthetic reference 3.5–5.0)\n\n[Result summary]\nBlood counts and hepatic-function values are within the documented treatment parameters.\nNo critical value is present in this synthetic report.\n\n[Important limitation]\nThis report does not contain a tuberculosis screening assay. A separate tuberculosis screening result was expected but was not received. The absence of that result must not be interpreted as a negative test.\n\nElectronically authenticated by Clearway Synthetic Laboratory on July 17, 2026 at 14:32 UTC.\nSYNTHETIC UAT LABORATORY REPORT — NOT FOR CLINICAL CARE.",
+      "title": "Baseline CBC and liver panel",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-17T14:32:00+00:00",
+      "authorName": "Clearway Synthetic Laboratory",
+      "authorRole": "Laboratory service",
+      "documentId": "DOC-3004-LABS",
+      "contentHash": "sha256:076dd4558633e0918d893cc280a28e61320fcb897252152c36ed08e3443d190f",
+      "documentDate": "2026-07-17",
+      "documentType": "Laboratory report",
+      "facilityName": "Clearway Synthetic Laboratory"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT MEDICATION ORDER\nDocument ID: DOC-3004-ORDER\nPatient: Casey Kim | Patient ID: PAT-3004 | MRN: MRN-UAT-83004\nOrder ID: ORD-3004\nOrder date: July 19, 2026\nOrdering clinician: Marcus Hale, MD\nNOTICE: This order is entirely synthetic and is intended only for software testing.\n\n[Medication order]\nAdalimumab induction and maintenance.\nHCPCS code: J0135\nIndication: Moderately active seropositive rheumatoid arthritis with inadequate response to four months of therapeutic-dose methotrexate.\nRequested service date: July 30, 2026.\n\n[Pre-initiation conditions]\nCoverage authorization and clinician review are required. Baseline CBC and hepatic panel are available. A current tuberculosis screening result must be documented and reviewed before initiation. The order itself is not evidence that tuberculosis screening was completed or negative.\n\n[Status]\nPending authorization and completion of safety-documentation requirements. No medication administration is represented by this synthetic order.\n\nElectronically signed by Marcus Hale, MD on July 19, 2026 at 15:14 UTC.\nSYNTHETIC UAT ORDER — NOT FOR CLINICAL CARE.",
+      "title": "Adalimumab order",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-19T15:14:00+00:00",
+      "authorName": "Marcus Hale, MD",
+      "authorRole": "Ordering clinician",
+      "documentId": "DOC-3004-ORDER",
+      "contentHash": "sha256:dfdb00924c2b20bc25d17a2178fce83847af336f9dacf6962fb8d22768cda39e",
+      "documentDate": "2026-07-19",
+      "documentType": "Order",
+      "facilityName": "Clearway Synthetic Rheumatology"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3004-RHEUM\nDocument type: Rheumatology treatment note\nPatient: Casey Kim | Patient ID: PAT-3004 | MRN: MRN-UAT-83004\nEncounter date: July 16, 2026\nAuthor: Marcus Hale, MD\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Diagnosis and current status]\nCasey Kim is a 36-year-old synthetic patient followed for seropositive rheumatoid arthritis. The record describes symmetric hand and wrist synovitis, morning stiffness lasting approximately ninety minutes, and persistent difficulty with gripping and keyboard work.\n\nSeropositive rheumatoid arthritis remains moderately active.\n\n[Prior therapy]\nMethotrexate was initiated March 5, 2026 and increased to a therapeutic weekly dose with folic-acid supplementation. Adherence is documented over four months. The patient reports modest improvement in morning stiffness but persistent swollen joints and functional limitation.\n\nMethotrexate was used for four months at a therapeutic dose with inadequate response.\n\n[Current examination]\nSynthetic examination records tenderness and swelling in multiple metacarpophalangeal and proximal interphalangeal joints. No active fever, productive cough, open wound, or other acute infection symptom is reported.\n\n[Safety review]\nBaseline CBC and liver panel were collected July 17, 2026 and are available as DOC-3004-LABS. Tuberculosis screening was ordered, but no specimen result, laboratory report, or documented negative test is available in the submitted packet. Hepatitis-screening assumptions must not be inferred beyond this synthetic case's defined criteria.\n\n[Assessment]\nModerately active seropositive rheumatoid arthritis despite an adequate methotrexate trial. Adalimumab is proposed as the next therapy, subject to coverage review and completion of required safety screening.\n\n[Plan]\nSubmit the diagnosis, prior-therapy history, baseline laboratory results, and medication order for authorization review. Do not initiate the synthetic therapy workflow until a current tuberculosis screening result is documented and reviewed.\n\nElectronically signed by Marcus Hale, MD on July 16, 2026 at 20:12 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Rheumatology treatment note",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-16T20:12:00+00:00",
+      "authorName": "Marcus Hale, MD",
+      "authorRole": "Rheumatologist",
+      "documentId": "DOC-3004-RHEUM",
+      "contentHash": "sha256:68bacb72688cedd11a36023c8368befc26dc092369247e70b4b3fd64d4b549cf",
+      "documentDate": "2026-07-16",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Rheumatology"
+    }
+  ],
+  "documentManifest": [
+    {
+      "title": "Baseline CBC and liver panel",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3004-LABS",
+      "contentHash": "sha256:076dd4558633e0918d893cc280a28e61320fcb897252152c36ed08e3443d190f",
+      "documentDate": "2026-07-17",
+      "documentType": "Laboratory report"
+    },
+    {
+      "title": "Adalimumab order",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3004-ORDER",
+      "contentHash": "sha256:dfdb00924c2b20bc25d17a2178fce83847af336f9dacf6962fb8d22768cda39e",
+      "documentDate": "2026-07-19",
+      "documentType": "Order"
+    },
+    {
+      "title": "Rheumatology treatment note",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3004-RHEUM",
+      "contentHash": "sha256:68bacb72688cedd11a36023c8368befc26dc092369247e70b4b3fd64d4b549cf",
+      "documentDate": "2026-07-16",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "Tuberculosis screening result",
+      "status": "expected_not_received",
+      "present": false,
+      "documentId": "DOC-3004-TB",
+      "contentHash": null,
+      "documentDate": null,
+      "documentType": "Laboratory report"
+    }
+  ]
+}

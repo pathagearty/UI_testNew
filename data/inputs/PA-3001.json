@@ -1,0 +1,136 @@
+{
+  "case": {
+    "order": {
+      "orderId": "ORD-3001",
+      "procedure": "Lumbar spine MRI without contrast",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-18",
+      "serviceDate": "2026-07-29",
+      "procedureCode": "72148",
+      "orderingClinician": "Dr. Elena Brooks"
+    },
+    "caseId": "PA-3001",
+    "patient": {
+      "mrn": "MRN-UAT-83001",
+      "patientId": "PAT-3001",
+      "dateOfBirth": "1982-04-19",
+      "displayName": "Morgan Lee"
+    },
+    "caseType": "Diagnostic imaging",
+    "coverage": {
+      "planId": "PLAN-SHP-PPO",
+      "payerId": "PAY-SHP-01",
+      "memberId": "MEM-UAT-3001",
+      "planName": "Summit Choice PPO",
+      "payerName": "Summit Health Plan",
+      "coverageId": "COV-3001"
+    },
+    "requestDate": "2026-07-21"
+  },
+  "policy": {
+    "version": "2026.1",
+    "criteria": [
+      {
+        "title": "Symptoms documented for required duration",
+        "required": true,
+        "criterionId": "IMG-MRI-101:C1",
+        "description": "Symptoms must continue beyond the policy-defined period.",
+        "policyQuote": "Symptoms persist for at least six weeks despite initial conservative management.",
+        "criterionCode": "C1",
+        "policyLocator": "IMG-MRI-101 · page 3 · section 2.1"
+      },
+      {
+        "title": "Conservative treatment documented",
+        "required": true,
+        "criterionId": "IMG-MRI-101:C2",
+        "description": "Treatment course, dates, and response must be included.",
+        "policyQuote": "The record must document at least six weeks of provider-directed conservative treatment and response.",
+        "criterionCode": "C2",
+        "policyLocator": "IMG-MRI-101 · page 4 · section 2.2"
+      },
+      {
+        "title": "MRI order and indication are consistent",
+        "required": true,
+        "criterionId": "IMG-MRI-101:C3",
+        "description": "The requested study must match the documented indication.",
+        "policyQuote": "The order must identify the requested MRI study and the documented clinical indication.",
+        "criterionCode": "C3",
+        "policyLocator": "IMG-MRI-101 · page 2 · section 1.3"
+      },
+      {
+        "title": "Red-flag exception",
+        "required": false,
+        "criterionId": "IMG-MRI-101:C4",
+        "description": "Urgent red-flag criteria are evaluated separately.",
+        "policyQuote": "Red-flag findings may bypass conservative-treatment duration requirements.",
+        "criterionCode": "C4",
+        "policyLocator": "IMG-MRI-101 · page 2 · section 1.4"
+      }
+    ],
+    "policyId": "IMG-MRI-101",
+    "policyText": "CLEARWAY SYNTHETIC UAT PAYER POLICY\nPolicy: IMG-MRI-101 — Advanced Imaging: Lumbar Spine MRI\nVersion: 2026.1 | Effective: January 1–December 31, 2026\nFictional payer: Summit Health Plan\nNOTICE: This policy is entirely synthetic. It is not a real coverage policy and must not be used for patient care, payment, or benefit interpretation.\n\n[Page 1 — Purpose and scope]\nThis policy defines the synthetic evidence needed to route a non-emergent lumbar-spine MRI request for clinician review. It supports software testing only. Meeting a criterion does not constitute authorization, and missing information does not constitute denial.\n\n[Page 2 — Section 1.3: Order and indication]\nThe order must identify the requested MRI study and the documented clinical indication.\nThe requested code, anatomic region, contrast status, and clinical reason must be consistent across the order and submitted clinical record.\n\n[Page 2 — Section 1.4: Red-flag exception]\nRed-flag findings may bypass conservative-treatment duration requirements.\nExamples for this synthetic policy include documented progressive motor loss, cauda-equina features, suspected infection, acute major trauma, or another specifically recorded urgent condition. The workflow must not infer a red flag from silence.\n\n[Page 3 — Section 2.1: Symptom duration]\nSymptoms persist for at least six weeks despite initial conservative management.\nThe source record should identify symptom onset or duration and the relevant functional or neurologic complaint.\n\n[Page 4 — Section 2.2: Conservative management]\nThe record must document at least six weeks of provider-directed conservative treatment and response.\nThe treatment record should include dates, modality, clinician direction, and the patient's response. A statement that the patient performed home exercise or used nonprescription medication, without a dated provider-directed course and response, is not sufficient for this synthetic requirement.\n\n[Page 5 — Documentation and workflow]\nRequired submission elements are the signed order, relevant clinical note, and treatment documentation unless a documented exception applies. Evidence must be linked to source document IDs and locations. A model may classify evidence, but trusted code must validate citations and derive the workflow state. Conflicting clinical statements require clinician clarification.\n\n[Page 6 — Limitations]\nThis policy does not define medical necessity, payer approval, or clinical appropriateness. It exists only to test evidence extraction, citation, missing-information detection, and human review.",
+    "contentHash": "sha256:30b6e06ce8e3b9fa8f2e747bf8b1c5dfbc0811d4cd4048d5abe4e0b74ea62a89",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01",
+    "policyVersionId": "IMG-MRI-101:2026.1"
+  },
+  "synthetic": true,
+  "schemaVersion": "clearway.ai-input.v1",
+  "sourceDocuments": [
+    {
+      "text": "CLEARWAY SYNTHETIC UAT CLINICAL DOCUMENT\nDocument ID: DOC-3001-NOTE\nDocument type: Spine clinic progress note\nPatient: Morgan Lee | Patient ID: PAT-3001 | MRN: MRN-UAT-83001\nEncounter date: July 14, 2026\nAuthor: Elena Brooks, MD\nFacility: Clearway Synthetic Spine Clinic\nNOTICE: This record is entirely synthetic and is intended only for software testing.\n\n[Paragraph 1 — Reason for visit]\nMorgan Lee is a 44-year-old synthetic patient seen for follow-up of low-back pain radiating through the right buttock and lateral calf. The purpose of this visit is to reassess symptoms and determine whether additional diagnostic evaluation is appropriate.\n\n[Paragraph 2 — Onset]\nSymptoms began gradually in mid-May 2026 without fall, collision, fever, or other acute event. Pain is described as aching in the lumbar region with intermittent sharp discomfort down the right leg.\n\n[Paragraph 3 — Functional effect]\nThe patient reports difficulty sitting longer than thirty minutes and has reduced recreational walking from three miles to approximately one mile. Sleep is interrupted two or three nights each week. The patient remains able to work and perform basic self-care.\n\n[Paragraph 4 — Duration]\nLow-back pain with right-sided radicular symptoms has persisted for approximately eight weeks.\n\n[Paragraph 5 — Review of prior records]\nNo prior lumbar MRI is available in the submitted record. A lumbar radiograph from June 2, 2026 describes mild multilevel degenerative change without fracture. That radiograph is not included in the authorization packet as a separate source document.\n\n[Paragraph 6 — Medication]\nThe patient has intermittently used nonprescription ibuprofen when tolerated. The record does not establish a prescribed dose, continuous treatment interval, or clinician-monitored response.\n\n[Paragraph 7 — Self-directed care]\nPatient reports home exercises and nonprescription anti-inflammatory medication. The patient recalls receiving an exercise handout but no dated physical-therapy plan, attendance record, or therapist response assessment is available today.\n\n[Paragraph 8 — Formal therapy]\nA referral for physical therapy was placed at this visit. The patient has not yet supplied a physical-therapy evaluation, treatment dates, number of completed visits, or documented response to provider-directed therapy. The authorization team should not infer completion of formal therapy from the reported home exercises.\n\n[Paragraph 9 — Examination]\nGait is steady. Lumbar flexion reproduces right posterior-thigh discomfort. Seated straight-leg raise is positive on the right. Hip flexion, knee extension, ankle dorsiflexion, and plantar flexion are 5/5 bilaterally. Light-touch sensation is mildly reduced over the right lateral calf. Patellar and Achilles reflexes are symmetric.\n\n[Paragraph 10 — Red flags]\nNo bowel or bladder change, saddle anesthesia, fever, trauma, or progressive motor loss.\n\n[Paragraph 11 — Assessment]\nPersistent low-back pain with right lumbar radicular symptoms. Duration and current symptoms are documented. The record available at this visit does not document a completed provider-directed conservative-treatment course with dates and response.\n\n[Paragraph 12 — Plan]\nOrder lumbar spine MRI without contrast to evaluate persistent radicular symptoms. Begin formal physical therapy and continue activity as tolerated. Authorization staff should request the physical-therapy treatment summary if completed before submission. Return sooner for new weakness or red-flag symptoms.\n\nElectronically signed by Elena Brooks, MD on July 14, 2026 at 15:42 UTC.\nSYNTHETIC UAT RECORD — NOT FOR CLINICAL CARE.",
+      "title": "Spine clinic progress note",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-14T15:42:00+00:00",
+      "authorName": "Elena Brooks, MD",
+      "authorRole": "Physical Medicine and Rehabilitation",
+      "documentId": "DOC-3001-NOTE",
+      "contentHash": "sha256:48ed896efc4f5fa35f38d02fa91637dea2060829ec851c7e16831343fa7aaceb",
+      "documentDate": "2026-07-14",
+      "documentType": "Clinical note",
+      "facilityName": "Clearway Synthetic Spine Clinic"
+    },
+    {
+      "text": "CLEARWAY SYNTHETIC UAT ORDER\nDocument ID: DOC-3001-ORDER\nPatient: Morgan Lee | Patient ID: PAT-3001 | MRN: MRN-UAT-83001\nOrder ID: ORD-3001\nOrder date: July 18, 2026\nOrdering clinician: Elena Brooks, MD\nNOTICE: This order is entirely synthetic and is intended only for software testing.\n\n[Order detail]\nLumbar spine MRI without contrast for persistent right lumbar radiculopathy.\n\nRequested procedure: MRI lumbar spine without contrast\nProcedure code: CPT 72148\nRequested service date: July 29, 2026\nClinical indication: Approximately eight weeks of low-back pain with right-sided radicular symptoms, positive right seated straight-leg raise, and reduced light-touch sensation over the right lateral calf.\n\nSafety screening: No implanted electronic device, retained metallic foreign body, or contrast administration is indicated in this synthetic record. Final imaging safety screening remains the responsibility of the imaging facility.\n\nAuthorization note: The order establishes the requested study and indication. It does not establish completion of provider-directed conservative treatment. Review the accompanying clinical note and request the absent treatment summary when required by policy.\n\nOrder status: Active\nElectronically signed by Elena Brooks, MD on July 18, 2026 at 14:05 UTC.\nSYNTHETIC UAT ORDER — NOT FOR CLINICAL CARE.",
+      "title": "Lumbar MRI order",
+      "mimeType": "text/plain",
+      "signedAt": "2026-07-18T14:05:00+00:00",
+      "authorName": "Elena Brooks, MD",
+      "authorRole": "Ordering clinician",
+      "documentId": "DOC-3001-ORDER",
+      "contentHash": "sha256:65810fb90949e2b0877de13df914c82033b5b9e9a373b05c1c909e6c0ebb48b5",
+      "documentDate": "2026-07-18",
+      "documentType": "Order",
+      "facilityName": "Clearway Synthetic Spine Clinic"
+    }
+  ],
+  "documentManifest": [
+    {
+      "title": "Spine clinic progress note",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3001-NOTE",
+      "contentHash": "sha256:48ed896efc4f5fa35f38d02fa91637dea2060829ec851c7e16831343fa7aaceb",
+      "documentDate": "2026-07-14",
+      "documentType": "Clinical note"
+    },
+    {
+      "title": "Lumbar MRI order",
+      "status": "received",
+      "present": true,
+      "documentId": "DOC-3001-ORDER",
+      "contentHash": "sha256:65810fb90949e2b0877de13df914c82033b5b9e9a373b05c1c909e6c0ebb48b5",
+      "documentDate": "2026-07-18",
+      "documentType": "Order"
+    },
+    {
+      "title": "Physical therapy treatment summary",
+      "status": "expected_not_received",
+      "present": false,
+      "documentId": "DOC-3001-PT",
+      "contentHash": null,
+      "documentDate": null,
+      "documentType": "Treatment record"
+    }
+  ]
+}

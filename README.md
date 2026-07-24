@@ -1,212 +1,153 @@
-# Clearway — provider prior-authorization readiness workspace
+# Clearway — Microsoft Foundry prior-authorization evidence review
 
-Production-shaped UAT interface, Supabase-backed synthetic case service, enterprise-assurance one-pager, cross-functional implementation walkthrough, and interactive reference architecture for a provider-side Microsoft Foundry prior-authorization PoC. The primary UI helps a clinician select a linked patient/case/order context, review supplied records against the backend-resolved payer policy, identify missing or conflicting evidence, and prepare the package for clinician review.
+Clearway is a synthetic UAT workspace for demonstrating a production-shaped prior-authorization evidence review. The current runtime deliberately does **not** use Supabase or precomputed review fixtures.
 
-Confirmed assumptions: the PoC uses synthetic cases, documents, policies, and expected results only; an Azure subscription is already available with team privileges. The implementation therefore verifies resource/project access and separates runtime identity rather than provisioning a new subscription or requesting broad ownership.
+## Current boundary
 
-## What is included
+```text
+Browser → trusted Python backend → local synthetic source bundle
+        → Microsoft Foundry agent → backend schema/citation validators → UI
+```
 
-- `index.html` — production-shaped provider workspace with linked patient/case/order selectors, backend-resolved policy context, and five synthetic Supabase UAT cases spanning ready, missing-evidence, and conflicting-evidence states.
-- `enterprise-assurance-one-pager.html` — executive single-scroll enterprise-control blueprint covering the runtime architecture, layered guardrails, Foundry-native versus custom responsibilities, release gates, evaluation deck, and ten-day conversion path.
-- `foundry-enterprise-harness-walkthrough.html` — detailed interactive cross-functional checklist with Foundry-specific portal/SDK steps, application-owned controls, verification gates, evidence requirements, troubleshooting, progress saving, search, and print support.
-- `foundry-prior-auth-reference-architecture.html` — interactive line-and-box architecture showing the existing subscription boundary, reviewer/application/Foundry/data/observability layers, numbered request flow, ownership model, synthetic examples, and fail-closed scenarios.
-- `FOUNDRY_ENTERPRISE_HARNESS_WALKTHROUGH.md` — source/reference version of the detailed walkthrough.
-- `build_walkthrough.py` — dependency-free builder that converts the Markdown source into the interactive HTML artifact.
-- `walkthrough.js` — local checklist progress, search, print, and reset behavior.
-- `provider-ui.css` — responsive styling for the simple provider workspace.
-- `styles.css` — shared styling retained for the technical walkthrough and assurance artifacts.
-- `config.js` — deployment-safe backend URL and fallback settings; never contains secrets.
-- `demo-data.js` — retained emergency fixtures; fixture fallback is disabled in the current Supabase configuration.
-- `api-client.js` — API adapter for the local backend service.
-- `app.js` — cascading clinical-context selection, evidence review, visual summaries, and human-review interactions.
-- `server.py` — dependency-free local backend and static server; it proxies opaque case/order requests to Supabase PostgREST.
-- `supabase/migrations/`, `supabase/seed.sql`, and `supabase/full_documents_seed.sql` — relational UAT schema, read-only synthetic-data policies, five-case seed dataset, sixteen received source texts, two intentionally absent records, five complete synthetic policy texts, and server-side API views.
-- `BACKEND_INTEGRATION.md` — current Supabase UAT implementation, future Azure data recommendation, endpoint contract, validation requirements, and Shorya handoff.
-- `SUPABASE_UAT_SETUP.md` — secret-safe setup, schema, seed catalog, health check, and AI-integration seam.
-- `SYNTHETIC_DOCUMENT_CATALOG.md` — case-by-case source inventory, intentional evidence logic, deterministic content gates, and model-input contract.
-- `PROVIDER_UI_UPDATE_NOTES.md` — focused case/policy identity flow, conflict handling, UI behavior, and demo-versus-production guidance.
+- The browser sends only `case_id` and `source_order_id`.
+- The backend loads one bounded synthetic case/policy/document bundle.
+- Microsoft Foundry performs the semantic evidence comparison.
+- The backend validates all returned criteria, statuses, source IDs and exact quotes.
+- The backend derives workflow state; the model cannot approve, deny or submit.
+- The UI starts **not analyzed** and renders completed results only when `resultSource` is `microsoft_foundry_agent`.
+- No runtime fixture fallback exists.
 
-## Run locally
+## Quick start without Foundry
+
+This confirms the safe unanalyzed and fail-closed state:
 
 ```bash
-git clone https://github.com/pathagearty/UI_test.git
-cd UI_test
-cp .env.example .env.local
-# Add the temporary Supabase UAT values to .env.local, then:
-chmod 600 .env.local
+python3 -m unittest -v test_clearway.py
 python3 server.py
 ```
 
-Open:
+Open `http://127.0.0.1:4173`.
 
-- Provider workspace: <http://127.0.0.1:8788/index.html>
-- Detailed implementation walkthrough: <http://127.0.0.1:8788/foundry-enterprise-harness-walkthrough.html>
-- Interactive reference architecture: <http://127.0.0.1:8788/foundry-prior-auth-reference-architecture.html>
-- Executive one-pager: <http://127.0.0.1:8788/enterprise-assurance-one-pager.html>
+Expected behavior without work-laptop Foundry configuration:
 
-The local server uses only the Python standard library. A configured synthetic Supabase UAT project is required for the primary provider workspace. The technical walkthrough and assurance pages remain static.
+- all five cases load from local synthetic source-only JSON;
+- every case says **Awaiting Microsoft Foundry analysis**;
+- criteria say **Not analyzed**;
+- readiness metrics and downstream actions remain unavailable;
+- running a review returns `503 foundry_not_configured`;
+- no precomputed result is displayed.
 
-## Important boundaries
+## Work-laptop live setup
 
-- The current UAT artifact uses fully synthetic patients, clinicians, facilities, clinical-document text, payer-policy text, a fictional reviewer, and deterministic precomputed review results stored in a temporary Supabase project.
-- Sixteen received documents and five policies contain substantive text and SHA-256 hashes. Two expected records intentionally remain absent to test missing-information detection.
-- The current evidence review endpoint retrieves stored UAT results; it does not invoke an AI model. Conflict clarification is an explicitly ephemeral UAT interaction until a controlled write service is implemented.
-- It is not connected to a live Foundry agent or any payer, EHR, clinical, or production system.
-- Any implementation should be treated as unverified until the repository, endpoint, configuration, traces, and tests are inspected directly.
-- The UI does not approve or deny prior authorization. It demonstrates a provider-side evidence-readiness workflow with human-owned next actions.
-- The browser sends only opaque case/order identifiers. Entity authorization, relationship validation, effective policy resolution, evidence validation, and workflow-state derivation must occur in a trusted backend.
-- This is Hexaware-inspired internal collateral, not an approved brand, security, clinical, legal, regulatory, or compliance architecture.
-- No generative system can guarantee zero hallucinations. The design goal is to prevent unsupported content from becoming an action, detect residual errors, fail closed, and make human accountability explicit.
+Use the firewall-approved work laptop and follow:
 
-## Recommended integration boundary
+- [`WORK_LAPTOP_FOUNDRY_HANDOFF.md`](WORK_LAPTOP_FOUNDRY_HANDOFF.md)
+- [`.env.example`](.env.example)
 
-Do **not** put Foundry credentials or direct model calls in the browser.
+Minimum configuration:
 
-```text
-Reviewer UI
-  -> authenticated application backend
-  -> deterministic intake + policy resolver
-  -> bounded Microsoft Foundry model/agent step
-  -> schema + citation + quote + prohibited-action validators
-  -> code-derived workflow state
-  -> human review / attestation
-  -> audit store + OpenTelemetry/Application Insights + evaluation pipeline
+```dotenv
+CLEARWAY_FOUNDRY_AGENT_ENDPOINT=https://<account>.services.ai.azure.com/api/projects/<project>/agents/<agent>/endpoint/protocols/openai/responses
+CLEARWAY_FOUNDRY_TOKEN_COMMAND=az account get-access-token --scope https://ai.azure.com/.default --query accessToken -o tsv
 ```
 
-### Minimal endpoint contract
+The endpoint and authentication remain server-side. Never commit `.env.foundry.local`, tokens or credentials.
 
-`POST /api/v1/evidence-reviews`
+## API
 
-Request:
+### Health
 
-```json
+```http
+GET /api/health
+```
+
+Reports the source repository, analysis service, Foundry configuration state and synthetic case count without exposing endpoint values.
+
+### Workspace
+
+```http
+GET /api/v1/prior-authorizations/workspace
+```
+
+Returns the synthetic patient/case selector metadata only.
+
+### Case
+
+```http
+GET /api/v1/prior-authorization-cases/{case_id}
+```
+
+Returns source context with `review.state = not_analyzed` and pending criteria. It never returns stored analysis.
+
+### Live evidence review
+
+```http
+POST /api/v1/evidence-reviews
+Content-Type: application/json
+
 {
   "case_id": "PA-3001",
   "source_order_id": "ORD-3001"
 }
 ```
 
-The browser sends only the opaque case and order IDs. The authenticated backend authorizes the request and resolves the patient reference, procedure, payer/plan, request date, approved clinical documents, and exact effective policy version from trusted stores before invoking Foundry.
+The backend validates the input, invokes the configured Foundry agent, validates its structured output and returns a transient reviewed case. Failed configuration, network calls, agent responses or citations stop closed.
 
-Response:
+## Synthetic cases
 
-```json
-{
-  "run_id": "run_...",
-  "trace_id": "trc_...",
-  "workflow_state": "more_information_required",
-  "workflow_state_source": "deterministic_router_v1",
-  "policy": {"policy_id": "RAD-201", "version": "2026.1", "content_hash": "sha256:..."},
-  "criteria": [
-    {
-      "criterion_id": "C2",
-      "status": "not_evidenced",
-      "policy_source": {"document_id": "RAD-201", "locator": "p.4 §2.2", "quote": "..."},
-      "clinical_sources": [{"document_id": "NOTE-1042", "locator": "paragraph 7", "quote": "..."}],
-      "missing_information": ["Provider-directed treatment dates and response"]
-    }
-  ],
-  "guardrails": [{"control_id": "citation_resolution", "outcome": "pass"}],
-  "human_action_required": true
-}
+| Case | Designed control scenario |
+|---|---|
+| `PA-3001` | Missing documentation |
+| `PA-3002` | Complete review-ready package |
+| `PA-3003` | Conflicting source evidence |
+| `PA-3004` | Missing monitoring evidence |
+| `PA-3005` | Complete review-ready package |
+
+These labels describe the source design. Only live work-laptop Foundry runs establish the actual agent results.
+
+## Source files
+
+| Path | Purpose |
+|---|---|
+| `data/workspace.json` | Synthetic work queue |
+| `data/cases/*.json` | Display-safe source context; no completed analysis |
+| `data/inputs/*.json` | Full bounded policy and source-document inputs |
+| `server.py` | Source retrieval, validation, API and workflow derivation |
+| `foundry_client.py` | Entra-authenticated Foundry stable-endpoint call |
+| `test_clearway.py` | Boundary and citation regression tests |
+| `app.js` | Unanalyzed/live/error UI states |
+| `api-client.js` | Backend-only API client with no fixture fallback |
+
+The older `demo-data.js`, Supabase SQL and Supabase environment artifacts are retained only for migration/history. They are not imported by `index.html` or `server.py`.
+
+## Verification
+
+```bash
+python3 -m py_compile server.py foundry_client.py test_clearway.py
+node --check app.js
+node --check api-client.js
+node --check config.js
+python3 -m unittest -v test_clearway.py
 ```
 
-### Allowed criterion states
+The regression suite verifies:
 
-- `supported`
-- `not_evidenced`
-- `conflicting`
-- `unable_to_assess`
-- `not_applicable`
+- five source-only cases;
+- all cases initially unanalyzed;
+- all full input bundles and hashes;
+- fail-closed behavior without Foundry;
+- exact-citation rejection;
+- Foundry provenance mapping;
+- blocked web access to source inputs, Python and environment files.
 
-The model must not emit `approved`, `denied`, `meets_medical_necessity`, or equivalent autonomous disposition fields. Workflow state is derived in code from validated criterion states and configured policy requirements.
+A live Foundry success cannot be verified from the personal laptop because the endpoint is firewall/IP restricted. That final gate must run on the approved work laptop.
 
-## Required backend gates
+## Safety boundary
 
-1. **Intake:** schema, content type, file size, procedure allowlist, date and required-field checks.
-2. **Policy authority:** exact policy/version/effective-date resolution and content hash.
-3. **Isolation:** fresh case state; no prior-case conversational memory.
-4. **Attack handling:** user-prompt and document/indirect-injection controls; retrieved content remains untrusted data.
-5. **Output contract:** known criterion IDs, allowed statuses, no additional fields, bounded length.
-6. **Provenance:** every material policy and clinical assertion has a source ID, locator, and exact resolvable quote.
-7. **Prohibited actions:** no approve/deny, submission, EHR write, or payer action.
-8. **Failure routing:** retry a transient/format failure once; otherwise stop and route to manual review.
-9. **Drafting:** letters use only verified claim IDs and require clinician review/attestation.
-10. **Audit:** one run/trace ID ties versions, spans, validator outcomes, evaluator results, and human action together.
-
-## Foundry implementation decision
-
-Current Microsoft documentation creates an important fork:
-
-- Prompt-agent tracing is documented as generally available for prompt and hosted agents.
-- Foundry agent guardrails are documented as preview, and Groundedness/Spotlighting controls are not currently applicable to agents.
-- Structured Outputs are currently documented as unsupported with Foundry Agents Service.
-
-Therefore:
-
-### Option A — preserve the current prompt-agent demonstration
-
-Use a trusted backend, prompt for the bounded JSON contract, strictly parse and validate the response, verify citations/quotes, retry once on a format-only failure, and fail closed. This minimizes near-term rework and is appropriate for the next integrated vertical slice.
-
-### Option B — enterprise-bound structured mapping step
-
-Use a direct Foundry Responses API model call that supports strict Structured Outputs for the policy-to-evidence mapping step, with explicit retrieval/functions and custom OpenTelemetry. Keep agent behavior only where tools or orchestration add demonstrated value.
-
-Do not introduce a multi-agent framework before the endpoint-backed vertical slice, deterministic contract, trace, and evaluation deck are stable.
-
-## Evaluation contract
-
-### Deterministic release invariants — 100% required
-
-- valid response schema;
-- exact policy/version pinned;
-- only known criteria and allowed statuses;
-- every citation ID and locator resolves;
-- every quoted string matches source text;
-- zero fabricated material facts in the reviewer view or draft;
-- zero approve/deny output or tool action;
-- zero cross-case leakage;
-- all invalid/stale/unsupported inputs fail closed;
-- all runs correlate to trace and artifact versions.
-
-### Domain-quality metrics — thresholds set with the workflow owner
-
-- evidence-status accuracy;
-- missing-evidence recall;
-- contradiction-detection/escalation rate;
-- unsupported-claim rate;
-- draft factuality and citation completeness;
-- reviewer agreement and override reasons;
-- task adherence;
-- p50/p95 latency and cost per case.
-
-### Minimum test deck
-
-At least 15 independent synthetic cases spanning:
-
-- complete happy paths;
-- missing treatment evidence;
-- conflicting clinical notes;
-- ambiguous or non-assessable evidence;
-- stale/wrong policy versions;
-- unsupported procedures;
-- malformed/duplicate/oversize files;
-- direct prompt injection;
-- indirect instructions embedded in supplied/retrieved documents;
-- sensitive-data leakage and prohibited-action attempts;
-- noisy/scanned document edge cases;
-- one or more cases not used during prompt development.
-
-Foundry evaluators and red-team tooling add diagnostic signal. They do not replace deterministic assertions, independent workflow labels, or human review. Microsoft documents red-team results as potentially non-deterministic and subject to false positives; review them before mitigation decisions.
-
-## Authoritative sources reviewed 2026-07-21
-
-- [Agent tracing in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/observability/concepts/trace-agent-concept)
-- [Evaluate agents](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/evaluate-agent)
-- [Guardrails and controls overview](https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview)
-- [Structured Outputs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs)
-- [Prompt Shields](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection)
-- [Groundedness detection](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/groundedness)
-- [AI Red Teaming Agent](https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent)
-- [Configure a private link](https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link)
-- [Public Hexaware website](https://hexaware.com/)
+- Synthetic data only.
+- No EHR or payer write-back.
+- No autonomous approval, denial, submission or medical-necessity decision.
+- Clinician verification remains required.
+- No unrestricted agent data access.
+- No browser-side Foundry credentials.
+- No silent fallback or replay presented as a live run.

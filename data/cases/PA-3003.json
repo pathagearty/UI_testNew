@@ -1,0 +1,138 @@
+{
+  "id": "PA-3003",
+  "orders": [
+    {
+      "id": "ORD-3003",
+      "status": "Active",
+      "procedure": "Lumbar spinal fusion",
+      "codeSystem": "CPT",
+      "orderedDate": "2026-07-17",
+      "serviceDate": "2026-08-19",
+      "procedureCode": "22612",
+      "orderingClinician": "Dr. Priya Nair"
+    }
+  ],
+  "policy": {
+    "id": "SURG-LSF-310",
+    "name": "Lumbar Spinal Fusion",
+    "current": true,
+    "version": "2026.1",
+    "contentHash": "sha256:a81d24d216b5e39533087e00284739da46463c43764c4541ee43e9f216a435fd",
+    "effectiveEnd": "2026-12-31",
+    "effectiveStart": "2026-01-01"
+  },
+  "review": {
+    "runId": null,
+    "traceId": null,
+    "state": "not_analyzed",
+    "stateLabel": "Awaiting Microsoft Foundry analysis",
+    "stateMessage": "No evidence analysis is stored for this case. Run evidence review to invoke the configured Foundry agent.",
+    "resultSource": "not_run"
+  },
+  "patient": {
+    "id": "PAT-3003",
+    "mrn": "MRN-UAT-83003",
+    "name": "Avery Patel",
+    "dateOfBirth": "1971-02-27"
+  },
+  "caseType": "Spine surgery",
+  "coverage": {
+    "plan": {
+      "id": "PLAN-SHP-PPO",
+      "name": "Summit Choice PPO"
+    },
+    "payer": {
+      "id": "PAY-SHP-01",
+      "name": "Summit Health Plan"
+    },
+    "memberId": "MEM-UAT-3003",
+    "coverageId": "COV-3003"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "criterionId": "SURG-LSF-310:C1",
+      "title": "Structural instability documented",
+      "description": "Imaging must support the requested fusion indication.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Imaging must demonstrate instability or another covered structural indication.",
+      "policyLocator": "SURG-LSF-310 · page 3 · section 2.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C2",
+      "criterionId": "SURG-LSF-310:C2",
+      "title": "Nonoperative treatment completed",
+      "description": "The treatment duration and response must be documented.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "At least six months of clinically appropriate nonoperative treatment must be documented unless an exception applies.",
+      "policyLocator": "SURG-LSF-310 · page 4 · section 2.2",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C3",
+      "criterionId": "SURG-LSF-310:C3",
+      "title": "Neurologic findings are consistent",
+      "description": "Objective findings should be internally consistent.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "Objective neurologic findings used to support surgery must be consistent across the submitted record.",
+      "policyLocator": "SURG-LSF-310 · page 4 · section 2.3",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    },
+    {
+      "id": "C4",
+      "criterionId": "SURG-LSF-310:C4",
+      "title": "Requested levels match the operative plan",
+      "description": "The order and operative plan must identify the same levels.",
+      "status": "pending",
+      "resolved": false,
+      "whyFlagged": "",
+      "policyQuote": "The requested fusion levels must be consistent across the order and surgical plan.",
+      "policyLocator": "SURG-LSF-310 · page 5 · section 3.1",
+      "clinicalSources": [],
+      "next": "Run the Microsoft Foundry evidence review to compare the supplied clinical records with this criterion."
+    }
+  ],
+  "scenario": "not_analyzed",
+  "documents": [
+    {
+      "id": "DOC-3003-IMG",
+      "date": "Jul 9, 2026",
+      "name": "Lumbar flexion-extension radiographs",
+      "type": "Imaging report",
+      "present": true
+    },
+    {
+      "id": "DOC-3003-NEURO",
+      "date": "Jul 12, 2026",
+      "name": "Neurologic examination",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3003-SPINE",
+      "date": "Jul 11, 2026",
+      "name": "Spine surgery consultation",
+      "type": "Clinical note",
+      "present": true
+    },
+    {
+      "id": "DOC-3003-TX",
+      "date": "Jul 7, 2026",
+      "name": "Nonoperative treatment history",
+      "type": "Treatment record",
+      "present": true
+    }
+  ],
+  "requestDate": "2026-07-21",
+  "selectedOrderId": "ORD-3003"
+}

@@ -33,11 +33,11 @@
       <div>
         <p class="eyebrow">PRIOR AUTHORIZATION WORKSPACE</p>
         <h1 id="page-title">Review evidence. Resolve gaps. Move cases forward.</h1>
-        <p>Select a patient and authorization case to load the linked order, coverage, clinical records, and effective payer policy.</p>
+        <p>Select a synthetic case, then invoke Microsoft Foundry to compare its authorized source records with the pinned payer policy.</p>
       </div>
       <div class="queue-summary" aria-label="Work queue summary">
         <span><strong id="queue-open">4</strong><small>Open cases</small></span>
-        <span><strong id="queue-attention">3</strong><small>Need attention</small></span>
+        <span><strong id="queue-attention">0</strong><small>Analyzed this session</small></span>
       </div>
     </section>
 
@@ -48,7 +48,7 @@
           <h2 id="selector-title">Select a case</h2>
           <p>Patient and case are selected by the reviewer. Order, coverage, and policy links are verified by the backend.</p>
         </div>
-        <span class="data-source" id="data-source"><i></i><span>Connecting to data service…</span></span>
+        <span class="data-source" id="data-source"><i></i><span>Connecting to local sources and Foundry…</span></span>
       </div>
 
       <div class="selector-grid">
@@ -69,9 +69,9 @@
           <select id="policy-select" disabled title="Resolved from payer, plan, procedure, and request date"></select>
           <small>Resolved automatically</small>
         </label>
-        <button class="button button-primary load-review" id="run-review">Run evidence review</button>
+        <button class="button button-primary load-review" id="run-review">Run Foundry evidence review</button>
       </div>
-      <p class="selection-guidance" id="selection-guidance">The browser sends the selected case and order IDs. The service validates entity relationships and pins the applicable policy before evidence review.</p>
+      <p class="selection-guidance" id="selection-guidance">The browser sends only the selected case and order IDs. The backend retrieves the bounded synthetic source bundle, validates relationships and policy authority, invokes Foundry, and accepts only source-valid structured output.</p>
     </section>
 
     <ol class="steps" aria-label="Prior authorization preparation steps">
@@ -144,7 +144,7 @@
         <div>
           <p class="eyebrow">EVIDENCE REVIEW</p>
           <h2 id="checklist-title">Policy requirements</h2>
-          <p>Each requirement is matched to the exact payer-policy language and source clinical record.</p>
+          <p>Requirements remain unanalyzed until Microsoft Foundry returns source-linked results that pass backend validation.</p>
         </div>
         <div class="checklist-summary" id="checklist-summary"></div>
       </div>
@@ -166,7 +166,7 @@
     </section>
 
     <footer class="page-footer">
-      <span>UAT environment · Synthetic records · No EHR or payer write-back</span>
+      <span>UAT environment · Local synthetic sources · Live Foundry analysis required · No EHR or payer write-back</span>
       <a href="foundry-enterprise-harness-walkthrough.html">Technical implementation details</a>
     </footer>
   </main>
@@ -187,7 +187,6 @@
   </div>
 
   <script src="config.js"></script>
-  <script src="demo-data.js"></script>
   <script src="api-client.js"></script>
   <script src="app.js"></script>
 </body>

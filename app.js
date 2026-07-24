@@ -6,7 +6,8 @@
   const state = {
     workspace: null,
     currentCase: null,
-    lastFocused: null
+    lastFocused: null,
+    analyzedCaseIds: new Set()
   };
 
   const statusLabels = {
@@ -15,7 +16,8 @@
     conflicting: 'Conflict found',
     unable_to_assess: 'Unable to assess',
     not_applicable: 'Not applicable',
-    blocked: 'Blocked'
+    blocked: 'Blocked',
+    pending: 'Not analyzed'
   };
 
   const scenarioOrder = ['needs_documentation', 'review_ready', 'conflicting_evidence', 'policy_blocked'];
@@ -35,6 +37,10 @@
     return 'attention';
   }
 
+  function hasFoundryAnalysis(record = state.currentCase) {
+    return Boolean(record && record.review && record.review.resultSource === 'microsoft_foundry_agent');
+  }
+
   function toneForCriterion(status) {
     if (status === 'supported') return 'success';
     if (status === 'not_evidenced') return 'warning';
@@ -51,7 +57,7 @@
     const node = $('#data-source');
     node.dataset.mode = status.mode;
     node.querySelector('span').textContent = status.label;
-    node.title = status.lastError || (status.mode === 'api' ? 'Authenticated backend connection' : 'Local UAT fixture adapter using the production API contract');
+    node.title = status.lastError || 'Synthetic source records are served by the local backend; completed analysis is accepted only from Microsoft Foundry.';
   }
 
   function populatePatients() {
@@ -89,7 +95,7 @@
     } catch (error) {
       renderError('Unable to load the selected case', error.message);
     } finally {
-      setReviewButton(false, 'Run evidence review');
+      setReviewButton(false, 'Run Foundry evidence review');
     }
   }
 
@@ -116,7 +122,9 @@
     ['#step-case', '#step-context', '#step-check', '#step-review'].forEach(selector => $(selector).className = '');
     $('#step-case').classList.add('complete');
     $('#step-context').classList.add(c.review.state === 'blocked_invalid_input' ? 'active' : 'complete');
-    if (c.review.state === 'review_ready') {
+    if (!hasFoundryAnalysis(c)) {
+      $('#step-check').classList.add('active');
+    } else if (c.review.state === 'review_ready') {
       $('#step-check').classList.add('complete');
       $('#step-review').classList.add('active');
     } else if (c.review.state !== 'blocked_invalid_input') {
@@ -132,15 +140,17 @@
   }
 
   function calculateMetrics(record) {
+    const analyzed = hasFoundryAnalysis(record);
     const required = record.criteria.filter(item => item.status !== 'not_applicable');
-    const supported = required.filter(item => item.status === 'supported').length;
-    const attention = required.filter(item => !['supported', 'not_applicable'].includes(item.status)).length;
+    const supported = analyzed ? required.filter(item => item.status === 'supported').length : 0;
+    const attention = analyzed ? required.filter(item => !['supported', 'not_applicable'].includes(item.status)).length : 0;
     const documentsPresent = record.documents.filter(item => item.present).length;
     return {
+      analyzed,
       required: required.length,
       supported,
       attention,
-      percentage: required.length ? Math.round((supported / required.length) * 100) : 0,
+      percentage: analyzed && required.length ? Math.round((supported / required.length) * 100) : 0,
       documentsPresent,
       documentsTotal: record.documents.length
     };
@@ -148,12 +158,12 @@
 
   function renderMetrics(record) {
     const metrics = calculateMetrics(record);
-    $('#requirements-percent').textContent = `${metrics.percentage}%`;
-    $('#requirements-ratio').textContent = `${metrics.supported} of ${metrics.required}`;
+    $('#requirements-percent').textContent = metrics.analyzed ? `${metrics.percentage}%` : '—';
+    $('#requirements-ratio').textContent = metrics.analyzed ? `${metrics.supported} of ${metrics.required}` : 'Not analyzed';
     $('#requirements-ring').style.setProperty('--progress', `${metrics.percentage * 3.6}deg`);
     $('#documents-metric').textContent = `${metrics.documentsPresent} of ${metrics.documentsTotal}`;
-    $('#documents-caption').textContent = metrics.documentsPresent === metrics.documentsTotal ? 'All expected records are available' : `${metrics.documentsTotal - metrics.documentsPresent} expected record${metrics.documentsTotal - metrics.documentsPresent === 1 ? '' : 's'} outstanding`;
-    $('#attention-metric').textContent = String(metrics.attention);
+    $('#documents-caption').textContent = metrics.documentsPresent === metrics.documentsTotal ? 'All expected source records are available' : `${metrics.documentsTotal - metrics.documentsPresent} expected source record${metrics.documentsTotal - metrics.documentsPresent === 1 ? '' : 's'} outstanding`;
+    $('#attention-metric').textContent = metrics.analyzed ? String(metrics.attention) : '—';
     $('#policy-metric').textContent = record.policy.current ? 'Current' : 'Blocked';
     $('#policy-metric-caption').textContent = record.policy.current ? 'Effective on the request date' : 'Policy expired before request date';
     const policyCard = $('#policy-metric').closest('.metric-card');
@@ -167,8 +177,9 @@
     const review = c.review;
     const statusBanner = $('#status-banner');
     const statusTone = toneForState(review.state);
+    const analyzed = hasFoundryAnalysis(c);
     statusBanner.dataset.state = statusTone;
-    $('.status-icon').textContent = review.state === 'review_ready' ? '✓' : statusTone === 'blocked' ? '×' : '!';
+    $('.status-icon').textContent = !analyzed ? '○' : review.state === 'review_ready' ? '✓' : statusTone === 'blocked' ? '×' : '!';
     $('#workflow-state').textContent = review.stateLabel;
     $('#workflow-message').textContent = review.stateMessage;
     $('#policy-version').textContent = `${c.policy.id} · v${c.policy.version}`;
@@ -180,7 +191,12 @@
     renderVerificationItem('#case-verification', 'Patient / case linked', `${c.patient.id} · ${c.id}`);
     renderVerificationItem('#order-verification', 'Order verified', `${order.id} · ${order.codeSystem} ${order.procedureCode}`);
     renderVerificationItem('#policy-verification', 'Policy version', c.policy.current ? `${c.policy.id} v${c.policy.version} pinned` : `${c.policy.id} v${c.policy.version} expired`, c.policy.current ? 'ready' : 'blocked');
-    renderVerificationItem('#trace-verification', 'Review trace', review.traceId, c.policy.current ? 'ready' : 'warning');
+    renderVerificationItem(
+      '#trace-verification',
+      analyzed ? 'Foundry response trace' : 'Analysis provenance',
+      analyzed ? (review.traceId || review.runId) : 'Not run · Foundry required',
+      analyzed ? 'ready' : 'warning'
+    );
 
     $('#case-facts').innerHTML = [
       ['Case ID', c.id],
@@ -213,8 +229,11 @@
       <div class="source-quote" data-conflict="${conflict}">
         <strong>${escapeHtml(source.label)}</strong>
         <blockquote>“${escapeHtml(source.quote)}”</blockquote>
-        <small>${escapeHtml(source.locator)}</small>
+        <small>${escapeHtml(source.documentId || '')}${source.documentId ? ' · ' : ''}${escapeHtml(source.locator)}</small>
       </div>`).join('');
+    if (!cards && item.status === 'pending') {
+      return '<p class="analysis-pending">No clinical evidence mapping exists yet. Run the Microsoft Foundry review.</p>';
+    }
     const reason = item.whyFlagged ? `<div class="conflict-callout"><strong>Why this was flagged:</strong> ${escapeHtml(item.whyFlagged)}</div>` : '';
     return `<div class="source-stack">${cards}</div>${reason}`;
   }
@@ -222,24 +241,26 @@
   function renderCriteria() {
     const c = state.currentCase;
     const metrics = calculateMetrics(c);
-    $('#checklist-summary').innerHTML = `
+    $('#checklist-summary').innerHTML = metrics.analyzed ? `
       <span><strong>${metrics.supported}</strong><small>supported</small></span>
-      <span class="${metrics.attention ? 'has-attention' : ''}"><strong>${metrics.attention}</strong><small>need action</small></span>`;
+      <span class="${metrics.attention ? 'has-attention' : ''}"><strong>${metrics.attention}</strong><small>need action</small></span>` : `
+      <span><strong>—</strong><small>not analyzed</small></span>`;
 
     $('#criteria-list').innerHTML = c.criteria.map(item => {
       const tone = toneForCriterion(item.status);
       const expanded = ['conflicting', 'blocked'].includes(item.status) || item.resolved ? ' open' : '';
+      const mark = item.status === 'pending' ? '○' : item.status === 'supported' ? '✓' : item.status === 'not_applicable' ? '–' : item.status === 'blocked' ? '×' : '!';
       return `
         <details class="criterion criterion-${tone}"${expanded}>
           <summary>
-            <span class="criterion-mark" aria-hidden="true">${item.status === 'supported' ? '✓' : item.status === 'not_applicable' ? '–' : item.status === 'blocked' ? '×' : '!'}</span>
+            <span class="criterion-mark" aria-hidden="true">${mark}</span>
             <span class="criterion-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.description)}</small></span>
             <span class="status-pill status-${tone}">${escapeHtml(statusLabels[item.status] || item.status)}</span>
           </summary>
           <div class="criterion-detail">
             <section><h3>Payer policy</h3><blockquote>“${escapeHtml(item.policyQuote)}”</blockquote><small>${escapeHtml(item.policyLocator)}</small></section>
             <section><h3>Clinical evidence</h3>${renderClinicalSources(item)}</section>
-            <section class="next-evidence${item.resolved ? ' is-resolved' : ''}"><h3>${item.resolved ? 'Resolution' : 'Required action'}</h3><p>${escapeHtml(item.next)}</p></section>
+            <section class="next-evidence${item.resolved ? ' is-resolved' : ''}"><h3>${item.status === 'pending' ? 'Analysis status' : item.resolved ? 'Resolution' : 'Required action'}</h3><p>${escapeHtml(item.next)}</p></section>
           </div>
         </details>`;
     }).join('');
@@ -250,9 +271,16 @@
     const action = $('#primary-action');
     const summary = $('#review-letter');
     const issues = c.criteria.filter(item => ['not_evidenced', 'conflicting', 'unable_to_assess', 'blocked'].includes(item.status));
-    summary.disabled = ['clinical_review_required', 'blocked_invalid_input'].includes(c.review.state);
+    summary.disabled = !hasFoundryAnalysis(c) || ['clinical_review_required', 'blocked_invalid_input'].includes(c.review.state);
 
-    if (c.review.state === 'review_ready') {
+    if (!hasFoundryAnalysis(c)) {
+      $('#next-step-title').textContent = 'Run the Microsoft Foundry evidence review';
+      $('#next-step-guidance').textContent = 'No evidence mapping or readiness conclusion exists yet. The backend must receive and validate a live Foundry agent response first.';
+      $('#attention-list').innerHTML = '<li>Select Run Foundry evidence review to submit this bounded synthetic case to the configured Foundry agent.</li>';
+      action.textContent = 'Awaiting Foundry analysis';
+      action.disabled = true;
+      summary.disabled = true;
+    } else if (c.review.state === 'review_ready') {
       $('#next-step-title').textContent = 'Ready for clinician review';
       $('#next-step-guidance').textContent = 'Verify the source-linked evidence and clinical summary before deciding whether the package should move to submission.';
       $('#attention-list').innerHTML = '<li>No unresolved policy-evidence gaps remain.</li>';
@@ -307,6 +335,10 @@
 
   function showClinicalSummary() {
     const c = state.currentCase;
+    if (!hasFoundryAnalysis(c)) {
+      showToast('Run and validate the Foundry review first');
+      return;
+    }
     const order = c.orders.find(item => item.id === $('#order-select').value) || c.orders[0];
     const metrics = calculateMetrics(c);
     openModal('CLINICIAN REVIEW REQUIRED', 'Prior authorization evidence summary', `
@@ -323,36 +355,18 @@
       </article>`);
   }
 
-  async function addClarification() {
-    const button = $('#modal-primary');
-    button.disabled = true;
-    button.textContent = 'Adding clarification…';
-    try {
-      state.currentCase = await service.addClarification(state.currentCase.id, 'C3');
-      populateLinkedContext(state.currentCase);
-      updateDataSource();
-      closeModal();
-      renderCase();
-      showToast('Clarification linked and evidence review updated');
-    } catch (error) {
-      button.disabled = false;
-      button.textContent = 'Add UAT clarification';
-      showToast(error.message);
-    }
-  }
-
   function handlePrimaryAction() {
     const c = state.currentCase;
+    if (!hasFoundryAnalysis(c)) {
+      showToast('Run and validate the Foundry review first');
+      return;
+    }
     if (c.review.state === 'review_ready') {
       openModal('CLINICIAN HANDOFF', 'Case prepared for clinician review', '<p>The evidence package is ready for an authorized clinician to verify. The UAT workflow records the handoff but does not submit to a payer.</p>');
     } else if (c.review.state === 'clinical_review_required') {
       openModal('CLINICAL CLARIFICATION', 'Resolve the conflicting finding', `
-        <p>The workflow has retained both statements and has not selected which one is correct.</p>
-        <div class="resolution-preview">
-          <div><strong>Progress note assessment</strong><small>“Right ankle reflex is reduced.”</small></div>
-          <div><strong>Neurologic examination</strong><small>“Lower-extremity reflexes are symmetric.”</small></div>
-        </div>
-        <p>Add a signed UAT clarification to demonstrate the reviewed-resolution path.</p>`, { label: 'Add UAT clarification', handler: addClarification });
+        <p>The Foundry review retained both cited statements and did not select which one is correct.</p>
+        <p>Update the authorized source record outside this demo, then rerun the same Foundry evidence review. Synthetic clarification injection is disabled.</p>`);
     } else if (c.review.state === 'blocked_invalid_input') {
       openModal('POLICY RESOLUTION', 'Current policy required', '<p>The backend must resolve exactly one policy using payer, plan, procedure, and request date. A missing, stale, or ambiguous match remains blocked for authorized review.</p>');
     } else {
@@ -372,22 +386,27 @@
   async function runEvidenceReview() {
     if (!state.currentCase) return;
     const button = $('#run-review');
-    const labels = ['Validating context…', 'Resolving policy…', 'Mapping evidence…', 'Validating sources…'];
+    const labels = ['Validating source bundle…', 'Invoking Microsoft Foundry…', 'Comparing policy and evidence…', 'Validating citations and output…'];
     setReviewButton(true, labels[0]);
     try {
       for (const label of labels) {
         button.textContent = label;
         await new Promise(resolve => setTimeout(resolve, 180));
       }
-      state.currentCase = await service.runEvidenceReview(state.currentCase.id, $('#order-select').value);
+      const reviewed = await service.runEvidenceReview(state.currentCase.id, $('#order-select').value);
+      if (!hasFoundryAnalysis(reviewed)) throw new Error('The backend returned no validated Microsoft Foundry provenance.');
+      state.currentCase = reviewed;
+      state.analyzedCaseIds.add(reviewed.id);
+      $('#queue-attention').textContent = String(state.analyzedCaseIds.size);
       populateLinkedContext(state.currentCase);
       updateDataSource();
       renderCase();
-      showToast('Evidence review complete');
+      showToast('Live Microsoft Foundry evidence review complete');
     } catch (error) {
-      renderError('Evidence review unavailable', error.message);
+      renderError('Foundry evidence review unavailable', error.message);
+      showToast(error.message);
     } finally {
-      setReviewButton(false, 'Run evidence review');
+      setReviewButton(false, 'Run Foundry evidence review');
     }
   }
 
@@ -415,7 +434,7 @@
       populatePatients();
       const caseId = populateCases('PA-3001');
       $('#queue-open').textContent = String(state.workspace.cases.length);
-      $('#queue-attention').textContent = String(state.workspace.cases.filter(item => item.scenario !== 'review_ready').length);
+      $('#queue-attention').textContent = String(state.analyzedCaseIds.size);
       updateDataSource();
       await loadSelectedCase(caseId);
     } catch (error) {
