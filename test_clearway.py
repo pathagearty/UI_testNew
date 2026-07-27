@@ -11,7 +11,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 import server
-from foundry_client import FoundryConfigurationError, FoundryOutputError
+from foundry_client import FoundryConfigurationError, FoundryOutputError, _responses_endpoint
 
 
 def structurally_valid_result(bundle: dict) -> dict:
@@ -37,15 +37,63 @@ def structurally_valid_result(bundle: dict) -> dict:
     }
 
 
+def supported_result(bundle: dict) -> dict:
+    """Return source-valid all-supported test data; never used by runtime or UI."""
+    result = structurally_valid_result(bundle)
+    source = bundle["sourceDocuments"][0]
+    quote = next(line.strip() for line in source["text"].splitlines() if line.strip())
+    for item, criterion in zip(result["criteria"], bundle["policy"]["criteria"]):
+        item.update(
+            {
+                "status": "supported",
+                "rationale": f"Test-only source evidence maps to {criterion['title']}.",
+                "clinicalSources": [
+                    {
+                        "documentId": source["documentId"],
+                        "locator": "Test-only exact source location",
+                        "quote": quote,
+                    }
+                ],
+                "missingInformation": [],
+            }
+        )
+    return result
+
+
 class ClearwayBoundaryTests(unittest.TestCase):
     def setUp(self) -> None:
         self.original_endpoint = os.environ.pop("CLEARWAY_FOUNDRY_AGENT_ENDPOINT", None)
+        self.original_api_version = os.environ.pop("CLEARWAY_FOUNDRY_API_VERSION", None)
 
     def tearDown(self) -> None:
         if self.original_endpoint is not None:
             os.environ["CLEARWAY_FOUNDRY_AGENT_ENDPOINT"] = self.original_endpoint
         else:
             os.environ.pop("CLEARWAY_FOUNDRY_AGENT_ENDPOINT", None)
+        if self.original_api_version is not None:
+            os.environ["CLEARWAY_FOUNDRY_API_VERSION"] = self.original_api_version
+        else:
+            os.environ.pop("CLEARWAY_FOUNDRY_API_VERSION", None)
+
+    def test_foundry_api_version_is_added_without_losing_existing_query(self) -> None:
+        endpoint = "https://example.services.ai.azure.com/endpoint/protocols/openai/responses?region=east"
+        self.assertEqual(
+            endpoint + "&api-version=v1",
+            _responses_endpoint(endpoint),
+        )
+
+        os.environ["CLEARWAY_FOUNDRY_API_VERSION"] = "custom-version"
+        self.assertEqual(
+            "https://example.services.ai.azure.com/endpoint/protocols/openai/responses?api-version=existing&region=east",
+            _responses_endpoint(
+                "https://example.services.ai.azure.com/endpoint/protocols/openai/responses?api-version=existing&region=east"
+            ),
+        )
+        self.assertTrue(_responses_endpoint(endpoint).endswith("api-version=custom-version"))
+
+        os.environ["CLEARWAY_FOUNDRY_API_VERSION"] = ""
+        with self.assertRaises(FoundryConfigurationError):
+            _responses_endpoint(endpoint)
 
     def test_all_cases_start_unanalyzed_and_inputs_validate(self) -> None:
         workspace = server.load_workspace()
@@ -84,6 +132,48 @@ class ClearwayBoundaryTests(unittest.TestCase):
         self.assertEqual("microsoft_foundry_agent", record["review"]["resultSource"])
         self.assertEqual("more_information_required", record["review"]["state"])
         self.assertEqual(4, len(record["criteria"]))
+        self.assertEqual("Moderate", record["submissionBrief"]["readiness"]["level"])
+        self.assertEqual(4, len(record["submissionBrief"]["documentationGaps"]))
+        self.assertFalse(record["submissionBrief"]["draftLetter"]["readyForClinicianEditing"])
+
+    def test_all_supported_result_builds_source_linked_clinician_draft(self) -> None:
+        bundle = server.load_ai_input("PA-3002")
+        raw = supported_result(bundle)
+        criteria = server.validate_foundry_output(raw, bundle)
+        record = server.build_reviewed_case(
+            "PA-3002",
+            raw,
+            {
+                "responseId": "resp_ready_test",
+                "clientRequestId": "trace_ready_test",
+                "model": "test-only",
+                "status": "completed",
+            },
+            criteria,
+        )
+        brief = record["submissionBrief"]
+        self.assertEqual("review_ready", record["review"]["state"])
+        self.assertEqual("High", brief["readiness"]["level"])
+        self.assertEqual(4, len(brief["requirementsMet"]))
+        self.assertEqual([], brief["documentationGaps"])
+        self.assertTrue(brief["draftLetter"]["readyForClinicianEditing"])
+        self.assertGreaterEqual(len(brief["draftLetter"]["citations"]), 1)
+        self.assertNotEqual(raw["analysisSummary"], brief["executiveSummary"])
+        known_quotes = {
+            source["quote"]
+            for item in brief["draftLetter"]["evidenceItems"]
+            for source in item["sourceStatements"]
+        }
+        self.assertTrue(known_quotes)
+        for quote in known_quotes:
+            self.assertIn(quote, bundle["sourceDocuments"][0]["text"])
+
+    def test_blank_analysis_summary_is_rejected(self) -> None:
+        bundle = server.load_ai_input("PA-3001")
+        raw = structurally_valid_result(bundle)
+        raw["analysisSummary"] = "  "
+        with self.assertRaises(FoundryOutputError):
+            server.validate_foundry_output(raw, bundle)
 
     def test_invented_clinical_quote_is_rejected(self) -> None:
         bundle = server.load_ai_input("PA-3001")
@@ -126,12 +216,14 @@ class ClearwayBoundaryTests(unittest.TestCase):
                 urlopen(request)
             self.assertEqual(503, context.exception.code)
             body = json.loads(context.exception.read())
+            context.exception.close()
             self.assertEqual("foundry_not_configured", body["code"])
 
             for path in ("/data/inputs/PA-3001.json", "/server.py", "/.env.local"):
                 with self.assertRaises(HTTPError) as blocked:
                     urlopen(base + path)
                 self.assertEqual(404, blocked.exception.code)
+                blocked.exception.close()
         finally:
             httpd.shutdown()
             httpd.server_close()

@@ -12,10 +12,15 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import uuid
 from urllib.error import HTTPError, URLError
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
+
+
+DEFAULT_FOUNDRY_API_VERSION = "v1"
 
 
 class FoundryConfigurationError(RuntimeError):
@@ -28,6 +33,22 @@ class FoundryInvocationError(RuntimeError):
 
 class FoundryOutputError(RuntimeError):
     """The agent response did not contain the required JSON contract."""
+
+
+def _responses_endpoint(endpoint: str) -> str:
+    """Append the configured API version without disturbing existing query parameters."""
+    api_version = os.environ.get(
+        "CLEARWAY_FOUNDRY_API_VERSION",
+        DEFAULT_FOUNDRY_API_VERSION,
+    ).strip()
+    if not api_version:
+        raise FoundryConfigurationError("CLEARWAY_FOUNDRY_API_VERSION cannot be blank.")
+
+    parsed = urlsplit(endpoint)
+    query = parse_qsl(parsed.query, keep_blank_values=True)
+    if not any(key.lower() == "api-version" for key, _ in query):
+        query.append(("api-version", api_version))
+    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urlencode(query), parsed.fragment))
 
 
 def foundry_is_configured() -> bool:
@@ -50,9 +71,20 @@ def _access_token() -> str:
             "or provide a short-lived CLEARWAY_FOUNDRY_BEARER_TOKEN for this process."
         )
 
+    command = shlex.split(command_text, posix=os.name != "nt")
+    if not command:
+        raise FoundryConfigurationError("The configured Entra token command is empty.")
+    executable = shutil.which(command[0])
+    if not executable:
+        raise FoundryConfigurationError(
+            "The configured Entra token command is unavailable. Install/sign in to Azure CLI "
+            "or replace CLEARWAY_FOUNDRY_TOKEN_COMMAND with the approved work-laptop token command."
+        )
+    command[0] = executable
+
     try:
         completed = subprocess.run(
-            shlex.split(command_text),
+            command,
             check=True,
             capture_output=True,
             text=True,
@@ -194,7 +226,7 @@ def invoke_foundry_agent(bundle: dict) -> tuple[dict, dict]:
     ).encode("utf-8")
 
     request = Request(
-        endpoint,
+        _responses_endpoint(endpoint),
         data=body,
         headers={
             "Accept": "application/json",

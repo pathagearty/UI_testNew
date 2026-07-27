@@ -27,6 +27,7 @@ Copy `.env.example` to ignored `.env.foundry.local` on the firewall-approved wor
 
 ```dotenv
 CLEARWAY_FOUNDRY_AGENT_ENDPOINT=https://<account>.services.ai.azure.com/api/projects/<project>/agents/<agent>/endpoint/protocols/openai/responses
+CLEARWAY_FOUNDRY_API_VERSION=v1
 CLEARWAY_FOUNDRY_TOKEN_COMMAND=az account get-access-token --scope https://ai.azure.com/.default --query accessToken -o tsv
 ```
 

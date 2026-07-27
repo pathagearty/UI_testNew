@@ -14,6 +14,7 @@ Browser → trusted Python backend → local synthetic source bundle
 - Microsoft Foundry performs the semantic evidence comparison.
 - The backend validates all returned criteria, statuses, source IDs and exact quotes.
 - The backend derives workflow state; the model cannot approve, deny or submit.
+- The backend deterministically builds a concise submission brief and source-linked draft medical necessity letter from the validated result.
 - The UI starts **not analyzed** and renders completed results only when `resultSource` is `microsoft_foundry_agent`.
 - No runtime fixture fallback exists.
 
@@ -48,6 +49,7 @@ Minimum configuration:
 
 ```dotenv
 CLEARWAY_FOUNDRY_AGENT_ENDPOINT=https://<account>.services.ai.azure.com/api/projects/<project>/agents/<agent>/endpoint/protocols/openai/responses
+CLEARWAY_FOUNDRY_API_VERSION=v1
 CLEARWAY_FOUNDRY_TOKEN_COMMAND=az account get-access-token --scope https://ai.azure.com/.default --query accessToken -o tsv
 ```
 
@@ -91,7 +93,7 @@ Content-Type: application/json
 }
 ```
 
-The backend validates the input, invokes the configured Foundry agent, validates its structured output and returns a transient reviewed case. Failed configuration, network calls, agent responses or citations stop closed.
+The backend validates the input, invokes the configured Foundry agent, validates its structured output and returns a transient reviewed case with `submissionBrief`. The brief includes explainable readiness, supported requirements, actionable documentation gaps, review notes, next steps and a source-linked draft letter. Failed configuration, network calls, agent responses or citations stop closed.
 
 ## Synthetic cases
 
@@ -114,8 +116,9 @@ These labels describe the source design. Only live work-laptop Foundry runs esta
 | `data/inputs/*.json` | Full bounded policy and source-document inputs |
 | `server.py` | Source retrieval, validation, API and workflow derivation |
 | `foundry_client.py` | Entra-authenticated Foundry stable-endpoint call |
+| `submission_brief.py` | Deterministic submission brief and source-linked draft-letter view model |
 | `test_clearway.py` | Boundary and citation regression tests |
-| `app.js` | Unanalyzed/live/error UI states |
+| `app.js` | Unanalyzed/live/error states, submission brief and draft-letter rendering |
 | `api-client.js` | Backend-only API client with no fixture fallback |
 
 The older `demo-data.js`, Supabase SQL and Supabase environment artifacts are retained only for migration/history. They are not imported by `index.html` or `server.py`.
@@ -123,7 +126,7 @@ The older `demo-data.js`, Supabase SQL and Supabase environment artifacts are re
 ## Verification
 
 ```bash
-python3 -m py_compile server.py foundry_client.py test_clearway.py
+python3 -m py_compile server.py foundry_client.py submission_brief.py test_clearway.py
 node --check app.js
 node --check api-client.js
 node --check config.js
@@ -138,6 +141,8 @@ The regression suite verifies:
 - fail-closed behavior without Foundry;
 - exact-citation rejection;
 - Foundry provenance mapping;
+- complete and incomplete draft-letter safety states;
+- current hosted-agent API-version query handling;
 - blocked web access to source inputs, Python and environment files.
 
 A live Foundry success cannot be verified from the personal laptop because the endpoint is firewall/IP restricted. That final gate must run on the approved work laptop.

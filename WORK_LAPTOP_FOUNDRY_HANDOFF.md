@@ -105,6 +105,7 @@ Edit only `.env.foundry.local`:
 
 ```dotenv
 CLEARWAY_FOUNDRY_AGENT_ENDPOINT=https://<account>.services.ai.azure.com/api/projects/<project>/agents/<agent>/endpoint/protocols/openai/responses
+CLEARWAY_FOUNDRY_API_VERSION=v1
 CLEARWAY_FOUNDRY_TOKEN_COMMAND=az account get-access-token --scope https://ai.azure.com/.default --query accessToken -o tsv
 CLEARWAY_FOUNDRY_TIMEOUT_SECONDS=90
 ```
@@ -126,14 +127,14 @@ The last command should return a token, but do not paste or save it. If your cor
 ### 5. Run static and regression checks
 
 ```powershell
-python -m py_compile server.py foundry_client.py test_clearway.py
+python -m py_compile server.py foundry_client.py submission_brief.py test_clearway.py
 node --check app.js
 node --check api-client.js
 node --check config.js
 python -m unittest -v test_clearway.py
 ```
 
-Expected result: five tests pass. These tests do not fabricate a runtime Foundry result; the only generated output exists inside test code and is never reachable from the demo UI.
+Expected result: eight tests pass. These tests do not fabricate a runtime Foundry result; the only generated output exists inside test code and is never reachable from the demo UI.
 
 ### 6. Start Clearway
 
@@ -224,7 +225,9 @@ Also inspect every result criterion and confirm:
 6. Confirm the UI shows the live Foundry loading stages.
 7. Confirm the result displays **Foundry response trace** and a nonempty trace ID.
 8. Open each policy criterion and verify its exact policy and clinical citations.
-9. Disconnect from the approved network or temporarily use an invalid endpoint and rerun once; confirm the UI shows **Foundry evidence review unavailable** and does not display a new completed result.
+9. Confirm the submission brief clearly separates supported requirements from documentation gaps and explains why each gap matters.
+10. Open **Preview draft medical necessity letter**. For an incomplete case, confirm it says **Completion required**, retains visible placeholders and cannot be mistaken for a send-ready letter. For a complete case, confirm it says **Ready for clinician editing**, displays source references and retains the clinician-review disclaimer.
+11. Disconnect from the approved network or temporarily use an invalid endpoint and rerun once; confirm the UI shows **Foundry evidence review unavailable** and does not display a new completed result.
 
 ## Recommended three-case team demonstration
 
@@ -311,6 +314,8 @@ The demo is ready for the team only when all of these are true on the work lapto
 - [ ] All four criteria pass source-ID and exact-quote validation.
 - [ ] The UI starts unanalyzed and displays results only after the live call.
 - [ ] The trace/request ID is visible in the UI.
+- [ ] The submission brief and draft letter reflect only the validated live result.
+- [ ] Incomplete drafts retain visible completion placeholders and a do-not-send warning.
 - [ ] The failure test does not produce or preserve a new completed analysis.
 - [ ] `PA-3001`, `PA-3002` and `PA-3003` produce sensible, source-grounded differentiated behavior.
 - [ ] No credentials, customer data, PHI or endpoint secrets are exposed in browser code or artifacts.
