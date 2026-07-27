@@ -96,9 +96,9 @@
     </section>
 
     <section class="metric-grid" aria-label="Case readiness summary">
-      <article class="metric-card metric-featured">
-        <div class="progress-ring" id="requirements-ring" style="--progress:0deg"><span id="requirements-percent">0%</span></div>
-        <div><small>Requirements satisfied</small><strong id="requirements-ratio">0 of 0</strong><span>Policy criteria with source-linked evidence</span></div>
+      <article class="metric-card metric-featured" id="readiness-card">
+        <span class="metric-icon readiness" id="readiness-icon" aria-hidden="true">○</span>
+        <div><small>Submission readiness</small><strong id="readiness-metric">Not analyzed</strong><span id="readiness-caption">Run Foundry to evaluate the policy evidence</span></div>
       </article>
       <article class="metric-card">
         <span class="metric-icon documents" aria-hidden="true">▤</span>
@@ -119,6 +119,48 @@
       <div class="verification-item" id="order-verification"></div>
       <div class="verification-item" id="policy-verification"></div>
       <div class="verification-item verification-trace" id="trace-verification"></div>
+    </section>
+
+    <section class="card submission-brief" id="submission-brief" aria-labelledby="brief-title" hidden>
+      <div class="card-heading brief-heading">
+        <div>
+          <p class="eyebrow">SUBMISSION READINESS BRIEF</p>
+          <h2 id="brief-title">What supports the request—and what still needs attention</h2>
+          <p>Generated only after a live Foundry result passes backend schema, source-ID and exact-quote validation.</p>
+        </div>
+        <span class="brief-level" id="brief-level"></span>
+      </div>
+      <div class="brief-overview-grid">
+        <article class="brief-summary-panel">
+          <h3>Executive summary</h3>
+          <p id="brief-executive-summary"></p>
+        </article>
+        <article class="brief-readiness-panel">
+          <span>Evidence readiness</span>
+          <strong id="brief-readiness-label"></strong>
+          <p id="brief-readiness-explanation"></p>
+        </article>
+      </div>
+      <div class="brief-detail-grid">
+        <section aria-labelledby="requirements-met-title">
+          <div class="brief-section-heading">
+            <h3 id="requirements-met-title">Requirements supported</h3>
+            <span id="requirements-met-count"></span>
+          </div>
+          <div class="brief-list" id="requirements-met-list"></div>
+        </section>
+        <section aria-labelledby="documentation-gaps-title">
+          <div class="brief-section-heading">
+            <h3 id="documentation-gaps-title">Documentation gaps</h3>
+            <span id="documentation-gaps-count"></span>
+          </div>
+          <div class="brief-list" id="documentation-gaps-list"></div>
+        </section>
+      </div>
+      <details class="review-notes">
+        <summary>Important review and compliance notes</summary>
+        <div id="review-notes-list"></div>
+      </details>
     </section>
 
     <div class="summary-grid">
@@ -160,7 +202,7 @@
       </div>
       <div class="action-stack">
         <button class="button button-primary" id="primary-action">Create documentation request</button>
-        <button class="button button-secondary" id="review-letter">Preview clinical summary</button>
+        <button class="button button-secondary" id="review-letter">Preview draft medical necessity letter</button>
         <p>Actions remain inside the UAT workflow and require clinician confirmation.</p>
       </div>
     </section>
@@ -174,7 +216,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
-    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <section class="modal-card" id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal-close" data-close-modal aria-label="Close dialog">×</button>
       <p class="eyebrow" id="modal-kicker"></p>
       <h2 id="modal-title"></h2>

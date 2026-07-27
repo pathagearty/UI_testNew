@@ -29,6 +29,7 @@ from foundry_client import (
     foundry_is_configured,
     invoke_foundry_agent,
 )
+from submission_brief import build_submission_brief
 
 ROOT = Path(__file__).resolve().parent
 DATA_ROOT = ROOT / "data"
@@ -216,6 +217,7 @@ def validate_foundry_output(result: dict, bundle: dict) -> list[dict]:
     _reject_prohibited_keys(result)
     if result.get("schemaVersion") != "clearway.evidence-review.v1":
         raise FoundryOutputError("schemaVersion must equal clearway.evidence-review.v1")
+    _require_string(result.get("analysisSummary"), "analysisSummary")
 
     policy = bundle["policy"]
     expected_criteria = {
@@ -362,6 +364,11 @@ def build_reviewed_case(case_id: str, result: dict, metadata: dict, criteria: li
             "status": metadata.get("status"),
         },
     }
+    record["submissionBrief"] = build_submission_brief(
+        record,
+        criteria,
+        state,
+    )
     return record
 
 

@@ -150,7 +150,6 @@
       required: required.length,
       supported,
       attention,
-      percentage: analyzed && required.length ? Math.round((supported / required.length) * 100) : 0,
       documentsPresent,
       documentsTotal: record.documents.length
     };
@@ -158,9 +157,14 @@
 
   function renderMetrics(record) {
     const metrics = calculateMetrics(record);
-    $('#requirements-percent').textContent = metrics.analyzed ? `${metrics.percentage}%` : '—';
-    $('#requirements-ratio').textContent = metrics.analyzed ? `${metrics.supported} of ${metrics.required}` : 'Not analyzed';
-    $('#requirements-ring').style.setProperty('--progress', `${metrics.percentage * 3.6}deg`);
+    const brief = record.submissionBrief;
+    const readiness = metrics.analyzed && brief ? brief.readiness : null;
+    $('#readiness-metric').textContent = readiness ? readiness.level : 'Not analyzed';
+    $('#readiness-caption').textContent = readiness ? readiness.label : 'Run Foundry to evaluate the policy evidence';
+    const readinessCard = $('#readiness-card');
+    const readinessTone = !readiness ? 'pending' : record.review.state === 'review_ready' ? 'ready' : record.review.state === 'clinical_review_required' ? 'blocked' : 'attention';
+    readinessCard.dataset.state = readinessTone;
+    $('#readiness-icon').textContent = !readiness ? '○' : readinessTone === 'ready' ? '✓' : readinessTone === 'blocked' ? '×' : '!';
     $('#documents-metric').textContent = `${metrics.documentsPresent} of ${metrics.documentsTotal}`;
     $('#documents-caption').textContent = metrics.documentsPresent === metrics.documentsTotal ? 'All expected source records are available' : `${metrics.documentsTotal - metrics.documentsPresent} expected source record${metrics.documentsTotal - metrics.documentsPresent === 1 ? '' : 's'} outstanding`;
     $('#attention-metric').textContent = metrics.analyzed ? String(metrics.attention) : '—';
@@ -169,6 +173,58 @@
     const policyCard = $('#policy-metric').closest('.metric-card');
     policyCard.dataset.state = record.policy.current ? 'ready' : 'blocked';
     policyCard.querySelector('.metric-icon').textContent = record.policy.current ? '✓' : '×';
+  }
+
+  function renderSubmissionBrief(record) {
+    const section = $('#submission-brief');
+    const brief = record.submissionBrief;
+    if (!hasFoundryAnalysis(record) || !brief) {
+      section.hidden = true;
+      return;
+    }
+
+    section.hidden = false;
+    section.dataset.state = toneForState(record.review.state);
+    $('#brief-level').textContent = brief.readiness.level;
+    $('#brief-executive-summary').textContent = brief.executiveSummary;
+    $('#brief-readiness-label').textContent = brief.readiness.label;
+    $('#brief-readiness-explanation').textContent = brief.readiness.explanation;
+
+    const met = brief.requirementsMet || [];
+    $('#requirements-met-count').textContent = `${met.length} supported`;
+    $('#requirements-met-list').innerHTML = met.length ? met.map(item => `
+      <article class="brief-item brief-item-supported">
+        <span class="brief-item-mark" aria-hidden="true">✓</span>
+        <div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.explanation)}</p>
+          <small>${escapeHtml(String(item.sourceCount))} exact source citation${item.sourceCount === 1 ? '' : 's'}</small>
+        </div>
+      </article>`).join('') : '<div class="brief-empty">No criteria have source-linked support yet.</div>';
+
+    const gaps = brief.documentationGaps || [];
+    $('#documentation-gaps-count').textContent = gaps.length ? `${gaps.length} to resolve` : 'None identified';
+    $('#documentation-gaps-list').innerHTML = gaps.length ? gaps.map(item => `
+      <article class="brief-item brief-item-gap">
+        <span class="brief-item-mark" aria-hidden="true">!</span>
+        <div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <small class="gap-label">What is missing</small>
+          <ul>${item.missingInformation.map(entry => `<li>${escapeHtml(entry)}</li>`).join('')}</ul>
+          <div class="gap-context"><b>Why it matters</b><p>“${escapeHtml(item.whyRequired)}”</p><small>${escapeHtml(item.policyLocator)}</small></div>
+          <p class="gap-impact"><b>Submission impact:</b> ${escapeHtml(item.impact)}</p>
+        </div>
+      </article>`).join('') : `
+      <div class="brief-empty brief-empty-success">
+        <strong>✓ No policy-evidence gaps identified</strong>
+        <span>Administrative checks and clinician verification still remain.</span>
+      </div>`;
+
+    $('#review-notes-list').innerHTML = (brief.risks || []).map(item => `
+      <article class="review-note" data-level="${escapeHtml(item.level)}">
+        <strong>${escapeHtml(item.title)}</strong>
+        <p>${escapeHtml(item.detail)}</p>
+      </article>`).join('');
   }
 
   function renderCase() {
@@ -188,6 +244,7 @@
 
     renderSteps();
     renderMetrics(c);
+    renderSubmissionBrief(c);
     renderVerificationItem('#case-verification', 'Patient / case linked', `${c.patient.id} · ${c.id}`);
     renderVerificationItem('#order-verification', 'Order verified', `${order.id} · ${order.codeSystem} ${order.procedureCode}`);
     renderVerificationItem('#policy-verification', 'Policy version', c.policy.current ? `${c.policy.id} v${c.policy.version} pinned` : `${c.policy.id} v${c.policy.version} expired`, c.policy.current ? 'ready' : 'blocked');
@@ -271,7 +328,8 @@
     const action = $('#primary-action');
     const summary = $('#review-letter');
     const issues = c.criteria.filter(item => ['not_evidenced', 'conflicting', 'unable_to_assess', 'blocked'].includes(item.status));
-    summary.disabled = !hasFoundryAnalysis(c) || ['clinical_review_required', 'blocked_invalid_input'].includes(c.review.state);
+    const brief = c.submissionBrief;
+    summary.disabled = !hasFoundryAnalysis(c) || !brief || c.review.state === 'blocked_invalid_input';
 
     if (!hasFoundryAnalysis(c)) {
       $('#next-step-title').textContent = 'Run the Microsoft Foundry evidence review';
@@ -282,38 +340,39 @@
       summary.disabled = true;
     } else if (c.review.state === 'review_ready') {
       $('#next-step-title').textContent = 'Ready for clinician review';
-      $('#next-step-guidance').textContent = 'Verify the source-linked evidence and clinical summary before deciding whether the package should move to submission.';
-      $('#attention-list').innerHTML = '<li>No unresolved policy-evidence gaps remain.</li>';
+      $('#next-step-guidance').textContent = 'Verify the source-linked brief and draft letter before deciding whether the package should move to submission.';
+      $('#attention-list').innerHTML = brief.nextSteps.map(item => `<li>${escapeHtml(item)}</li>`).join('');
       action.textContent = 'Send to clinician review';
       action.disabled = false;
       summary.disabled = false;
     } else if (c.review.state === 'clinical_review_required') {
       $('#next-step-title').textContent = 'Resolve the clinical conflict';
       $('#next-step-guidance').textContent = 'Both source statements remain visible. The workflow will not decide which clinical statement is correct.';
-      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      $('#attention-list').innerHTML = (brief?.nextSteps || issues.map(item => item.next)).map(item => `<li>${escapeHtml(item)}</li>`).join('');
       action.textContent = 'Request clinical clarification';
       action.disabled = false;
     } else if (c.review.state === 'blocked_invalid_input') {
       $('#next-step-title').textContent = 'Resolve the policy mapping';
       $('#next-step-guidance').textContent = 'Evidence review cannot continue until the backend resolves a policy effective on the request date.';
-      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      $('#attention-list').innerHTML = (brief?.nextSteps || issues.map(item => item.next)).map(item => `<li>${escapeHtml(item)}</li>`).join('');
       action.textContent = 'Review policy mapping';
       action.disabled = false;
     } else {
       $('#next-step-title').textContent = 'Complete the evidence package';
       $('#next-step-guidance').textContent = 'Collect the highlighted documentation before routing the case to a clinician.';
-      $('#attention-list').innerHTML = issues.map(item => `<li>${escapeHtml(item.next)}</li>`).join('');
+      $('#attention-list').innerHTML = (brief?.nextSteps || issues.map(item => item.next)).map(item => `<li>${escapeHtml(item)}</li>`).join('');
       action.textContent = 'Create documentation request';
       action.disabled = false;
       summary.disabled = false;
     }
   }
 
-  function openModal(kicker, title, body, action = null) {
+  function openModal(kicker, title, body, action = null, wide = false) {
     state.lastFocused = document.activeElement;
     $('#modal-kicker').textContent = kicker;
     $('#modal-title').textContent = title;
     $('#modal-body').innerHTML = body;
+    $('#modal-card').classList.toggle('modal-card-wide', wide);
     const primary = $('#modal-primary');
     primary.hidden = !action;
     primary.onclick = null;
@@ -333,26 +392,57 @@
     if (state.lastFocused) state.lastFocused.focus();
   }
 
-  function showClinicalSummary() {
+  function showDraftLetter() {
     const c = state.currentCase;
-    if (!hasFoundryAnalysis(c)) {
+    const brief = c?.submissionBrief;
+    const letter = brief?.draftLetter;
+    if (!hasFoundryAnalysis(c) || !letter) {
       showToast('Run and validate the Foundry review first');
       return;
     }
-    const order = c.orders.find(item => item.id === $('#order-select').value) || c.orders[0];
-    const metrics = calculateMetrics(c);
-    openModal('CLINICIAN REVIEW REQUIRED', 'Prior authorization evidence summary', `
-      <article class="draft-letter">
-        <dl class="modal-facts">
-          <div><dt>Patient</dt><dd>${escapeHtml(c.patient.name)} · ${escapeHtml(c.patient.id)}</dd></div>
-          <div><dt>Case / order</dt><dd>${escapeHtml(c.id)} · ${escapeHtml(order.id)}</dd></div>
-          <div><dt>Requested service</dt><dd>${escapeHtml(order.procedure)} · ${escapeHtml(order.codeSystem)} ${escapeHtml(order.procedureCode)}</dd></div>
-          <div><dt>Policy</dt><dd>${escapeHtml(c.policy.id)} v${escapeHtml(c.policy.version)}</dd></div>
-        </dl>
-        <p><strong>${metrics.supported} of ${metrics.required} required criteria have source-linked support.</strong></p>
-        <p>This summary assists review; it does not determine medical necessity, approve or deny a request, or submit information to a payer.</p>
-        <p><strong>Clinician verification and attestation are required before use.</strong></p>
-      </article>`);
+
+    const evidenceItems = (letter.evidenceItems || []).map(item => {
+      const statements = (item.sourceStatements || []).map(source => `
+        <blockquote>“${escapeHtml(source.quote)}” <sup>[${escapeHtml(source.citationId)}]</sup></blockquote>`).join('');
+      return `<li><strong>${escapeHtml(item.title)}</strong>${statements}</li>`;
+    }).join('');
+    const completionItems = (letter.completionItems || []).map(item => `
+      <li><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.placeholder)}</span><small>${escapeHtml(item.policyLocator)}</small></li>`).join('');
+    const citations = (letter.citations || []).map(source => `
+      <article class="letter-citation">
+        <strong>[${escapeHtml(source.id)}] ${escapeHtml(source.label)}</strong>
+        <blockquote>“${escapeHtml(source.quote)}”</blockquote>
+        <small>${escapeHtml(source.documentId)} · ${escapeHtml(source.locator)}</small>
+      </article>`).join('');
+    const letterTone = letter.readyForClinicianEditing ? 'ready' : 'attention';
+
+    openModal(`DRAFT · ${letter.status.toUpperCase()}`, letter.title, `
+      <div class="letter-readiness" data-state="${letterTone}">
+        <span aria-hidden="true">${letter.readyForClinicianEditing ? '✓' : '!'}</span>
+        <div><strong>${escapeHtml(letter.status)}</strong><p>${letter.readyForClinicianEditing ? 'All policy-evidence criteria are supported; clinician and administrative verification still remain.' : 'This draft contains visible completion placeholders and must not be sent as-is.'}</p></div>
+      </div>
+      <article class="medical-letter">
+        <p>${escapeHtml(letter.date)}</p>
+        <p>${escapeHtml(letter.recipient)}</p>
+        <div class="letter-subject">
+          <strong>Re: ${escapeHtml(letter.subject)}</strong>
+          <span>Member: ${escapeHtml(letter.memberName)} · ${escapeHtml(letter.memberId)}</span>
+          <span>Case ID: ${escapeHtml(letter.caseId)}</span>
+          <span>Diagnosis: ${escapeHtml(letter.diagnosis)}</span>
+          <span>Requested service: ${escapeHtml(letter.requestedService)} · ${escapeHtml(letter.procedureCode)}</span>
+          <span>Ordering clinician: ${escapeHtml(letter.orderingClinician)}</span>
+          <span>Planned service date: ${escapeHtml(formatDate(letter.serviceDate))}</span>
+        </div>
+        <p>Dear Medical Reviewer:</p>
+        <p>${escapeHtml(letter.openingParagraph)}</p>
+        ${evidenceItems ? `<p>${escapeHtml(letter.evidenceIntro)}</p><ul class="letter-evidence">${evidenceItems}</ul>` : '<p><strong>No policy criterion currently has sufficient source-linked support for inclusion in this draft.</strong></p>'}
+        ${completionItems ? `<section class="letter-completion"><h3>Required before finalization</h3><p>The following placeholders are intentionally retained so missing information is not silently omitted:</p><ul>${completionItems}</ul></section>` : ''}
+        <p>${escapeHtml(letter.supportingConclusion)}</p>
+        <p>${escapeHtml(letter.closing)}</p>
+        <p class="letter-signature">Sincerely,<br><br>[Provider Name / Credentials]<br>[Practice Name]<br>[Contact Information]</p>
+      </article>
+      ${citations ? `<details class="letter-sources"><summary>Source references used in this draft (${letter.citations.length})</summary><div>${citations}</div></details>` : ''}
+      <p class="letter-disclaimer">${escapeHtml(letter.disclaimer)}</p>`, null, true);
   }
 
   function handlePrimaryAction() {
@@ -419,7 +509,7 @@
     $('#order-select').addEventListener('change', renderCase);
     $('#run-review').addEventListener('click', runEvidenceReview);
     $('#primary-action').addEventListener('click', handlePrimaryAction);
-    $('#review-letter').addEventListener('click', showClinicalSummary);
+    $('#review-letter').addEventListener('click', showDraftLetter);
     $$('[data-close-modal]').forEach(element => element.addEventListener('click', closeModal));
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && $('#modal').classList.contains('is-open')) closeModal();
